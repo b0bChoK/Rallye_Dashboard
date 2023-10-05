@@ -7,10 +7,10 @@
         android:id="@+id/MainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#c2c2c2"
+        android:background="@color/background"
         tools:context=".MainActivity">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/caseLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -21,65 +21,62 @@
             app:layout_constraintWidth_default="percent"
             app:layout_constraintWidth_percent="0.5">
 
-
-            <FrameLayout
+            <ImageView
+                android:id="@+id/imageCaseA"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                >
-                <ImageView
-                    android:id="@+id/imageCaseA"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:adjustViewBounds="true"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="@color/background"
 
-                    android:contentDescription="@string/img_caseA"
-                    android:paddingHorizontal="5dp"
-                    android:paddingVertical="5dp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/case_empty" />
-            </FrameLayout>
+                android:contentDescription="@string/img_caseA"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/case_empty"
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                >
+                app:layout_constrainedHeight="true"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <ImageView
                 android:id="@+id/imageCaseB"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:adjustViewBounds="true"
+
+                android:background="@color/background"
                 android:contentDescription="@string/img_caseB"
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/case_empty" />
-            </FrameLayout>
+                android:src="@drawable/case_empty"
 
+                app:layout_constrainedHeight="true"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintTop_toBottomOf="@id/imageCaseA" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:background="#202020"
-                >
             <ImageView
                 android:id="@+id/imageCaseC"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:adjustViewBounds="true"
+
+                android:background="@color/main_case"
 
                 android:contentDescription="@string/img_caseC"
                 android:paddingHorizontal="5dp"
                 android:paddingVertical="5dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/case_empty" />
-            </FrameLayout>
+                android:src="@drawable/case_empty"
 
-        </LinearLayout>
+                app:layout_constrainedHeight="true"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintTop_toBottomOf="@id/imageCaseB" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:id="@+id/divider"
@@ -122,17 +119,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
                 android:keepScreenOn="true"
-                android:text="@string/button_open_roadbook_ld"
-                />
+                android:text="@string/button_open_roadbook_ld" />
 
-<!--            <ImageButton-->
-<!--                android:id="@+id/btSelectRoadbook"-->
-<!--                style="@style/Widget.AppCompat.Button"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_weight="0"-->
-<!--                android:keepScreenOn="true"-->
-<!--                android:src="@drawable/opened_folder"/>-->
+            <!--            <ImageButton-->
+            <!--                android:id="@+id/btSelectRoadbook"-->
+            <!--                style="@style/Widget.AppCompat.Button"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_weight="0"-->
+            <!--                android:keepScreenOn="true"-->
+            <!--                android:src="@drawable/opened_folder"/>-->
 
         </LinearLayout>
 
@@ -304,9 +300,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintEnd_toEndOf="parent">
 
             <Button
                 android:id="@+id/btIncreaseDist"
@@ -335,6 +330,6 @@
 
         </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

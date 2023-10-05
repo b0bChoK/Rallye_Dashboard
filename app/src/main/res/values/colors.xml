@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background">#c2c2c2</color>
+    <color name="main_case">#202020</color>
+
 </resources>
