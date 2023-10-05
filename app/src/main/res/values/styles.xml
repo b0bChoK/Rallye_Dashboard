@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.XLarge" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">34sp</item>
+    </style>
+
+    <style name="TextAppearance.XXLarge" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">40sp</item>
+    </style>
+
+</resources>

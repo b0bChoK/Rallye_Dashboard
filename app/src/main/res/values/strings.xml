@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Rallye Dashboard</string>
+
+    <string name="button_next">Next</string>
+    <string name="button_prev">Prev</string>
+    <string name="button_open_roadbook">Open Roadbook</string>
+
+    <string name="button_next_ld">Next</string>
+    <string name="button_prev_ld">Prev</string>
+    <string name="button_open_roadbook_ld">Open RB</string>
+
+    <string name="button_increase_dist">+ 10 m</string>
+    <string name="button_raz">RAZ</string>
+    <string name="button_decrease_dist">- 10 m</string>
+
+    <string name="img_caseC">Bottom case</string>
+    <string name="img_caseB">Middle case</string>
+    <string name="img_caseA">Top case</string>
+
+    <string name="click_raz">Press long to RAZ</string>
+    <string name="click_rb">Press long to Open Roadbook</string>
+
+    <string name="copyright">(c)2022 by A. DEWAS</string>
+    <string name="comment">This is an Android app that can display the current roadbook and a chronometer/odometer/speedometer dashboard, that can be piloted by a ble remote.</string>
+</resources>

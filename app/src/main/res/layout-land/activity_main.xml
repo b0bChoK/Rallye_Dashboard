@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/MainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#c2c2c2"
+        tools:context=".MainActivity">
+
+        <LinearLayout
+            android:id="@+id/caseLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.5">
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                >
+                <ImageView
+                    android:id="@+id/imageCaseA"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+
+                    android:contentDescription="@string/img_caseA"
+                    android:paddingHorizontal="5dp"
+                    android:paddingVertical="5dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/case_empty" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                >
+            <ImageView
+                android:id="@+id/imageCaseB"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/img_caseB"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/case_empty" />
+            </FrameLayout>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:background="#202020"
+                >
+            <ImageView
+                android:id="@+id/imageCaseC"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:adjustViewBounds="true"
+
+                android:contentDescription="@string/img_caseC"
+                android:paddingHorizontal="5dp"
+                android:paddingVertical="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/case_empty" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/caseLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/buttonLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/divider"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <Button
+                android:id="@+id/btPageUp"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_prev_ld" />
+
+            <Button
+                android:id="@+id/btPageDown"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_next_ld" />
+
+            <Button
+                android:id="@+id/btSelectRoadbook"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:keepScreenOn="true"
+                android:text="@string/button_open_roadbook_ld"
+                />
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/btSelectRoadbook"-->
+<!--                style="@style/Widget.AppCompat.Button"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="0"-->
+<!--                android:keepScreenOn="true"-->
+<!--                android:src="@drawable/opened_folder"/>-->
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/imgOdometer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtOdometer"
+            app:layout_constraintEnd_toStartOf="@id/txtOdometer"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toTopOf="@id/txtOdometer"
+            app:srcCompat="@drawable/counter" />
+
+        <TextView
+            android:id="@+id/txtOdometer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:text="000.00 km"
+            android:textAppearance="@style/TextAppearance.XXLarge"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imgClock"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtCurrentTime"
+            app:layout_constraintEnd_toStartOf="@id/txtCurrentTime"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toTopOf="@id/txtCurrentTime"
+            app:srcCompat="@drawable/clock" />
+
+        <TextView
+            android:id="@+id/txtCurrentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:text="Clock"
+            android:textAppearance="@style/TextAppearance.XLarge"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toBottomOf="@id/txtOdometer" />
+
+        <ImageView
+            android:id="@+id/imgTimer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtTimer"
+            app:layout_constraintEnd_toStartOf="@id/txtTimer"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toTopOf="@id/txtTimer"
+            app:srcCompat="@drawable/timer" />
+
+        <TextView
+            android:id="@+id/txtTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:text="00m00s"
+            android:textAppearance="@style/TextAppearance.XLarge"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtCurrentTime" />
+
+        <!--<ImageView
+            android:id="@+id/imgESTimer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtESTimer"
+            app:layout_constraintEnd_toStartOf="@id/txtESTimer"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toTopOf="@id/txtESTimer"
+            app:srcCompat="@drawable/racing_flag" />
+
+
+        <TextView
+            android:id="@+id/txtESTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:text="0'00.00&quot;"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtOdometer" />-->
+
+        <ImageView
+            android:id="@+id/imgSpeed"
+            android:layout_width="32dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtSpeedOMeter"
+            app:layout_constraintEnd_toStartOf="@id/txtSpeedOMeter"
+            app:layout_constraintTop_toTopOf="@id/txtSpeedOMeter"
+            app:srcCompat="@drawable/speedometer" />
+
+        <TextView
+            android:id="@+id/txtSpeedOMeter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="16dp"
+            android:text="000 km/h"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtTimer" />
+
+        <ImageView
+            android:id="@+id/imgAVGSpeed"
+            android:layout_width="32dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtAVGSpeed"
+            app:layout_constraintEnd_toStartOf="@id/txtAVGSpeed"
+            app:layout_constraintTop_toTopOf="@id/txtAVGSpeed"
+            app:srcCompat="@drawable/speedometer_avg" />
+
+        <TextView
+            android:id="@+id/txtAVGSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
+            android:text="000 km/h"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtSpeedOMeter" />
+
+        <ImageView
+            android:id="@+id/imgTOPSpeed"
+            android:layout_width="32dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtTOPSpeed"
+            app:layout_constraintEnd_toStartOf="@id/txtTOPSpeed"
+            app:layout_constraintTop_toTopOf="@id/txtTOPSpeed"
+            app:srcCompat="@drawable/speedometer_top" />
+
+        <TextView
+            android:id="@+id/txtTOPSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="8dp"
+            android:text="000 km/h"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtAVGSpeed" />
+
+        <LinearLayout
+            android:id="@+id/caseLayout2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <Button
+                android:id="@+id/btIncreaseDist"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_increase_dist" />
+
+            <Button
+                android:id="@+id/btRAZ"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_raz" />
+
+            <Button
+                android:id="@+id/btDecreaseDist"
+                style="@style/Widget.AppCompat.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:keepScreenOn="true"
+                android:text="@string/button_decrease_dist" />
+
+        </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
