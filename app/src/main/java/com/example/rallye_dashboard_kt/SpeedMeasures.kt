@@ -20,7 +20,8 @@ class SpeedMeasures {
         endLongitude = location.longitude.toString()
 
         // Get GNSS speed in m/s
-        speedMS = location.speed
+        if(location.hasSpeed())
+            speedMS = location.speed
         // Update max speed
         if (speedMS > maxSpeedMS) {
             maxSpeedMS = speedMS
@@ -67,6 +68,9 @@ class SpeedMeasures {
     }
 
     fun getAverageSpeed(duration: Long): Float {
-        return distanceTotalM / (duration / 1000)
+        return if(distanceTotalM > 0f && duration > 0f)
+            distanceTotalM / (duration / 1000)
+        else
+            0f
     }
 }
