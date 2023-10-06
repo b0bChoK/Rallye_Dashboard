@@ -71,19 +71,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     override fun onStart() {
         super.onStart()
 
-        if (RoadbookLoader.isDefined(this)) {
-            // directory already defined and permission already granted
-            // just have to load it
-            val ld = RoadbookLoader.load(this)
-            if (ld != null) {
-                mRbLoader = ld
-                mRbLoader.loadCases()
-                refreshRoadbookCases()
-            } else {
-                // the saved pref were wrong, forget them
-                RoadbookLoader.forget(this)
-            }
-        }
+
     }
 
     private fun initializeComponents() {

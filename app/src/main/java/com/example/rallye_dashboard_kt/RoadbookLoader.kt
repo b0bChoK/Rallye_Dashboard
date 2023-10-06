@@ -7,37 +7,8 @@ import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
 
 class RoadbookLoader(private val context: Context, val uri: Uri) {
-    companion object {
-        const val PREF_KEY = "ROAD_BOOK_LOADED"
-
-        fun isDefined(context: Context): Boolean {
-            val pref = Prefs.with(context).getString(PREF_KEY, "")
-            if (!pref.isNullOrBlank()) {
-                val documentFile = DocumentFile.fromTreeUri(context, pref.toUri())
-                if (documentFile != null) {
-                    return documentFile.exists() && documentFile.isDirectory
-                }
-            }
-            return false
-        }
-
-        fun load(context: Context): RoadbookLoader? {
-            val uri = Prefs.with(context).getString(PREF_KEY, "")
-            if (uri.isNullOrEmpty()) {
-                return null
-            }
-            return RoadbookLoader(context, uri.toUri())
-        }
-
-        fun forget(context: Context) {
-            Prefs.with(context).edit().putString(PREF_KEY, "").apply()
-        }
-    }
-
     private var ordererFiles: Array<DocumentFile>? = null
     var currentCase = 0
-
-
 
     fun goNextCase() {
         if (isRoadbookLoaded) {
