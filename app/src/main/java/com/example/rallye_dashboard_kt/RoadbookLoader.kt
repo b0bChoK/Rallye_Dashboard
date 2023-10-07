@@ -1,14 +1,18 @@
 package com.example.rallye_dashboard_kt
 
-import android.content.Context
-import android.net.Uri
 import android.util.Log
-import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.ViewModel
 
-class RoadbookLoader(private val context: Context, val uri: Uri) {
+class RoadbookLoader : ViewModel() {
+    private lateinit var mRoadbookDir: DocumentFile
     private var ordererFiles: Array<DocumentFile>? = null
     var currentCase = 0
+
+    fun setRoadbookDir(dir: DocumentFile) {
+        mRoadbookDir = dir
+        loadCases()
+    }
 
     fun goNextCase() {
         if (isRoadbookLoaded) {
@@ -47,12 +51,16 @@ class RoadbookLoader(private val context: Context, val uri: Uri) {
         get() = ordererFiles != null
 
     fun loadCases() {
-        var roadbookDir = DocumentFile.fromTreeUri(context, uri)
-
-        if (roadbookDir!!.exists() && roadbookDir!!.isDirectory) {
-            ordererFiles = roadbookDir!!.listFiles()
+        var listOfFiles: Array<DocumentFile>? = null
+        if (mRoadbookDir!!.exists() && mRoadbookDir!!.isDirectory) {
+            ordererFiles = mRoadbookDir!!.listFiles()
         }
+
         if (ordererFiles != null) {
+            // Keep only image file
+            ordererFiles = ordererFiles!!.filter { it.isFile && it.name?.split(".")?.get(1).equals("jpg", true) || it.name?.split(".")?.get(1).equals("png", true) }.toTypedArray()
+
+            // Sort by name
             ordererFiles!!.sortWith(Comparator { o1: DocumentFile, o2: DocumentFile ->
                 val o1splits = o1.name!!
                     .split("_|\\.").toTypedArray()

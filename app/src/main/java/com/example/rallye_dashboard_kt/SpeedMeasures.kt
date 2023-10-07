@@ -1,8 +1,10 @@
 package com.example.rallye_dashboard_kt
 
 import android.location.Location
+import android.util.Log
+import androidx.lifecycle.ViewModel
 
-class SpeedMeasures {
+class SpeedMeasures : ViewModel() {
     private var endLongitude: String? = null
     private var endLatitude: String? = null
 
@@ -22,6 +24,7 @@ class SpeedMeasures {
         // Get GNSS speed in m/s
         if(location.hasSpeed())
             speedMS = location.speed
+
         // Update max speed
         if (speedMS > maxSpeedMS) {
             maxSpeedMS = speedMS

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
@@ -19,11 +18,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.ViewModelProvider
 import com.example.rallye_dashboard_kt.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity(), LocationListener {
@@ -37,7 +41,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var locationManager: LocationManager
-    private var mSpeedMeasures: SpeedMeasures = SpeedMeasures()
+    private lateinit var mSpeedMeasures: SpeedMeasures
     private  var mConfiguration: Configuration = Configuration()
 
     private lateinit var mRbLoader: RoadbookLoader
@@ -57,6 +61,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mRbLoader = ViewModelProvider(this)[RoadbookLoader::class.java]
+        mSpeedMeasures = ViewModelProvider(this)[SpeedMeasures::class.java]
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
@@ -92,17 +99,17 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
 
         binding.btPageDown.setOnClickListener {
-            mRbLoader!!.goNextCase()
+            mRbLoader.goNextCase()
             refreshRoadbookCases()
         }
 
         binding.btPageUp.setOnClickListener {
-            mRbLoader!!.goPrevCase()
+            mRbLoader.goPrevCase()
             refreshRoadbookCases()
         }
 
         binding.btPageUp.setOnLongClickListener {
-            mRbLoader!!.goCase(0)
+            mRbLoader.goCase(0)
             refreshRoadbookCases()
             true
         }
@@ -132,6 +139,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
         mTxtOdometer = binding.txtOdometer
 
         mHandlerClock.post(mRunnableClock)
+
+        refreshRoadbookCases()
     }
 
 
@@ -264,9 +273,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun refreshRoadbookCases() {
-        val index = mRbLoader!!.currentCase
-        Log.d("Main", "Current case is " + index + " over " + mRbLoader!!.casesSize)
-        val currentIndex = mRbLoader!!.currentCase
+        val index = mRbLoader.currentCase
+        Log.d("Main", "Current case is " + index + " over " + mRbLoader.casesSize)
+        val currentIndex = mRbLoader.currentCase
         //The case C is the lower and should draw the current case, then caseB then caseA (display order from bottom to top)
         val caseCindex = currentIndex
         val caseBindex = currentIndex + 1
@@ -278,8 +287,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private fun loadCase(theCase: ImageView?, index: Int) {
         if (theCase != null) {
-            if (mRbLoader!!.isRoadbookLoaded) {
-                val caseFile = mRbLoader!!.getCase(index)
+            if (mRbLoader.isRoadbookLoaded) {
+                val caseFile = mRbLoader.getCase(index)
                 if (caseFile != null) theCase.setImageURI(caseFile.uri) else theCase.setImageResource(
                     R.drawable.case_empty
                 )
@@ -293,8 +302,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 return@registerForActivityResult
             }
             Log.d("Main", "Open document tree "+uri.toString())
-            mRbLoader = RoadbookLoader(this, uri)
-            mRbLoader.loadCases()
+            DocumentFile.fromTreeUri(this, uri)?.let { mRbLoader.setRoadbookDir(it) }
             refreshRoadbookCases()
         }
 }
