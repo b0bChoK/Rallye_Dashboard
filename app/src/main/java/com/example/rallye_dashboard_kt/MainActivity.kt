@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
+import android.view.KeyEvent
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
@@ -42,7 +43,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
     private lateinit var locationManager: LocationManager
     private lateinit var mSpeedMeasures: SpeedMeasures
-    private  var mConfiguration: Configuration = Configuration()
+    private var mConfiguration: Configuration = Configuration()
 
     private lateinit var mRbLoader: RoadbookLoader
     private var mImgCaseA: ImageView? = null
@@ -82,8 +83,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun initializeComponents() {
-        binding.btIncreaseDist.text = String.format("+ %d M", mConfiguration.DistanceIncrementation.toInt())
-        binding.btDecreaseDist.text = String.format("- %d M", mConfiguration.DistanceIncrementation.toInt())
+        binding.btIncreaseDist.text =
+            String.format("+ %d M", mConfiguration.DistanceIncrementation.toInt())
+        binding.btDecreaseDist.text =
+            String.format("- %d M", mConfiguration.DistanceIncrementation.toInt())
 
         mImgCaseA = binding.imageCaseA
         mImgCaseB = binding.imageCaseB
@@ -122,11 +125,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
             Toast.makeText(this, getString(R.string.click_raz), Toast.LENGTH_SHORT).show()
         }
 
-        binding.btIncreaseDist.setOnClickListener{
+        binding.btIncreaseDist.setOnClickListener {
             mSpeedMeasures.increaseTotalDistance(mConfiguration.DistanceIncrementation)
             updateMeter()
         }
-        binding.btDecreaseDist.setOnClickListener{
+        binding.btDecreaseDist.setOnClickListener {
             mSpeedMeasures.decreaseTotalDistance(mConfiguration.DistanceIncrementation)
             updateMeter()
         }
@@ -221,7 +224,8 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private fun updateMeter() {
         mTxtOdometer?.text = String.format("%.2f km", mSpeedMeasures.getDistanceTotalM() / 1000)
         mTxtSpeed?.text = String.format("%03d km/h", (mSpeedMeasures.getSpeedMS() * 3.6).toInt())
-        mTxtMaxSpeed?.text = String.format("%03d km/h", (mSpeedMeasures.getMaxSpeedMS() * 3.6).toInt())
+        mTxtMaxSpeed?.text =
+            String.format("%03d km/h", (mSpeedMeasures.getMaxSpeedMS() * 3.6).toInt())
     }
 
     /**
@@ -241,10 +245,17 @@ class MainActivity : AppCompatActivity(), LocationListener {
             if (isChronometerRunning) {
                 val currentDurationMS = currentDate.time - startChronometer
                 // Update AVG Speed
-                mTxtAvgSpeed?.text = String.format("%03d km/h", (mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6).toInt())
+                mTxtAvgSpeed?.text = String.format(
+                    "%03d km/h",
+                    (mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6).toInt()
+                )
 
                 // Update chrono
-                mTxtTimer?.text = String.format("%02dm%02ds", (currentDurationMS / 60000).toInt(), ((currentDurationMS / 1000)%60).toInt())
+                mTxtTimer?.text = String.format(
+                    "%02dm%02ds",
+                    (currentDurationMS / 60000).toInt(),
+                    ((currentDurationMS / 1000) % 60).toInt()
+                )
 
             } else if (mSpeedMeasures.getDistanceTotalM() > mConfiguration.MinimumDistanceToStartChrono) {
                 isChronometerRunning = true
@@ -301,8 +312,50 @@ class MainActivity : AppCompatActivity(), LocationListener {
             if (uri == null) {
                 return@registerForActivityResult
             }
-            Log.d("Main", "Open document tree "+uri.toString())
+            Log.d("Main", "Open document tree " + uri.toString())
             DocumentFile.fromTreeUri(this, uri)?.let { mRbLoader.setRoadbookDir(it) }
             refreshRoadbookCases()
         }
+
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_VOLUME_UP -> {
+                mRbLoader.goNextCase()
+                refreshRoadbookCases()
+                true
+            }
+
+            KeyEvent.KEYCODE_VOLUME_DOWN -> {
+                mRbLoader.goPrevCase()
+                refreshRoadbookCases()
+                true
+            }
+
+            KeyEvent.KEYCODE_MEDIA_NEXT -> {
+                mSpeedMeasures.increaseTotalDistance(mConfiguration.DistanceIncrementation)
+                updateMeter()
+                true
+            }
+
+            KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
+                mSpeedMeasures.decreaseTotalDistance(mConfiguration.DistanceIncrementation)
+                updateMeter()
+                true
+            }
+
+            else -> super.onKeyUp(keyCode, event)
+        }
+    }
+
+    @Override
+    override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
+                raz()
+                true
+            }
+
+            else -> super.onKeyLongPress(keyCode, event)
+        }
+    }
 }
