@@ -8,4 +8,21 @@
         <item name="android:textSize">40sp</item>
     </style>
 
+
+
+    <style name="Custom_button" parent="@style/Widget.AppCompat.Button">
+        <item name="android:textColor">@color/background</item>
+        <item name="backgroundColor">@color/dark_blue</item>
+        <item name="backgroundTint">@color/dark_blue</item>
+        <item name="singleLine">true</item>
+    </style>
+
+    <style name="Custom_button.L" parent="Custom_button">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="Custom_button.XL" parent="Custom_button">
+        <item name="android:textSize">25sp</item>
+    </style>
+
 </resources>

@@ -36,7 +36,7 @@
 
                 app:layout_constrainedHeight="true"
                 app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintHeight_percent="0.33"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
@@ -54,7 +54,7 @@
 
                 app:layout_constrainedHeight="true"
                 app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintHeight_percent="0.33"
                 app:layout_constraintTop_toBottomOf="@id/imageCaseA" />
 
             <ImageView
@@ -73,7 +73,7 @@
 
                 app:layout_constrainedHeight="true"
                 app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.3"
+                app:layout_constraintHeight_percent="0.33"
                 app:layout_constraintTop_toBottomOf="@id/imageCaseB" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -87,50 +87,72 @@
             app:layout_constraintStart_toEndOf="@+id/caseLayout"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/buttonLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/divider"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="percent"
+            app:layout_constraintWidth_percent="0.12">
 
             <Button
                 android:id="@+id/btPageUp"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_prev_ld" />
+                style="@style/Custom_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="@string/button_prev_ld"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.25"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/btPageDown"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_next_ld" />
+                style="@style/Custom_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:text="@string/button_next_ld"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btPageUp" />
 
-            <Button
+
+            <ImageButton
                 android:id="@+id/btSelectRoadbook"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
+                style="@style/Custom_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:keepScreenOn="true"
-                android:text="@string/button_open_roadbook_ld" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/opened_folder"
+                android:text="@string/button_open_roadbook_ld"
+                app:layout_constraintBottom_toTopOf="@id/btOpenConfig"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/background" />
 
-            <!--            <ImageButton-->
-            <!--                android:id="@+id/btSelectRoadbook"-->
-            <!--                style="@style/Widget.AppCompat.Button"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_weight="0"-->
-            <!--                android:keepScreenOn="true"-->
-            <!--                android:src="@drawable/opened_folder"/>-->
+            <ImageButton
+                android:id="@+id/btOpenConfig"
+                style="@style/Custom_button"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:keepScreenOn="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/setup"
+                android:text="@string/button_open_setup_ld"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHeight_default="percent"
+                app:layout_constraintHeight_percent="0.12"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:tint="@color/background" />
 
-        </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ImageView
             android:id="@+id/imgOdometer"
@@ -151,7 +173,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:layout_marginTop="16dp"
-            android:text="000.00 km"
+            android:text="000,00 km"
             android:textAppearance="@style/TextAppearance.XXLarge"
             app:layout_constraintStart_toEndOf="@id/buttonLayout"
             app:layout_constraintTop_toTopOf="parent" />
@@ -305,15 +327,15 @@
 
             <Button
                 android:id="@+id/btIncreaseDist"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Custom_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="@string/button_increase_dist" />
 
             <Button
                 android:id="@+id/btRAZ"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Custom_button.L"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -321,9 +343,9 @@
 
             <Button
                 android:id="@+id/btDecreaseDist"
-                style="@style/Widget.AppCompat.Button"
+                style="@style/Custom_button"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:keepScreenOn="true"
                 android:text="@string/button_decrease_dist" />

@@ -277,7 +277,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         isChronometerRunning = false
         startChronometer = 0
         mTxtTimer?.text = "00m00s"
-        mTxtOdometer?.text = "0.00 km"
+        mTxtOdometer?.text = "0,00 km"
         mTxtSpeed?.text = "000 km/h"
         mTxtMaxSpeed?.text = "000 km/h"
         mTxtAvgSpeed?.text = "000 km/h"
@@ -357,5 +357,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
             else -> super.onKeyLongPress(keyCode, event)
         }
+    }
+
+    // https://stuff.mit.edu/afs/sipb/project/android/docs/training/managing-audio/volume-playback.html
+    // tester pour éviter d'appeler les fonctoins media du systeme
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        return super.dispatchKeyEvent(event)
     }
 }

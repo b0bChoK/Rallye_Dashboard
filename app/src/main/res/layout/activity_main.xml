@@ -61,28 +61,47 @@
 
         <Button
             android:id="@+id/btPageDown"
-            style="@style/Widget.AppCompat.Button"
+            style="@style/Custom_button.XL"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
             android:text="@string/button_next" />
 
         <Button
             android:id="@+id/btPageUp"
-            style="@style/Widget.AppCompat.Button"
+            style="@style/Custom_button.L"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
+
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"
             android:text="@string/button_prev" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btSelectRoadbook"
-            style="@style/Widget.AppCompat.Button"
+            style="@style/Custom_button"
+            android:scaleType="fitCenter"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
             android:keepScreenOn="true"
-            android:text="@string/button_open_roadbook" />
+            android:text="@string/button_open_roadbook_ld"
+            android:src="@drawable/opened_folder"
+            app:tint="@color/background" />
+
+        <ImageButton
+            android:id="@+id/btOpenConfig"
+            style="@style/Custom_button"
+            android:scaleType="fitCenter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:keepScreenOn="true"
+            android:text="@string/button_open_setup"
+            android:src="@drawable/setup"
+            app:tint="@color/background" />
     </LinearLayout>
 
     <ImageView
@@ -104,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="16dp"
-        android:text="0.00 km"
+        android:text="0,00 km"
         android:textAppearance="@style/TextAppearance.XXLarge"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonsBar" />
@@ -260,15 +279,15 @@
 
         <Button
             android:id="@+id/btIncreaseDist"
-            style="@style/Widget.AppCompat.Button"
+            style="@style/Custom_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/button_increase_dist" />
 
         <Button
             android:id="@+id/btRAZ"
-            style="@style/Widget.AppCompat.Button"
+            style="@style/Custom_button.L"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -276,9 +295,9 @@
 
         <Button
             android:id="@+id/btDecreaseDist"
-            style="@style/Widget.AppCompat.Button"
+            style="@style/Custom_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:keepScreenOn="true"
             android:text="@string/button_decrease_dist" />
