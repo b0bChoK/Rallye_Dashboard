@@ -76,12 +76,6 @@ class MainActivity : AppCompatActivity(), LocationListener {
         checkPermissions()
     }
 
-    override fun onStart() {
-        super.onStart()
-
-
-    }
-
     private fun initializeComponents() {
         binding.btIncreaseDist.text =
             String.format("+ %d M", mConfiguration.DistanceIncrementation.toInt())
@@ -132,6 +126,15 @@ class MainActivity : AppCompatActivity(), LocationListener {
         binding.btDecreaseDist.setOnClickListener {
             mSpeedMeasures.decreaseTotalDistance(mConfiguration.DistanceIncrementation)
             updateMeter()
+        }
+
+        binding.btOpenConfig.setOnClickListener {
+            Toast.makeText(this, getString(R.string.click_setup), Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btOpenConfig.setOnLongClickListener {
+            Toast.makeText(this, "Soon !", Toast.LENGTH_SHORT).show()
+            true
         }
 
         mTxtClock = binding.txtCurrentTime
@@ -288,12 +291,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         Log.d("Main", "Current case is " + index + " over " + mRbLoader.casesSize)
         val currentIndex = mRbLoader.currentCase
         //The case C is the lower and should draw the current case, then caseB then caseA (display order from bottom to top)
-        val caseCindex = currentIndex
-        val caseBindex = currentIndex + 1
-        val caseAindex = currentIndex + 2
-        this.loadCase(mImgCaseA, caseAindex)
-        this.loadCase(mImgCaseB, caseBindex)
-        this.loadCase(mImgCaseC, caseCindex)
+        this.loadCase(mImgCaseA, currentIndex + 2)
+        this.loadCase(mImgCaseB, currentIndex + 1)
+        this.loadCase(mImgCaseC, currentIndex)
     }
 
     private fun loadCase(theCase: ImageView?, index: Int) {
@@ -312,7 +312,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             if (uri == null) {
                 return@registerForActivityResult
             }
-            Log.d("Main", "Open document tree " + uri.toString())
+            Log.d("Main", "Open document tree $uri")
             DocumentFile.fromTreeUri(this, uri)?.let { mRbLoader.setRoadbookDir(it) }
             refreshRoadbookCases()
         }
