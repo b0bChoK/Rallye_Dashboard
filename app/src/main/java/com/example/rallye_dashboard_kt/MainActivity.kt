@@ -11,6 +11,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
@@ -20,6 +21,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.documentfile.provider.DocumentFile
@@ -29,6 +32,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlin.math.max
+import kotlin.math.min
 
 
 class MainActivity : AppCompatActivity(), LocationListener {
@@ -77,6 +82,18 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun initializeComponents() {
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val ratio = max(displayMetrics.heightPixels, displayMetrics.widthPixels).toFloat() / min(displayMetrics.heightPixels, displayMetrics.widthPixels).toFloat()
+
+        if(ratio < 1.9) {
+            if(binding.caseLayout != null) {
+                (binding.caseLayout?.layoutParams as ConstraintLayout.LayoutParams)
+                    .matchConstraintPercentWidth = 0.6F
+                binding.caseLayout!!.requestLayout()
+            }
+        }
+
         binding.btIncreaseDist.text =
             String.format("+ %d M", mConfiguration.DistanceIncrementation.toInt())
         binding.btDecreaseDist.text =
