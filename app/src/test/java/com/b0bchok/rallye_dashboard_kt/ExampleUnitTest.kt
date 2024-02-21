@@ -1,4 +1,4 @@
-package com.example.rallye_dashboard_kt
+package com.b0bchok.rallye_dashboard_kt
 
 import org.junit.Test
 

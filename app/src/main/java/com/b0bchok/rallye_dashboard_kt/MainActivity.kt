@@ -1,4 +1,4 @@
-package com.example.rallye_dashboard_kt
+package com.b0bchok.rallye_dashboard_kt
 
 import android.Manifest
 import android.content.Context
@@ -22,12 +22,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
-import com.example.rallye_dashboard_kt.databinding.ActivityMainBinding
+import com.b0bchok.rallye_dashboard_kt.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.rallye_dashboard_kt"
+    namespace = "com.b0bchok.rallye_dashboard_kt"
     compileSdk = 33
 
     defaultConfig {
-        applicationId = "com.example.rallye_dashboard_kt"
+        applicationId = "com.b0bchok.rallye_dashboard_kt"
         minSdk = 28
         targetSdk = 33
         versionCode = 1
@@ -24,6 +24,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        create("relase_2") {
         }
     }
     compileOptions {

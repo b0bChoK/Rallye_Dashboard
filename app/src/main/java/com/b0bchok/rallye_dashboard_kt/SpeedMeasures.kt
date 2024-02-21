@@ -1,7 +1,6 @@
-package com.example.rallye_dashboard_kt
+package com.b0bchok.rallye_dashboard_kt
 
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.ViewModel
 
 class SpeedMeasures : ViewModel() {

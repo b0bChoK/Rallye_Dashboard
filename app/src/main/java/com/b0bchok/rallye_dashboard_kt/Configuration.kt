@@ -1,4 +1,4 @@
-package com.example.rallye_dashboard_kt
+package com.b0bchok.rallye_dashboard_kt
 
 class Configuration {
     // Distance to run before start chronometer in metre

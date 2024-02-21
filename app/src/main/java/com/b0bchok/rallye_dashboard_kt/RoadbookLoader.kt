@@ -1,4 +1,4 @@
-package com.example.rallye_dashboard_kt
+package com.b0bchok.rallye_dashboard_kt
 
 import android.util.Log
 import androidx.documentfile.provider.DocumentFile
@@ -51,7 +51,6 @@ class RoadbookLoader : ViewModel() {
         get() = ordererFiles != null
 
     fun loadCases() {
-        var listOfFiles: Array<DocumentFile>? = null
         if (mRoadbookDir!!.exists() && mRoadbookDir!!.isDirectory) {
             ordererFiles = mRoadbookDir!!.listFiles()
         }
