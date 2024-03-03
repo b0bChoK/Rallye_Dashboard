@@ -329,6 +329,14 @@
             app:layout_constraintBottom_toBottomOf="parent"/>
 
 
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+
+        app:layout_constraintBottom_toTopOf="@+id/buttonsBar2"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

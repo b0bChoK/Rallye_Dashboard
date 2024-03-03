@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
@@ -28,6 +29,7 @@ import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import com.b0bchok.rallye_dashboard_kt.databinding.ActivityMainBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -37,7 +39,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class MainActivity : AppCompatActivity(), LocationListener {
+class MainActivity : AppCompatActivity(), LocationListener, SharedPreferences.OnSharedPreferenceChangeListener {
 
     companion object {
         private val permissions = arrayOf(
@@ -69,6 +71,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
     private var startChronometer: Long = 0
     private var isChronometerRunning: Boolean = false
 
+    //Value get from shared preference
+    private var minimumDistanceToStartChrono: Int = 40
+    private var distanceIncrementation: Int = 10
+
+    private var isPreferenceOpen: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -84,6 +92,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        if (sharedPreferences != null) {
+            minimumDistanceToStartChrono = sharedPreferences.getString("chronometer_distance", "40")!!.toInt()
+            distanceIncrementation = sharedPreferences.getString("odometer_increment", "10")!!.toInt()
+        }
 
         initializeComponents()
 
@@ -152,20 +166,43 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         binding.btIncreaseDist.setOnClickListener {
-            mSpeedMeasures.increaseTotalDistance(mConfiguration.DistanceIncrementation)
+            mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
             updateMeter()
         }
         binding.btDecreaseDist.setOnClickListener {
-            mSpeedMeasures.decreaseTotalDistance(mConfiguration.DistanceIncrementation)
+            mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
             updateMeter()
         }
 
         binding.btOpenConfig.setOnClickListener {
-            Toast.makeText(this, getString(R.string.click_setup), Toast.LENGTH_SHORT).show()
+            if (isPreferenceOpen) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .remove(SettingsFragment())
+                    .commit()
+                supportFragmentManager.popBackStack()
+                isPreferenceOpen = false
+            } else
+                    Toast.makeText(this, getString(R.string.click_setup), Toast.LENGTH_SHORT).show()
         }
 
         binding.btOpenConfig.setOnLongClickListener {
-            Toast.makeText(this, "Soon !", Toast.LENGTH_SHORT).show()
+            isPreferenceOpen = if (isPreferenceOpen) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .remove(SettingsFragment())
+                    .commit()
+                supportFragmentManager.popBackStack()
+                false
+            } else {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, SettingsFragment())
+                    .addToBackStack(null)
+                    .commit()
+                true
+            }
+
             true
         }
 
@@ -181,6 +218,36 @@ class MainActivity : AppCompatActivity(), LocationListener {
         refreshRoadbookCases()
     }
 
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, s: String?) {
+        if (sharedPreferences != null) {
+            minimumDistanceToStartChrono = sharedPreferences.getString("chronometer_distance", "40")!!.toInt()
+            distanceIncrementation = sharedPreferences.getString("odometer_increment", "10")!!.toInt()
+        }
+
+        binding.btIncreaseDist.text =
+            String.format("+ %d M", distanceIncrementation)
+        binding.btDecreaseDist.text =
+            String.format("- %d M", distanceIncrementation)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        PreferenceManager.getDefaultSharedPreferences(this)
+            .unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+        if (isPreferenceOpen)
+            isPreferenceOpen = false
+    }
 
     private fun checkPermissions() {
         val anyDenied = permissions.any {
@@ -292,7 +359,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
                     ((currentDurationMS / 1000) % 60).toInt()
                 )
 
-            } else if (mSpeedMeasures.getDistanceTotalM() > mConfiguration.MinimumDistanceToStartChrono) {
+            } else if (mSpeedMeasures.getDistanceTotalM() > minimumDistanceToStartChrono) {
                 isChronometerRunning = true
                 startChronometer = currentDate.time
             }
@@ -366,13 +433,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
             }
 
             KeyEvent.KEYCODE_MEDIA_NEXT -> {
-                mSpeedMeasures.increaseTotalDistance(mConfiguration.DistanceIncrementation)
+                mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
                 updateMeter()
                 true
             }
 
             KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                mSpeedMeasures.decreaseTotalDistance(mConfiguration.DistanceIncrementation)
+                mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
                 updateMeter()
                 true
             }
