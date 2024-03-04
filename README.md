@@ -13,7 +13,7 @@ Requier une tablette ou une smartphone Android 12 mini (API 31)
 Autorisation requise pour accéder à la position GPS et la lecture du répertoire contenant les roadbooks.
 
 ## Manuel de l'utilisateur en français
-[Rallye Dashboard User Manual FR.pdf](docs/Rallye Dashboard User Manual FR.pdf)
+Le manuel est lisible ici : https://github.com/b0bChoK/Rallye_Dashboard/blob/main/docs/Rallye%20Dashboard%20User%20Manual%20FR.pdf
 
 ## Convertion du roadbook pdf en serie d'image
 L'application supporte le format IZ Roadbook, convertisser vos roadbook ici https://www.izroadbook.com/roadbook et copier les fichiers sur votre appareil Android
