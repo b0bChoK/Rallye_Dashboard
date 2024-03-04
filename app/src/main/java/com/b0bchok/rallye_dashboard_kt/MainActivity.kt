@@ -1,6 +1,8 @@
 package com.b0bchok.rallye_dashboard_kt
 
 import android.Manifest
+import android.R.attr.value
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -43,6 +45,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         )
     }
 
+    private val TAG_IS_CHRONOMTER_RUNNING = "is-chronometer-running"
+    private val TAG_CHRONOMETER_VALUE = "chronometer-value"
+
     private lateinit var binding: ActivityMainBinding
 
     private lateinit var locationManager: LocationManager
@@ -67,6 +72,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (savedInstanceState != null) {
+            isChronometerRunning = savedInstanceState.getBoolean(TAG_IS_CHRONOMTER_RUNNING)
+            startChronometer = savedInstanceState.getLong(TAG_CHRONOMETER_VALUE)
+        }
+
         mRbLoader = ViewModelProvider(this)[RoadbookLoader::class.java]
         mSpeedMeasures = ViewModelProvider(this)[SpeedMeasures::class.java]
 
@@ -78,6 +88,12 @@ class MainActivity : AppCompatActivity(), LocationListener {
         initializeComponents()
 
         checkPermissions()
+    }
+
+    override fun onSaveInstanceState(bundle: Bundle) {
+        super.onSaveInstanceState(bundle)
+        bundle.putLong(TAG_CHRONOMETER_VALUE, startChronometer)
+        bundle.putBoolean(TAG_IS_CHRONOMTER_RUNNING, isChronometerRunning)
     }
 
     private fun initializeComponents() {
@@ -291,6 +307,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun raz() {
         mSpeedMeasures.raz()
         isChronometerRunning = false
