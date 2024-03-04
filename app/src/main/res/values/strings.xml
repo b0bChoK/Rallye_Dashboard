@@ -12,7 +12,7 @@
     <string name="button_open_setup_ld">Setup</string>
 
     <string name="button_increase_dist">+ 10 m</string>
-    <string name="button_raz">RAZ</string>
+    <string name="button_raz">RESET</string>
     <string name="button_decrease_dist">- 10 m</string>
 
     <string name="img_caseC">Bottom case</string>

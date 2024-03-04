@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="button_next">Suiv</string>
+    <string name="button_prev">Prec</string>
+    <string name="button_open_roadbook">Ouvrir Roadbook</string>
+    <string name="button_open_setup">Menu Configuration</string>
+
+    <string name="button_next_ld">Next</string>
+    <string name="button_prev_ld">Prev</string>
+    <string name="button_open_roadbook_ld">Ouv. RB</string>
+    <string name="button_open_setup_ld">Config</string>
+
+    <string name="button_raz">RAZ</string>
+
+    <string name="click_raz">Appui long pour RAZ</string>
+    <string name="click_rb">Appui long pour Ouvrir Roadbook</string>
+    <string name="click_setup">Appui long pour afficher Configuration</string>
+
+    <string name="copyright">(c)2022 by A. DEWAS</string>
+    <string name="comment">C\'est une application Android qui permet d\'afficher un roadbook et un chronomètre/odomètre, qui peut être pilotée par une télécommande bluetooth.</string>
+</resources>
