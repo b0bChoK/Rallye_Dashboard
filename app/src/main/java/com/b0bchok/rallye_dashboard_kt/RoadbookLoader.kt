@@ -61,24 +61,29 @@ class RoadbookLoader : ViewModel() {
 
             // Sort by name
             ordererFiles!!.sortWith(Comparator { o1: DocumentFile, o2: DocumentFile ->
-                val o1splits = o1.name!!
-                    .split("_|\\.").toTypedArray()
-                val o2splits =
-                    o2.name!!.split("_|\\.").toTypedArray()
-                var os1weight = Int.MAX_VALUE
-                var os2weight = Int.MAX_VALUE
-                if (o1splits[0].equals("case", ignoreCase = true)) {
-                    os1weight = Integer.valueOf(o1splits[1])
-                }
-                if (o2splits[0].equals("case", ignoreCase = true)) {
-                    os2weight = Integer.valueOf(o2splits[1])
-                }
-                os1weight - os2weight
+                extractWeight(o1.name!!) - extractWeight(o2.name!!)
             })
             for (i in ordererFiles!!) {
                 Log.d("RoadbookLoader", "FileName:" + i.name)
             }
             Log.i("RoadbookLoader", ordererFiles!!.size.toString() + " cases in roadbook")
         }
+    }
+
+    private fun extractWeight(s : String): Int {
+        val oSplits = s.split("_", "-", ".").toTypedArray()
+        var oSweight = Int.MAX_VALUE
+        if (oSplits[0].equals("case", ignoreCase = true)) {
+            if (isNumeric(oSplits[1]))
+                oSweight = Integer.valueOf(oSplits[1])
+        } else {
+            if (isNumeric(oSplits[0]))
+                oSweight = Integer.valueOf(oSplits[0])
+        }
+        return oSweight
+    }
+
+    private fun isNumeric(toCheck: String): Boolean {
+        return toCheck.toDoubleOrNull() != null
     }
 }
