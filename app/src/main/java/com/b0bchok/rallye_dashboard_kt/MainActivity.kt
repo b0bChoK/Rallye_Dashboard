@@ -330,6 +330,7 @@ class MainActivity : AppCompatActivity(), LocationListener {
             }
             Log.d("Main", "Open document tree $uri")
             DocumentFile.fromTreeUri(this, uri)?.let { mRbLoader.setRoadbookDir(it) }
+            mRbLoader.goCase(0)
             refreshRoadbookCases()
         }
 
