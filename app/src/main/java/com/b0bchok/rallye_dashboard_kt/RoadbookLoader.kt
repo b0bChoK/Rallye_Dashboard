@@ -31,8 +31,10 @@ class RoadbookLoader : ViewModel() {
     }
 
     fun goCase(n: Int) {
-        if (n >= 0 && n < ordererFiles!!.size) {
-            currentCase = n
+        if (isRoadbookLoaded) {
+            if (n >= 0 && n < ordererFiles!!.size) {
+                currentCase = n
+            }
         }
     }
 
