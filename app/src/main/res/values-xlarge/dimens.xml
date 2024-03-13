@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="odometer_height">160dp</dimen>
+    <dimen name="time_height">100dp</dimen>
+    <dimen name="speed_height">60dp</dimen>
+</resources>

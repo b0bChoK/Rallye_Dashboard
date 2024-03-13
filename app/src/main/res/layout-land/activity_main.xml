@@ -99,7 +99,7 @@
 
             <Button
                 android:id="@+id/btPageUp"
-                style="@style/Custom_button"
+                style="@style/Custom_button.L"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:text="@string/button_prev_ld"
@@ -110,7 +110,7 @@
 
             <Button
                 android:id="@+id/btPageDown"
-                style="@style/Custom_button"
+                style="@style/Custom_button.L"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:text="@string/button_next_ld"
@@ -156,28 +156,56 @@
 
         <ImageView
             android:id="@+id/imgOdometer"
-            android:layout_width="0dp"
+            android:layout_width="40dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp"
+            android:layout_marginEnd="8dp"
             android:scaleType="fitCenter"
             app:layout_constraintBottom_toBottomOf="@id/txtOdometer"
-            app:layout_constraintEnd_toStartOf="@id/txtOdometer"
             app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintEnd_toStartOf="@id/txtOdometer"
             app:layout_constraintTop_toTopOf="@id/txtOdometer"
             app:srcCompat="@drawable/counter" />
 
         <TextView
             android:id="@+id/txtOdometer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/odometer_height"
+            android:layout_marginStart="42dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="8dp"
             android:textStyle="bold"
-            android:text="000,00 km"
-            android:textAppearance="@style/TextAppearance.XXLarge"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+            android:textAppearance="@style/TextNoSize"
+            android:text="000,00km"
             app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btIncreaseDist"
+            style="@style/Custom_button.L"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/button_increase_dist"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintEnd_toStartOf="@id/btDecreaseDist"
+            app:layout_constraintTop_toBottomOf="@id/txtOdometer"/>
+
+        <Button
+            android:id="@+id/btDecreaseDist"
+            style="@style/Custom_button.L"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:keepScreenOn="true"
+            android:text="@string/button_decrease_dist"
+            app:layout_constraintStart_toEndOf="@id/btIncreaseDist"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtOdometer"
+            android:layout_marginEnd="8dp"/>
 
         <ImageView
             android:id="@+id/imgClock"
@@ -194,14 +222,20 @@
 
         <TextView
             android:id="@+id/txtCurrentTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/time_height"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="Clock"
-            android:textAppearance="@style/TextAppearance.XLarge"
+            android:layout_marginTop="2dp"
+            android:text="00:00:00"
+            android:textStyle="bold"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+            android:textAppearance="@style/TextNoSize"
             app:layout_constraintStart_toEndOf="@id/buttonLayout"
-            app:layout_constraintTop_toBottomOf="@id/txtOdometer" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btIncreaseDist" />
 
         <ImageView
             android:id="@+id/imgTimer"
@@ -218,61 +252,19 @@
 
         <TextView
             android:id="@+id/txtTimer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="00m00s"
-            android:textAppearance="@style/TextAppearance.XLarge"
-            app:layout_constraintStart_toEndOf="@id/buttonLayout"
-            app:layout_constraintTop_toBottomOf="@+id/txtCurrentTime" />
-
-        <!--<ImageView
-            android:id="@+id/imgESTimer"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="4dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@id/txtESTimer"
-            app:layout_constraintEnd_toStartOf="@id/txtESTimer"
-            app:layout_constraintStart_toEndOf="@id/buttonLayout"
-            app:layout_constraintTop_toTopOf="@id/txtESTimer"
-            app:srcCompat="@drawable/racing_flag" />
-
-
-        <TextView
-            android:id="@+id/txtESTimer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/time_height"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="0'00.00&quot;"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:layout_marginTop="2dp"
+            android:text="00m00s"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+            android:textAppearance="@style/TextNoSize"
             app:layout_constraintStart_toEndOf="@id/buttonLayout"
-            app:layout_constraintTop_toBottomOf="@+id/txtOdometer" />-->
-
-        <ImageView
-            android:id="@+id/imgSpeed"
-            android:layout_width="32dp"
-            android:layout_height="0dp"
-            android:layout_marginEnd="4dp"
-            android:scaleType="fitCenter"
-            app:layout_constraintBottom_toBottomOf="@id/txtSpeedOMeter"
-            app:layout_constraintEnd_toStartOf="@id/txtSpeedOMeter"
-            app:layout_constraintTop_toTopOf="@id/txtSpeedOMeter"
-            app:srcCompat="@drawable/speedometer" />
-
-        <TextView
-            android:id="@+id/txtSpeedOMeter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:text="000 km/h"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintStart_toEndOf="@id/buttonLayout"
-            app:layout_constraintTop_toBottomOf="@+id/txtTimer" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtCurrentTime" />
 
         <ImageView
             android:id="@+id/imgAVGSpeed"
@@ -287,15 +279,48 @@
 
         <TextView
             android:id="@+id/txtAVGSpeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/time_height"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="4dp"
             android:textStyle="bold"
-            android:text="000 km/h"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:text="00,0 km/h"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+            android:textAppearance="@style/TextNoSize"
             app:layout_constraintStart_toEndOf="@id/buttonLayout"
-            app:layout_constraintTop_toBottomOf="@+id/txtSpeedOMeter" />
+            app:layout_constraintTop_toBottomOf="@+id/txtTimer"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ImageView
+            android:id="@+id/imgSpeed"
+            android:layout_width="32dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="4dp"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="@id/txtSpeedOMeter"
+            app:layout_constraintEnd_toStartOf="@id/txtSpeedOMeter"
+            app:layout_constraintTop_toTopOf="@id/txtSpeedOMeter"
+            app:srcCompat="@drawable/speedometer" />
+
+        <TextView
+            android:id="@+id/txtSpeedOMeter"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/speed_height"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="20dp"
+            android:text="000 km/h"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+            android:textAppearance="@style/TextNoSize"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            app:layout_constraintTop_toBottomOf="@+id/txtAVGSpeed"
+            app:layout_constraintEnd_toStartOf="@id/txtTOPSpeed"/>
 
         <ImageView
             android:id="@+id/imgTOPSpeed"
@@ -310,49 +335,31 @@
 
         <TextView
             android:id="@+id/txtTOPSpeed"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/speed_height"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="2dp"
             android:text="000 km/h"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            app:layout_constraintStart_toEndOf="@id/buttonLayout"
-            app:layout_constraintTop_toBottomOf="@+id/txtAVGSpeed" />
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="12sp"
+            android:autoSizeMaxTextSize="100sp"
+            android:autoSizeStepGranularity="2sp"
+            android:textAppearance="@style/TextNoSize"
+            app:layout_constraintTop_toBottomOf="@+id/txtAVGSpeed"
+            app:layout_constraintStart_toEndOf="@id/txtSpeedOMeter"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <LinearLayout
-            android:id="@+id/caseLayout2"
+        <Button
+            android:id="@+id/btRAZ"
+            style="@style/Custom_button.L"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:text="@string/button_raz"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <Button
-                android:id="@+id/btIncreaseDist"
-                style="@style/Custom_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/button_increase_dist" />
-
-            <Button
-                android:id="@+id/btRAZ"
-                style="@style/Custom_button.L"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/button_raz" />
-
-            <Button
-                android:id="@+id/btDecreaseDist"
-                style="@style/Custom_button"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:keepScreenOn="true"
-                android:text="@string/button_decrease_dist" />
-
-        </LinearLayout>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/buttonLayout"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
