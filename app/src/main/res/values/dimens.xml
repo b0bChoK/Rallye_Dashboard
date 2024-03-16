@@ -3,4 +3,7 @@
     <dimen name="odometer_height">80dp</dimen>
     <dimen name="time_height">46dp</dimen>
     <dimen name="speed_height">32dp</dimen>
+    <dimen name="speed_margin_top_land">2dp</dimen>
+    <dimen name="avg_speed_margin_top">4dp</dimen>
+    <dimen name="time_margin_top">2dp</dimen>
 </resources>

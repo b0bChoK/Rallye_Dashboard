@@ -4,4 +4,8 @@
     <style name="Custom_button.L" parent="Custom_button">
         <item name="android:textSize">30sp</item>
     </style>
+
+    <style name="Custom_button.XL" parent="Custom_button">
+        <item name="android:textSize">34sp</item>
+    </style>
 </resources>
