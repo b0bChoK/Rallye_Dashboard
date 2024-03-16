@@ -25,4 +25,21 @@
 
     <string name="copyright">(c)2022 by A. DEWAS</string>
     <string name="comment">This is an Android app that can display the current roadbook and a chronometer/odometer/speedometer dashboard, that can be piloted by a ble remote.</string>
+
+    <string name="odometer_format">%.2fkm</string>
+    <string name="speed_format">%03d km/h</string>
+    <string name="max_speed_format">%03d km/h</string>
+    <string name="avg_speed_format">%03.1f km/h</string>
+    <string name="timer_format">%02dm%02ds</string>
+    <string name="zero_timer">00m00s</string>
+    <string name="zero_odometer">0,00km</string>
+    <string name="zero_speed">000 km/h</string>
+    <string name="zero_max_speed">000 km/h</string>
+    <string name="zero_avg_speed">00,0 km/h</string>
+    <string name="alert_location_required">Location Required</string>
+    <string name="alert_location_detail">Please enable Location in system settings</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
+    <string name="increase_button_format">+ %d M</string>
+    <string name="decrease_button_format">- %d M</string>
 </resources>

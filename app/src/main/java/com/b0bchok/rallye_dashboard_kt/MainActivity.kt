@@ -110,9 +110,9 @@ class MainActivity : AppCompatActivity(), LocationListener {
         }
 
         binding.btIncreaseDist.text =
-            String.format("+ %d M", mConfiguration.DistanceIncrementation.toInt())
+            String.format(getString(R.string.increase_button_format), mConfiguration.DistanceIncrementation.toInt())
         binding.btDecreaseDist.text =
-            String.format("- %d M", mConfiguration.DistanceIncrementation.toInt())
+            String.format(getString(R.string.decrease_button_format), mConfiguration.DistanceIncrementation.toInt())
 
         mImgCaseA = binding.imageCaseA
         mImgCaseB = binding.imageCaseB
@@ -214,10 +214,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
         if (!gpsEnabled) {
 
             val builder = AlertDialog.Builder(this)
-            builder.setPositiveButton("Yes") { _: DialogInterface, _: Int -> enableLocation() }
-                .setNegativeButton("No") { _: DialogInterface, _: Int -> gpsNotEnabled() }
-                .setMessage("Please enable Location in system settings")
-                .setTitle("Location Required")
+            builder.setPositiveButton(getString(R.string.text_yes)) { _: DialogInterface, _: Int -> enableLocation() }
+                .setNegativeButton(getString(R.string.text_no)) { _: DialogInterface, _: Int -> gpsNotEnabled() }
+                .setMessage(getString(R.string.alert_location_detail))
+                .setTitle(getString(R.string.alert_location_required))
             val alertDialog = builder.create()
             alertDialog.show()
         }
@@ -257,10 +257,10 @@ class MainActivity : AppCompatActivity(), LocationListener {
     }
 
     private fun updateMeter() {
-        mTxtOdometer?.text = String.format("%.2f km", mSpeedMeasures.getDistanceTotalM() / 1000)
-        mTxtSpeed?.text = String.format("%03d km/h", (mSpeedMeasures.getSpeedMS() * 3.6).toInt())
+        mTxtOdometer?.text = String.format(getString(R.string.odometer_format), mSpeedMeasures.getDistanceTotalM() / 1000)
+        mTxtSpeed?.text = String.format(getString(R.string.speed_format), (mSpeedMeasures.getSpeedMS() * 3.6).toInt())
         mTxtMaxSpeed?.text =
-            String.format("%03d km/h", (mSpeedMeasures.getMaxSpeedMS() * 3.6).toInt())
+            String.format(getString(R.string.max_speed_format), (mSpeedMeasures.getMaxSpeedMS() * 3.6).toInt())
     }
 
     /**
@@ -281,13 +281,13 @@ class MainActivity : AppCompatActivity(), LocationListener {
                 val currentDurationMS = currentDate.time - startChronometer
                 // Update AVG Speed
                 mTxtAvgSpeed?.text = String.format(
-                    "%03d km/h",
-                    (mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6).toInt()
+                    getString(R.string.avg_speed_format),
+                    (mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6)
                 )
 
                 // Update chrono
                 mTxtTimer?.text = String.format(
-                    "%02dm%02ds",
+                    getString(R.string.timer_format),
                     (currentDurationMS / 60000).toInt(),
                     ((currentDurationMS / 1000) % 60).toInt()
                 )
@@ -312,11 +312,11 @@ class MainActivity : AppCompatActivity(), LocationListener {
         mSpeedMeasures.raz()
         isChronometerRunning = false
         startChronometer = 0
-        mTxtTimer?.text = "00m00s"
-        mTxtOdometer?.text = "0,00 km"
-        mTxtSpeed?.text = "000 km/h"
-        mTxtMaxSpeed?.text = "000 km/h"
-        mTxtAvgSpeed?.text = "000 km/h"
+        mTxtTimer?.text = getString(R.string.zero_timer)
+        mTxtOdometer?.text = getString(R.string.zero_odometer)
+        mTxtSpeed?.text = getString(R.string.zero_speed)
+        mTxtMaxSpeed?.text = getString(R.string.zero_max_speed)
+        mTxtAvgSpeed?.text = getString(R.string.zero_avg_speed)
     }
 
     private fun refreshRoadbookCases() {
