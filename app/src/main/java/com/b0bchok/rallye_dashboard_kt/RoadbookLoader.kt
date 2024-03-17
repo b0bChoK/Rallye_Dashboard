@@ -5,6 +5,8 @@ import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModel
 
 class RoadbookLoader : ViewModel() {
+    private val TAG = "RoadbookLoader"
+
     private lateinit var mRoadbookDir: DocumentFile
     private var ordererFiles: Array<DocumentFile>? = null
     var currentCase = 0
@@ -66,9 +68,9 @@ class RoadbookLoader : ViewModel() {
                 extractWeight(o1.name!!) - extractWeight(o2.name!!)
             })
             for (i in ordererFiles!!) {
-                Log.d("RoadbookLoader", "FileName:" + i.name)
+                Log.d(TAG, "FileName:" + i.name)
             }
-            Log.i("RoadbookLoader", ordererFiles!!.size.toString() + " cases in roadbook")
+            Log.i(TAG, ordererFiles!!.size.toString() + " cases in roadbook")
         }
     }
 
