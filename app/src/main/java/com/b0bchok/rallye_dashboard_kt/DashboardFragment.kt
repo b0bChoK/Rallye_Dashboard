@@ -39,10 +39,10 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListener,
+class DashboardFragment : Fragment(), LocationListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
-        val TAG = "DashboardFragment"
+        private const val TAG = "DashboardFragment"
         private val permissions = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION
         )
@@ -56,7 +56,6 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
 
     private lateinit var locationManager: LocationManager
     private lateinit var mSpeedMeasures: SpeedMeasures
-    private var mConfiguration: Configuration = Configuration()
 
     private lateinit var mRbLoader: RoadbookLoader
     private var mImgCaseA: ImageView? = null
@@ -80,7 +79,6 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         _binding = DashboardFragmentBinding.inflate(inflater,container,false);
-        val view = binding.root;
 
         if (savedInstanceState != null) {
             isChronometerRunning = savedInstanceState.getBoolean(TAG_IS_CHRONOMTER_RUNNING)
@@ -101,11 +99,15 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
                 sharedPreferences.getString("odometer_increment", "10")!!.toInt()
         }
 
-        initializeComponents()
-
         checkPermissions()
 
-        return view;
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initializeComponents()
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {
@@ -144,16 +146,7 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
             }
         }
 
-        binding.btIncreaseDist.text =
-            String.format(
-                requireContext().getString(R.string.increase_button_format),
-                mConfiguration.DistanceIncrementation.toInt()
-            )
-        binding.btDecreaseDist.text =
-            String.format(
-                requireContext().getString(R.string.decrease_button_format),
-                mConfiguration.DistanceIncrementation.toInt()
-            )
+        updateButton()
 
         mImgCaseA = binding.imageCaseA
         mImgCaseB = binding.imageCaseB
@@ -208,8 +201,8 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
         }
 
         binding.btOpenConfig.setOnLongClickListener {
-            childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SettingsFragment())
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, SettingsFragment(), "settings")
                 .addToBackStack(null)
                 .commit()
             true
@@ -228,6 +221,7 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, s: String?) {
+        Log.d(TAG, "New preference !")
         if (sharedPreferences != null) {
             minimumDistanceToStartChrono =
                 sharedPreferences.getString("chronometer_distance", "40")!!.toInt()
@@ -235,10 +229,14 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
                 sharedPreferences.getString("odometer_increment", "10")!!.toInt()
         }
 
+        updateButton()
+    }
+
+    private fun updateButton() {
         binding.btIncreaseDist.text =
-            String.format("+ %d M", distanceIncrementation)
+            String.format(getString(R.string.increase_button_pattern), distanceIncrementation)
         binding.btDecreaseDist.text =
-            String.format("- %d M", distanceIncrementation)
+            String.format(getString(R.string.decrease_button_pattern), distanceIncrementation)
     }
 
     override fun onStart() {
@@ -326,10 +324,10 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
         mSpeedMeasures.updateLocation(p0)
 
         // Update odometer and speed
-        if (requireContext() != null)
+        if (context != null)
             updateMeter()
         else
-            Log.w(TAG, "Not attached to context !")
+            Log.w(TAG, "Not attached to context ! (onLocationChanged)")
     }
 
     private fun updateMeter() {
@@ -354,42 +352,53 @@ class DashboardFragment : Fragment(R.layout.dashboard_fragment), LocationListene
     private val mHandlerClock = Handler()
     private val mRunnableClock: Runnable = object : Runnable {
         override fun run() {
-            val currentDate = Calendar.getInstance().time
+            if (context != null) {
+                val currentDate = Calendar.getInstance().time
 
-            // Update current time
-            val simpleDateFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-            mTxtClock?.text = simpleDateFormat.format(currentDate)
-            updateTimer(currentDate.time)
+                // Update current time
+                val simpleDateFormat =
+                    SimpleDateFormat(getString(R.string.time_pattern), Locale.getDefault())
+                mTxtClock?.text = simpleDateFormat.format(currentDate)
+                updateTimer(currentDate.time)
 
-            // Update chronometer
-            if (isChronometerRunning) {
-                val currentDurationMS = currentDate.time - startChronometer
-                // Update AVG Speed
-                mTxtAvgSpeed?.text = String.format(
-                    requireContext().getString(R.string.avg_speed_format),
-                    (mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6)
-                )
+                // Update chronometer
+                if (isChronometerRunning) {
+                    val currentDurationMS = currentDate.time - startChronometer
+                    // Update AVG Speed
+                    mTxtAvgSpeed?.text = String.format(
+                        requireContext().getString(R.string.avg_speed_format),
+                        (mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6)
+                    )
 
-                // Update chrono
-                mTxtTimer?.text = String.format(
-                    requireContext().getString(R.string.timer_format),
-                    (currentDurationMS / 60000).toInt(),
-                    ((currentDurationMS / 1000) % 60).toInt()
-                )
+                    // Update chrono
+                    mTxtTimer?.text = String.format(
+                        requireContext().getString(R.string.timer_format),
+                        (currentDurationMS / 60000).toInt(),
+                        ((currentDurationMS / 1000) % 60).toInt()
+                    )
 
-            } else if (mSpeedMeasures.getDistanceTotalM() > minimumDistanceToStartChrono) {
-                isChronometerRunning = true
-                startChronometer = currentDate.time
-            }
+                } else if (mSpeedMeasures.getDistanceTotalM() > minimumDistanceToStartChrono) {
+                    isChronometerRunning = true
+                    startChronometer = currentDate.time
+                }
+            } else
+                Log.w(TAG, "Not attached to context ! (mRunnableClock)")
+
             mHandlerClock.postDelayed(this, 1000)
         }
     }
 
     private fun updateTimer(currentTime: Long) {
-        if (isChronometerRunning) {
-            val simpleDateFormat = SimpleDateFormat("mm'm'ss's'", Locale.getDefault())
-            mTxtTimer?.text = simpleDateFormat.format(Date(currentTime - startChronometer))
-        }
+            if (isChronometerRunning) {
+                if (context != null) {
+                    val simpleDateFormat = SimpleDateFormat(
+                        getString(R.string.chronometer_pattern),
+                        Locale.getDefault()
+                    )
+                    mTxtTimer?.text = simpleDateFormat.format(Date(currentTime - startChronometer))
+                } else
+                    Log.w(TAG, "Not attached to context ! (updateTimer)")
+            }
     }
 
     @SuppressLint("SetTextI18n")

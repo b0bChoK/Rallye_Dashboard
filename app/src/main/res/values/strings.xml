@@ -44,6 +44,8 @@
     <string name="alert_location_detail">Please enable Location in system settings</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
-    <string name="increase_button_format">+ %d M</string>
-    <string name="decrease_button_format">- %d M</string>
+    <string name="time_pattern">HH:mm:ss</string>
+    <string name="chronometer_pattern">mm\'m\'ss\'s\'</string>
+    <string name="increase_button_pattern">+ %d M</string>
+    <string name="decrease_button_pattern">- %d M</string>
 </resources>
