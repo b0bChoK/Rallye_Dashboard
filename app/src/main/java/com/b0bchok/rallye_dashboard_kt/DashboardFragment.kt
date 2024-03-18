@@ -51,7 +51,7 @@ class DashboardFragment : Fragment(), LocationListener,
     private val TAG_IS_CHRONOMTER_RUNNING = "is-chronometer-running"
     private val TAG_CHRONOMETER_VALUE = "chronometer-value"
 
-    private var _binding:DashboardFragmentBinding? = null;
+    private var _binding: DashboardFragmentBinding? = null;
     private val binding get() = _binding!!;
 
     private lateinit var locationManager: LocationManager
@@ -76,9 +76,11 @@ class DashboardFragment : Fragment(), LocationListener,
     private var minimumDistanceToStartChrono: Int = 40
     private var distanceIncrementation: Int = 10
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        _binding = DashboardFragmentBinding.inflate(inflater,container,false);
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = DashboardFragmentBinding.inflate(inflater, container, false);
 
         if (savedInstanceState != null) {
             isChronometerRunning = savedInstanceState.getBoolean(TAG_IS_CHRONOMTER_RUNNING)
@@ -157,7 +159,11 @@ class DashboardFragment : Fragment(), LocationListener,
             true
         }
         binding.btSelectRoadbook.setOnClickListener {
-            Toast.makeText(context, requireContext().getString(R.string.click_rb), Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                context,
+                requireContext().getString(R.string.click_rb),
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
 
@@ -182,7 +188,11 @@ class DashboardFragment : Fragment(), LocationListener,
             true
         }
         binding.btRAZ.setOnClickListener {
-            Toast.makeText(requireContext(), requireContext().getString(R.string.click_raz), Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                requireContext().getString(R.string.click_raz),
+                Toast.LENGTH_SHORT
+            )
                 .show()
         }
 
@@ -196,7 +206,11 @@ class DashboardFragment : Fragment(), LocationListener,
         }
 
         binding.btOpenConfig.setOnClickListener {
-            Toast.makeText(requireContext(), requireContext().getString(R.string.click_setup), Toast.LENGTH_SHORT)
+            Toast.makeText(
+                requireContext(),
+                requireContext().getString(R.string.click_setup),
+                Toast.LENGTH_SHORT
+            )
                 .show()
         }
 
@@ -389,16 +403,16 @@ class DashboardFragment : Fragment(), LocationListener,
     }
 
     private fun updateTimer(currentTime: Long) {
-            if (isChronometerRunning) {
-                if (context != null) {
-                    val simpleDateFormat = SimpleDateFormat(
-                        getString(R.string.chronometer_pattern),
-                        Locale.getDefault()
-                    )
-                    mTxtTimer?.text = simpleDateFormat.format(Date(currentTime - startChronometer))
-                } else
-                    Log.w(TAG, "Not attached to context ! (updateTimer)")
-            }
+        if (isChronometerRunning) {
+            if (context != null) {
+                val simpleDateFormat = SimpleDateFormat(
+                    getString(R.string.chronometer_pattern),
+                    Locale.getDefault()
+                )
+                mTxtTimer?.text = simpleDateFormat.format(Date(currentTime - startChronometer))
+            } else
+                Log.w(TAG, "Not attached to context ! (updateTimer)")
+        }
     }
 
     @SuppressLint("SetTextI18n")

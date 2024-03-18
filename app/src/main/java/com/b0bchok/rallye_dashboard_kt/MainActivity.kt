@@ -1,6 +1,7 @@
 package com.b0bchok.rallye_dashboard_kt
 
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,10 @@ import androidx.fragment.app.commit
 
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,12 +30,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d(TAG, "Press Key Up %d".format(keyCode))
         var res = false
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            for(f in supportFragmentManager.fragments) {
-                if (f is DashboardFragment)
-                    res = f.onKeyUp(keyCode)
-            }
+        for (f in supportFragmentManager.fragments) {
+            if (f is DashboardFragment)
+                res = f.onKeyUp(keyCode)
         }
 
         return if (res)
@@ -40,13 +44,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d(TAG, "Long Press Key %d".format(keyCode))
+
         var res = false
 
-        if (keyCode == KeyEvent.KEYCODE_MENU) {
-            for(f in supportFragmentManager.fragments) {
-                if (f is DashboardFragment)
-                    res = f.onKeyLongPress(keyCode)
-            }
+        for (f in supportFragmentManager.fragments) {
+            if (f is DashboardFragment)
+                res = f.onKeyLongPress(keyCode)
         }
 
         return if (res)
