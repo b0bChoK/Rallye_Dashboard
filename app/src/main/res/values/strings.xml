@@ -48,4 +48,6 @@
     <string name="chronometer_pattern">mm\'m\'ss\'s\'</string>
     <string name="increase_button_pattern">+ %d M</string>
     <string name="decrease_button_pattern">- %d M</string>
+    <string name="rewind_roadbook">Rewind roadbook</string>
+    <string name="are_you_sure_you_want_to_return_to_first_case">Are you sure, you want to return to first case ?</string>
 </resources>

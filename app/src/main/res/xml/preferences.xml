@@ -11,14 +11,14 @@
     <ListPreference
         android:key="odometer_increment"
         android:title="@string/pref_edit_odo"
-        android:defaultValue="1"
+        android:defaultValue="10"
         android:entries="@array/IncrementOdometer"
         android:entryValues="@array/IncrementOdometerData" />
 
     <ListPreference
         android:key="chronometer_distance"
         android:title="@string/pref_chrono_start"
-        android:defaultValue="4"
+        android:defaultValue="40"
         android:entries="@array/DistanceChronometer"
         android:entryValues="@array/DistanceChronometerData" />
 

@@ -178,8 +178,22 @@ class DashboardFragment : Fragment(), LocationListener,
         }
 
         binding.btPageUp.setOnLongClickListener {
-            mRbLoader.goCase(0)
-            refreshRoadbookCases()
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle(requireContext().getString(R.string.rewind_roadbook))
+                .setMessage(requireContext().getString(R.string.are_you_sure_you_want_to_return_to_first_case))
+                .setCancelable(true)
+                .setPositiveButton(
+                    requireContext().getString(R.string.text_yes)
+                ) { _, _ ->
+                    mRbLoader.goCase(0)
+                    refreshRoadbookCases()
+                }
+                .setNegativeButton(requireContext().getString(R.string.text_no)) { _, _ ->
+                    return@setNegativeButton
+                }
+            val dialog = builder.create()
+            dialog.show()
+
             true
         }
 

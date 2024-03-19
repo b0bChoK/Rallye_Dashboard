@@ -16,10 +16,17 @@
     <string name="click_rb">Appui long pour Ouvrir Roadbook</string>
     <string name="click_setup">Appui long pour afficher Configuration</string>
 
+    <string name="pref_title_conf_odo">Configurer l\'odomètre et le chronomètre</string>
+    <string name="pref_edit_odo">Distance d\'incrémentation de l\'odomètre</string>
+    <string name="pref_chrono_start">Distance avant activation du chronomètre</string>
+
     <string name="copyright">(c)2022 by A. DEWAS</string>
     <string name="comment">C\'est une application Android qui permet d\'afficher un roadbook et un chronomètre/odomètre, qui peut être pilotée par une télécommande bluetooth.</string>
     <string name="alert_location_required">Positionnement requis</string>
     <string name="alert_location_detail">Merci d\'activer la localisation dans les paramètres systèmes</string>
-    <string name="text_yes">Yes</string>
-    <string name="text_no">No</string>
+
+    <string name="text_yes">Oui</string>
+    <string name="text_no">Non</string>
+    <string name="rewind_roadbook">Rembobiner le roadbook</string>
+    <string name="are_you_sure_you_want_to_return_to_first_case">Es-tu sur de vouloir retourner à la première case ?</string>
 </resources>
