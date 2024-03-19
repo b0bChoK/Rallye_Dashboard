@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="IncrementOdometerData">
+        <item>10</item>
+        <item>50</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="IncrementOdometer">
+        <item>+/- 10m</item>
+        <item>+/- 50m</item>
+        <item>+/- 100m</item>
+    </string-array>
+
+    <string-array name="DistanceChronometerData">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+    </string-array>
+
+    <string-array name="DistanceChronometer">
+        <item>10m</item>
+        <item>20m</item>
+        <item>30m</item>
+        <item>40m</item>
+        <item>50m</item>
+        <item>60m</item>
+        <item>70m</item>
+        <item>80m</item>
+    </string-array>
+</resources>

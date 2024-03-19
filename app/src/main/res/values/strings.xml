@@ -23,6 +23,10 @@
     <string name="click_rb">Press long to Open Roadbook</string>
     <string name="click_setup">Press long to Open Configuration</string>
 
+    <string name="pref_title_conf_odo">Configure odometer and chronometer</string>
+    <string name="pref_edit_odo">Distance to increment odometer</string>
+    <string name="pref_chrono_start">Distance before chronometer start</string>
+
     <string name="copyright">(c)2022 by A. DEWAS</string>
     <string name="comment">This is an Android app that can display the current roadbook and a chronometer/odometer/speedometer dashboard, that can be piloted by a ble remote.</string>
 
@@ -40,6 +44,10 @@
     <string name="alert_location_detail">Please enable Location in system settings</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
-    <string name="increase_button_format">+ %d M</string>
-    <string name="decrease_button_format">- %d M</string>
+    <string name="time_pattern">HH:mm:ss</string>
+    <string name="chronometer_pattern">mm\'m\'ss\'s\'</string>
+    <string name="increase_button_pattern">+ %d M</string>
+    <string name="decrease_button_pattern">- %d M</string>
+    <string name="rewind_roadbook">Rewind roadbook</string>
+    <string name="are_you_sure_you_want_to_return_to_first_case">Are you sure, you want to return to first case ?</string>
 </resources>
