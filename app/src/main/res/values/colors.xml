@@ -6,4 +6,6 @@
     <color name="main_case">#202020</color>
     <color name="dark_blue">#234057</color>
     <color name="light_blue">#3A5466</color>
+    <color name="text">#1C1B1F</color>
+    <color name="button_text">#c2c2c2</color>
 </resources>

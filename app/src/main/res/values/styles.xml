@@ -9,14 +9,11 @@
     </style>
 
     <style name="TextNoSize">
-        <item name="android:textColor">?android:textColorPrimary</item>
-        <item name="android:textColorHint">?android:textColorHint</item>
-        <item name="android:textColorHighlight">?android:textColorHighlight</item>
-        <item name="android:textColorLink">?android:textColorLink</item>
+        <item name="android:textColor">@color/text</item>
     </style>
 
     <style name="Custom_button" parent="@style/Widget.AppCompat.Button">
-        <item name="android:textColor">@color/background</item>
+        <item name="android:textColor">@color/button_text</item>
         <item name="backgroundColor">@color/dark_blue</item>
         <item name="backgroundTint">@color/dark_blue</item>
         <item name="singleLine">true</item>
