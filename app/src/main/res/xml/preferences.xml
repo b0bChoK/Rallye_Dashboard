@@ -6,20 +6,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:title="@string/pref_title_conf_odo">
+        <ListPreference
+            android:key="odometer_increment"
+            android:title="@string/pref_edit_odo"
+            android:defaultValue="10"
+            android:entries="@array/IncrementOdometer"
+            android:entryValues="@array/IncrementOdometerData" />
+
+        <ListPreference
+            android:key="chronometer_distance"
+            android:title="@string/pref_chrono_start"
+            android:defaultValue="40"
+            android:entries="@array/DistanceChronometer"
+            android:entryValues="@array/DistanceChronometerData" />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="A propos">
+
+        <Preference android:title="@string/manuel_utilisateur_fr">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:data="https://github.com/b0bChoK/Rallye_Dashboard/blob/main/docs/Rallye%20Dashboard%20User%20Manual%20FR.pdf"/>
+        </Preference>
+
+        <Preference android:title="@string/soutenir_le_projet">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://paypal.me/albertdewas?country.x=FR&amp;locale.x=fr_FR"/>
+        </Preference>
 
     </PreferenceCategory>
-    <ListPreference
-        android:key="odometer_increment"
-        android:title="@string/pref_edit_odo"
-        android:defaultValue="10"
-        android:entries="@array/IncrementOdometer"
-        android:entryValues="@array/IncrementOdometerData" />
-
-    <ListPreference
-        android:key="chronometer_distance"
-        android:title="@string/pref_chrono_start"
-        android:defaultValue="40"
-        android:entries="@array/DistanceChronometer"
-        android:entryValues="@array/DistanceChronometerData" />
 
 </PreferenceScreen>
