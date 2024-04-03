@@ -75,6 +75,7 @@ class DashboardFragment : Fragment(), LocationListener,
     //Value get from shared preference
     private var minimumDistanceToStartChrono: Int = 40
     private var distanceIncrementation: Int = 10
+    private lateinit var odometerFormat: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,6 +100,11 @@ class DashboardFragment : Fragment(), LocationListener,
                 sharedPreferences.getString("chronometer_distance", "40")!!.toInt()
             distanceIncrementation =
                 sharedPreferences.getString("odometer_increment", "10")!!.toInt()
+
+            if (sharedPreferences.getBoolean("odometer_precision", true))
+                odometerFormat = requireContext().getString(R.string.odometer_format_10m)
+            else
+                odometerFormat = requireContext().getString(R.string.odometer_format_100m)
         }
 
         checkPermissions()
@@ -237,6 +243,7 @@ class DashboardFragment : Fragment(), LocationListener,
         mHandlerClock.post(mRunnableClock)
 
         refreshRoadbookCases()
+        updateMeter()
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, s: String?) {
@@ -246,6 +253,10 @@ class DashboardFragment : Fragment(), LocationListener,
                 sharedPreferences.getString("chronometer_distance", "40")!!.toInt()
             distanceIncrementation =
                 sharedPreferences.getString("odometer_increment", "10")!!.toInt()
+            if (sharedPreferences.getBoolean("odometer_precision", false))
+                odometerFormat = requireContext().getString(R.string.odometer_format_10m)
+            else
+                odometerFormat = requireContext().getString(R.string.odometer_format_100m)
         }
 
         updateButton()
@@ -351,7 +362,7 @@ class DashboardFragment : Fragment(), LocationListener,
 
     private fun updateMeter() {
         mTxtOdometer?.text = String.format(
-            requireContext().getString(R.string.odometer_format),
+            odometerFormat,
             mSpeedMeasures.getDistanceTotalM() / 1000
         )
         mTxtSpeed?.text = String.format(

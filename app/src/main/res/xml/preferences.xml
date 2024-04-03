@@ -12,6 +12,10 @@
             android:entryValues="@array/ThemeSelection"
             android:key="theme_selection"
             android:title="@string/theme_selection_dark_light_auto" />
+        <SwitchPreference
+            android:key="odometer_precision"
+            android:title="@string/odometer_precision_to_10m"
+            android:defaultValue="true"/>
 
     </PreferenceCategory>
 
