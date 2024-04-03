@@ -5,13 +5,13 @@
     <PreferenceCategory
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:title="Configure display">
+        android:title="@string/configure_display">
         <ListPreference
             android:defaultValue="Auto"
             android:entries="@array/ThemeSelection"
             android:entryValues="@array/ThemeSelection"
             android:key="theme_selection"
-            android:title="Theme selection (dark/light/auto)" />
+            android:title="@string/theme_selection_dark_light_auto" />
 
     </PreferenceCategory>
 

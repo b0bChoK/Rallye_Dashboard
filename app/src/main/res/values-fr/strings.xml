@@ -31,4 +31,6 @@
     <string name="are_you_sure_you_want_to_return_to_first_case">Es-tu sur de vouloir retourner à la première case ?</string>
     <string name="soutenir_le_projet">Soutenir le projet</string>
     <string name="manuel_utilisateur_fr">Manuel utilisateur (FR)</string>
+    <string name="theme_selection_dark_light_auto">Sélection du thème (dark/light/auto)</string>
+    <string name="configure_display">Configurer l\'affichage</string>
 </resources>

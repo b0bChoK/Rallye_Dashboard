@@ -52,4 +52,6 @@
     <string name="are_you_sure_you_want_to_return_to_first_case">Are you sure, you want to return to first case ?</string>
     <string name="soutenir_le_projet">Donate</string>
     <string name="manuel_utilisateur_fr">User manual (FR)</string>
+    <string name="theme_selection_dark_light_auto">Theme selection (dark/light/auto)</string>
+    <string name="configure_display">Configure display</string>
 </resources>
