@@ -123,15 +123,6 @@ class DashboardFragment : Fragment(), LocationListener,
         _binding = null
     }
 
-//    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//        //if (newConfig.orientation == Configuration.ORI)
-//        requireActivity().supportFragmentManager.beginTransaction()
-//            .detach(this)
-//            .attach(this)
-//            .commit()
-//    }
-
     private fun initializeComponents() {
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
