@@ -8,4 +8,7 @@
     <color name="light_blue">#3A5466</color>
     <color name="text">#1C1B1F</color>
     <color name="button_text">#c2c2c2</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_grey">#77302E33</color>
+    <color name="roadbook_mask">@color/transparent</color>
 </resources>

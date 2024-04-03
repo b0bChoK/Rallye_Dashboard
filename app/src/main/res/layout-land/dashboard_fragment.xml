@@ -75,6 +75,13 @@
                 app:layout_constraintHeight_percent="0.33"
                 app:layout_constraintTop_toBottomOf="@id/imageCaseB" />
 
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintStart_toStartOf="@id/imageCaseA"
+                app:layout_constraintEnd_toEndOf="@id/imageCaseA"
+                android:background="@color/roadbook_mask"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
