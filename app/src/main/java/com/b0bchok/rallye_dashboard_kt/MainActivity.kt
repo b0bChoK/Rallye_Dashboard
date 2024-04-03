@@ -5,8 +5,10 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.preference.PreferenceManager
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +27,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.commit {
                 setReorderingAllowed(true)
                 add<DashboardFragment>(R.id.fragment_container)
+            }
+        }
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        if (sharedPreferences != null) {
+            when (sharedPreferences.getString("theme_selection", "Auto")) {
+                "Light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                "Dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                else -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
             }
         }
     }

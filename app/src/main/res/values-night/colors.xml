@@ -3,4 +3,5 @@
     <color name="main_case">#0B0B0B</color>
     <color name="background">#302E33</color>
     <color name="text">#c2c2c2</color>
+    <color name="roadbook_mask">@color/transparent_grey</color>
 </resources>

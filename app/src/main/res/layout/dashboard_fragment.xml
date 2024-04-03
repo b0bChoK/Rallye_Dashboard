@@ -50,6 +50,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageCaseB" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="@id/imageCaseA"
+            app:layout_constraintBottom_toBottomOf="@id/imageCaseC"
+            android:background="@color/roadbook_mask"/>
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/buttonsBar"
             android:layout_width="match_parent"
@@ -76,7 +83,7 @@
 
             <Button
                 android:id="@+id/btPageUp"
-                style="@style/Custom_button.L"
+                style="@style/Custom_button.XL"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
@@ -148,7 +155,8 @@
             android:autoSizeMinTextSize="12sp"
             android:autoSizeStepGranularity="2sp"
             android:autoSizeTextType="uniform"
-            android:text="0,00 km"
+            android:textAlignment="center"
+            android:text="000,00 km"
             android:textAppearance="@style/TextNoSize"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
