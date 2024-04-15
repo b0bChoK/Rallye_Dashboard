@@ -28,6 +28,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.b0bchok.rallye_dashboard_kt.databinding.DashboardFragmentBinding
@@ -89,6 +90,16 @@ class DashboardFragment : Fragment(), LocationListener,
         }
 
         mRbLoader = ViewModelProvider(this)[RoadbookLoader::class.java]
+
+        val roadbooLoadedObserver = Observer<Boolean> { status ->
+            if (mRbLoader.isRoadbookLoaded) {
+                mRbLoader.goCase(0)
+                refreshRoadbookCases()
+                binding.progressBar.visibility = View.GONE
+            }
+        }
+        mRbLoader.roadbookLoaded.observe(viewLifecycleOwner, roadbooLoadedObserver)
+
         mSpeedMeasures = ViewModelProvider(this)[SpeedMeasures::class.java]
 
         locationManager =
@@ -470,9 +481,8 @@ class DashboardFragment : Fragment(), LocationListener,
                 return@registerForActivityResult
             }
             Log.d(TAG, "Open document tree $uri")
+            binding.progressBar.visibility = View.VISIBLE
             DocumentFile.fromTreeUri(requireContext(), uri)?.let { mRbLoader.setRoadbookDir(it) }
-            mRbLoader.goCase(0)
-            refreshRoadbookCases()
         }
 
     fun onKeyUp(keyCode: Int): Boolean {

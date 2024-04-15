@@ -2,18 +2,30 @@ package com.b0bchok.rallye_dashboard_kt
 
 import android.util.Log
 import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class RoadbookLoader : ViewModel() {
-    private val TAG = "RoadbookLoader"
+
+    companion object {
+        private const val TAG = "RoadbookLoader"
+    }
 
     private lateinit var mRoadbookDir: DocumentFile
     private var ordererFiles: Array<DocumentFile>? = null
     var currentCase = 0
+    val roadbookLoaded : MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
 
     fun setRoadbookDir(dir: DocumentFile) {
         mRoadbookDir = dir
-        loadCases()
+        ordererFiles = null
+        roadbookLoaded.value = false
+        GlobalScope.launch(Dispatchers.IO){
+            loadCases()
+        }
     }
 
     fun goNextCase() {
@@ -72,6 +84,8 @@ class RoadbookLoader : ViewModel() {
             }
             Log.i(TAG, ordererFiles!!.size.toString() + " cases in roadbook")
         }
+
+        roadbookLoaded.postValue(true)
     }
 
     private fun extractWeight(s : String): Int {
