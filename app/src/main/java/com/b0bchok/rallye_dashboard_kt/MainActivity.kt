@@ -48,6 +48,11 @@ class MainActivity : AppCompatActivity() {
                 res = f.onKeyUp(keyCode)
         }
 
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true)
+            res = true
+        }
+
         return if (res)
             true
         else
