@@ -131,6 +131,21 @@ class DashboardFragment : Fragment(), LocationListener,
         _binding = null
     }
 
+    private val increaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
+        override fun onTick(l: Long) {
+            mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
+            updateMeter()
+        }
+        override fun onFinish() {}
+    }
+    private val decreaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
+        override fun onTick(l: Long) {
+            mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
+            updateMeter()
+        }
+        override fun onFinish() {}
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun initializeComponents() {
         val displayMetrics = DisplayMetrics()
@@ -208,21 +223,6 @@ class DashboardFragment : Fragment(), LocationListener,
                 Toast.LENGTH_SHORT
             )
                 .show()
-        }
-
-        val increaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
-            override fun onTick(l: Long) {
-                mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
-                updateMeter()
-            }
-            override fun onFinish() {}
-        }
-        val decreaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
-            override fun onTick(l: Long) {
-                mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
-                updateMeter()
-            }
-            override fun onFinish() {}
         }
 
         binding.btIncreaseDist.setOnTouchListener { _, event ->
@@ -518,14 +518,28 @@ class DashboardFragment : Fragment(), LocationListener,
             }
 
             KeyEvent.KEYCODE_MEDIA_NEXT -> {
-                mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
-                updateMeter()
+                increaseTotalTimer.cancel()
                 true
             }
 
             KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
-                updateMeter()
+                decreaseTotalTimer.cancel();
+                true
+            }
+
+            else -> false
+        }
+    }
+
+    fun onKeyDown(keyCode: Int): Boolean {
+        return when (keyCode) {
+            KeyEvent.KEYCODE_MEDIA_NEXT -> {
+                increaseTotalTimer.start()
+                true
+            }
+
+            KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
+                decreaseTotalTimer.start()
                 true
             }
 

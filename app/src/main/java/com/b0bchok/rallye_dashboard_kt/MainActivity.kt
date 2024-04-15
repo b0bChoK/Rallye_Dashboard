@@ -54,6 +54,20 @@ class MainActivity : AppCompatActivity() {
             super.onKeyUp(keyCode, event)
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        Log.d(TAG, "Press Key Down %d".format(keyCode))
+        var res = false
+        for (f in supportFragmentManager.fragments) {
+            if (f is DashboardFragment)
+                res = f.onKeyDown(keyCode)
+        }
+
+        return if (res)
+            true
+        else
+            super.onKeyUp(keyCode, event)
+    }
+
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(TAG, "Long Press Key %d".format(keyCode))
 
