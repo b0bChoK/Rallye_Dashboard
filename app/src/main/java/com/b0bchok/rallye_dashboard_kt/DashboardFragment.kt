@@ -11,12 +11,14 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -129,6 +131,7 @@ class DashboardFragment : Fragment(), LocationListener,
         _binding = null
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initializeComponents() {
         val displayMetrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -207,13 +210,38 @@ class DashboardFragment : Fragment(), LocationListener,
                 .show()
         }
 
-        binding.btIncreaseDist.setOnClickListener {
-            mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
-            updateMeter()
+        val increaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
+            override fun onTick(l: Long) {
+                mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
+                updateMeter()
+            }
+            override fun onFinish() {}
         }
-        binding.btDecreaseDist.setOnClickListener {
-            mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
-            updateMeter()
+        val decreaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
+            override fun onTick(l: Long) {
+                mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
+                updateMeter()
+            }
+            override fun onFinish() {}
+        }
+
+        binding.btIncreaseDist.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                increaseTotalTimer.start();
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                increaseTotalTimer.cancel();
+            }
+            true
+        }
+        binding.btDecreaseDist.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                decreaseTotalTimer.start();
+            }
+            if (event.action == MotionEvent.ACTION_UP) {
+                decreaseTotalTimer.cancel();
+            }
+            true
         }
 
         binding.btOpenConfig.setOnClickListener {
