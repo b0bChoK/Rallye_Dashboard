@@ -22,6 +22,7 @@ class RoadbookLoader : ViewModel() {
     fun setRoadbookDir(dir: DocumentFile) {
         mRoadbookDir = dir
         ordererFiles = null
+        currentCase = 0
         roadbookLoaded.value = false
         GlobalScope.launch(Dispatchers.IO){
             loadCases()

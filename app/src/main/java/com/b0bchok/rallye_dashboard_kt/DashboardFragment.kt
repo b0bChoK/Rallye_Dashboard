@@ -94,8 +94,8 @@ class DashboardFragment : Fragment(), LocationListener,
         mRbLoader = ViewModelProvider(this)[RoadbookLoader::class.java]
 
         val roadbooLoadedObserver = Observer<Boolean> { status ->
-            if (mRbLoader.isRoadbookLoaded) {
-                mRbLoader.goCase(0)
+            if (status && mRbLoader.isRoadbookLoaded) {
+                Log.d(TAG, "End of loading")
                 refreshRoadbookCases()
                 binding.progressBar.visibility = View.GONE
             }
@@ -211,6 +211,7 @@ class DashboardFragment : Fragment(), LocationListener,
                 .setPositiveButton(
                     requireContext().getString(R.string.text_yes)
                 ) { _, _ ->
+                    Log.d(TAG, "Reset roadbook")
                     mRbLoader.goCase(0)
                     refreshRoadbookCases()
                 }
