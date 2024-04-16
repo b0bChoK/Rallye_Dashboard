@@ -50,6 +50,12 @@
                 android:data="https://github.com/b0bChoK/Rallye_Dashboard/blob/main/docs/Rallye%20Dashboard%20User%20Manual%20FR.pdf" />
         </Preference>
 
+        <Preference android:title="@string/convertisseur_de_roadbook">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://www.izroadbook.com/roadbook" />
+        </Preference>
+
         <Preference android:title="@string/soutenir_le_projet">
             <intent
                 android:action="android.intent.action.VIEW"
