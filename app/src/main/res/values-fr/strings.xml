@@ -34,4 +34,5 @@
     <string name="theme_selection_dark_light_auto">Sélection du thème (dark/light/auto)</string>
     <string name="configure_display">Configurer l\'affichage</string>
     <string name="odometer_precision_to_10m">Précision de l\'odomètre à 10m</string>
+    <string name="convertisseur_de_roadbook">Convertisseur de roadbook pdf</string>
 </resources>

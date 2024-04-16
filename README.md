@@ -9,7 +9,7 @@ Permet de remplacer le dérouleur et un compteur odométre :
 - afficher des statistiques de vitesses
 - piloté par une télécommande bluetooth
 
-Requier une tablette ou une smartphone Android 12 mini (API 31)
+Requier une tablette ou une smartphone Android 8 mini (API 28)
 Autorisation requise pour accéder à la position GPS et la lecture du répertoire contenant les roadbooks.
 
 ## Manuel de l'utilisateur en français
@@ -37,7 +37,7 @@ Allow you to replace the traditional paper roadbook and include an odometer :
 - display speed statistics
 - remotely controlled by bluetooth media controller
 
-Need a tablet or smartphone with Android 12 minimum (API 31)
+Need a tablet or smartphone with Android 8 minimum (API 28)
 Need request to access fine position and read access to directory containing the roadbook.
 
 ## Convert a pdf roadbook in a set of image

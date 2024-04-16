@@ -56,4 +56,5 @@
     <string name="theme_selection_dark_light_auto">Theme selection (dark/light/auto)</string>
     <string name="configure_display">Configure display</string>
     <string name="odometer_precision_to_10m">Odometer precision to 10m</string>
+    <string name="convertisseur_de_roadbook">Roadbook pdf converteur</string>
 </resources>
