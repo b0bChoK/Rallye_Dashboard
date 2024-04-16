@@ -533,7 +533,7 @@ class DashboardFragment : Fragment(), LocationListener,
             }
 
             KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                decreaseTotalTimer.cancel();
+                decreaseTotalTimer.cancel()
                 true
             }
 
