@@ -48,11 +48,6 @@ class MainActivity : AppCompatActivity() {
                 res = f.onKeyUp(keyCode)
         }
 
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            moveTaskToBack(true)
-            res = true
-        }
-
         return if (res)
             true
         else
@@ -70,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         return if (res)
             true
         else
-            super.onKeyUp(keyCode, event)
+            super.onKeyDown(keyCode, event)
     }
 
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
