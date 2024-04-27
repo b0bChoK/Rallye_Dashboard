@@ -68,6 +68,17 @@ class MainActivity : AppCompatActivity() {
             super.onKeyDown(keyCode, event)
     }
 
+    //https://medium.com/jodel-engineering/android-volume-keys-as-camera-trigger-with-kotlin-e75d20838706
+//    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+//        val keyCode = event?.keyCode
+//        val action = event?.action
+//
+//
+//        if (action == KeyEvent.ACTION_DOWN)
+//
+//        return super.dispatchKeyEvent(event)
+//    }
+
     override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
         Log.d(TAG, "Long Press Key %d".format(keyCode))
 
