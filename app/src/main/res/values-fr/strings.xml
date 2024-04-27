@@ -35,4 +35,5 @@
     <string name="configure_display">Configurer l\'affichage</string>
     <string name="odometer_precision_to_10m">Précision de l\'odomètre à 10m</string>
     <string name="convertisseur_de_roadbook">Convertisseur de roadbook pdf</string>
+    <string name="unit_km">km</string>
 </resources>

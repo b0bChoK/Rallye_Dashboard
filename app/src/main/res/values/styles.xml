@@ -20,7 +20,7 @@
     </style>
 
     <style name="Custom_button.L" parent="Custom_button">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Custom_button.XL" parent="Custom_button">
