@@ -36,4 +36,6 @@
     <string name="odometer_precision_to_10m">Précision de l\'odomètre à 10m</string>
     <string name="convertisseur_de_roadbook">Convertisseur de roadbook pdf</string>
     <string name="unit_km">km</string>
+    <string name="configure_roadbook">Configuration du Roadbook</string>
+    <string name="auto_load_last_roadbook_on_startup">Chargement automatique du précédent roadbook au démarage</string>
 </resources>

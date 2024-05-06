@@ -17,14 +17,14 @@ class RoadbookLoader : ViewModel() {
     private lateinit var mRoadbookDir: DocumentFile
     private var ordererFiles: Array<DocumentFile>? = null
     var currentCase = 0
-    val roadbookLoaded : MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
+    val roadbookLoaded: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
 
     fun setRoadbookDir(dir: DocumentFile) {
         mRoadbookDir = dir
         ordererFiles = null
         currentCase = 0
         roadbookLoaded.value = false
-        GlobalScope.launch(Dispatchers.IO){
+        GlobalScope.launch(Dispatchers.IO) {
             loadCases()
         }
     }
@@ -70,11 +70,15 @@ class RoadbookLoader : ViewModel() {
     fun loadCases() {
         if (mRoadbookDir!!.exists() && mRoadbookDir!!.isDirectory) {
             ordererFiles = mRoadbookDir!!.listFiles()
-        }
+        } else
+            Log.w(TAG, "Uri not valid ! %s".format(mRoadbookDir))
 
         if (ordererFiles != null) {
             // Keep only image file
-            ordererFiles = ordererFiles!!.filter { it.isFile && it.name?.split(".")?.get(1).equals("jpg", true) || it.name?.split(".")?.get(1).equals("png", true) }.toTypedArray()
+            ordererFiles = ordererFiles!!.filter {
+                it.isFile && it.name?.split(".")?.get(1).equals("jpg", true) || it.name?.split(".")
+                    ?.get(1).equals("png", true)
+            }.toTypedArray()
 
             // Sort by name
             ordererFiles!!.sortWith(Comparator { o1: DocumentFile, o2: DocumentFile ->
@@ -89,7 +93,7 @@ class RoadbookLoader : ViewModel() {
         roadbookLoaded.postValue(true)
     }
 
-    private fun extractWeight(s : String): Int {
+    private fun extractWeight(s: String): Int {
         val oSplits = s.split("_", "-", ".").toTypedArray()
         var oSweight = Int.MAX_VALUE
         if (oSplits[0].equals("case", ignoreCase = true)) {
