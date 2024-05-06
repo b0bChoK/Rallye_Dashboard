@@ -25,6 +25,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -113,6 +114,11 @@ class DashboardFragment : Fragment(), LocationListener,
         locationManager =
             requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            callbackBackPressedCallback
+        );
+
         updatePrefs()
 
         checkPermissions()
@@ -134,7 +140,36 @@ class DashboardFragment : Fragment(), LocationListener,
 
     override fun onDestroyView() {
         super.onDestroyView()
+        callbackBackPressedCallback.remove()
         _binding = null
+    }
+
+    private val callbackBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle(getString(R.string.close_rallye_dashboard))
+                .setMessage(getString(R.string.quit_the_app))
+                .setCancelable(true)
+                .setPositiveButton(
+                    requireContext().getString(R.string.text_yes)
+                ) { _, _ ->
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+                .setNegativeButton(requireContext().getString(R.string.text_no)) { _, _ ->
+                    return@setNegativeButton
+                }
+            val dialog = builder.create()
+            dialog.show()
+
+            val dismissalDelayMillis = "5000" // 5 seconds
+            val handler = Handler()
+            handler.postDelayed({
+                if (dialog.isShowing) {
+                    dialog.dismiss()
+                }
+            }, dismissalDelayMillis.toLong())
+        }
     }
 
     private val increaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
@@ -145,6 +180,7 @@ class DashboardFragment : Fragment(), LocationListener,
 
         override fun onFinish() {}
     }
+
     private val decreaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
         override fun onTick(l: Long) {
             mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
@@ -299,7 +335,7 @@ class DashboardFragment : Fragment(), LocationListener,
         else
             odometerFormat = requireContext().getString(R.string.odometer_format_100m)
 
-        if(!prefs.autoLoadRoadbook)
+        if (!prefs.autoLoadRoadbook)
             prefs.roadbookUri = ""
 
         val roadbookUri = prefs.roadbookUri

@@ -61,4 +61,6 @@
     <string name="unit_km">km</string>
     <string name="configure_roadbook">Configure Roadbook</string>
     <string name="auto_load_last_roadbook_on_startup">Auto load last roadbook on startup</string>
+    <string name="close_rallye_dashboard">Close Rallye Dashboard</string>
+    <string name="quit_the_app">Quit the app ?</string>
 </resources>
