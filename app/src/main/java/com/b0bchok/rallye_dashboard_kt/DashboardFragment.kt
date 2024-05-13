@@ -10,6 +10,7 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -24,6 +25,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -33,6 +35,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
+import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.autoLoadRoadbook
+import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.chronometerDistance
+import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.odometerIncrement
+import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.odometerPrecision
+import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.roadbookUri
 import com.b0bchok.rallye_dashboard_kt.databinding.DashboardFragmentBinding
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -107,18 +114,12 @@ class DashboardFragment : Fragment(), LocationListener,
         locationManager =
             requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        if (sharedPreferences != null) {
-            minimumDistanceToStartChrono =
-                sharedPreferences.getString("chronometer_distance", "40")!!.toInt()
-            distanceIncrementation =
-                sharedPreferences.getString("odometer_increment", "10")!!.toInt()
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            callbackBackPressedCallback
+        );
 
-            if (sharedPreferences.getBoolean("odometer_precision", true))
-                odometerFormat = requireContext().getString(R.string.odometer_format_10m)
-            else
-                odometerFormat = requireContext().getString(R.string.odometer_format_100m)
-        }
+        updatePrefs()
 
         checkPermissions()
 
@@ -139,7 +140,36 @@ class DashboardFragment : Fragment(), LocationListener,
 
     override fun onDestroyView() {
         super.onDestroyView()
+        callbackBackPressedCallback.remove()
         _binding = null
+    }
+
+    private val callbackBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setTitle(getString(R.string.close_rallye_dashboard))
+                .setMessage(getString(R.string.quit_the_app))
+                .setCancelable(true)
+                .setPositiveButton(
+                    requireContext().getString(R.string.text_yes)
+                ) { _, _ ->
+                    isEnabled = false
+                    requireActivity().onBackPressed()
+                }
+                .setNegativeButton(requireContext().getString(R.string.text_no)) { _, _ ->
+                    return@setNegativeButton
+                }
+            val dialog = builder.create()
+            dialog.show()
+
+            val dismissalDelayMillis = "5000" // 5 seconds
+            val handler = Handler()
+            handler.postDelayed({
+                if (dialog.isShowing) {
+                    dialog.dismiss()
+                }
+            }, dismissalDelayMillis.toLong())
+        }
     }
 
     private val increaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
@@ -147,13 +177,16 @@ class DashboardFragment : Fragment(), LocationListener,
             mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
             updateMeter()
         }
+
         override fun onFinish() {}
     }
+
     private val decreaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
         override fun onTick(l: Long) {
             mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
             updateMeter()
         }
+
         override fun onFinish() {}
     }
 
@@ -288,19 +321,36 @@ class DashboardFragment : Fragment(), LocationListener,
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, s: String?) {
         Log.d(TAG, "New preference !")
-        if (sharedPreferences != null) {
-            minimumDistanceToStartChrono =
-                sharedPreferences.getString("chronometer_distance", "40")!!.toInt()
-            distanceIncrementation =
-                sharedPreferences.getString("odometer_increment", "10")!!.toInt()
-            if (sharedPreferences.getBoolean("odometer_precision", false))
-                odometerFormat = requireContext().getString(R.string.odometer_format_10m)
-            else
-                odometerFormat = requireContext().getString(R.string.odometer_format_100m)
-        }
-
+        updatePrefs()
         updateButton()
     }
+
+    fun updatePrefs() {
+        val prefs = PreferenceHelper.defaultPreference(requireContext())
+
+        minimumDistanceToStartChrono = prefs.chronometerDistance?.toInt() ?: 40
+        distanceIncrementation = prefs.odometerIncrement?.toInt() ?: 10
+        if (prefs.odometerPrecision)
+            odometerFormat = requireContext().getString(R.string.odometer_format_10m)
+        else
+            odometerFormat = requireContext().getString(R.string.odometer_format_100m)
+
+        if (!prefs.autoLoadRoadbook)
+            prefs.roadbookUri = ""
+
+        val roadbookUri = prefs.roadbookUri
+        if (roadbookUri != "" && prefs.autoLoadRoadbook && !mRbLoader.isRoadbookLoaded) {
+            Log.d(TAG, "Auto load roadbook \"%s\" - %b".format(roadbookUri, prefs.autoLoadRoadbook))
+            val uri = Uri.parse(roadbookUri)
+            val dir = DocumentFile.fromTreeUri(requireActivity(), uri)
+
+            if (dir != null) {
+                binding.progressBar.visibility = View.VISIBLE
+                mRbLoader.setRoadbookDir(dir)
+            }
+        }
+    }
+
 
     private fun updateButton() {
         binding.btIncreaseDist.text =
@@ -473,11 +523,15 @@ class DashboardFragment : Fragment(), LocationListener,
 
     @SuppressLint("SetTextI18n")
     private fun raz() {
+        val prefs = PreferenceHelper.defaultPreference(requireContext())
         mSpeedMeasures.raz()
         isChronometerRunning = false
         startChronometer = 0
         mTxtTimer?.text = requireContext().getString(R.string.zero_timer)
-        mTxtOdometer?.text = requireContext().getString(R.string.zero_odometer)
+        mTxtOdometer?.text =
+            if (prefs.odometerPrecision) requireContext().getString(R.string.zero_odometer) else requireContext().getString(
+                R.string.zero_odometer_dec
+            )
         mTxtSpeed?.text = requireContext().getString(R.string.zero_speed)
         mTxtMaxSpeed?.text = requireContext().getString(R.string.zero_max_speed)
         mTxtAvgSpeed?.text = requireContext().getString(R.string.zero_avg_speed)
@@ -509,9 +563,18 @@ class DashboardFragment : Fragment(), LocationListener,
             if (uri == null) {
                 return@registerForActivityResult
             }
+            requireActivity().contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
             Log.d(TAG, "Open document tree $uri")
             binding.progressBar.visibility = View.VISIBLE
-            DocumentFile.fromTreeUri(requireContext(), uri)?.let { mRbLoader.setRoadbookDir(it) }
+            DocumentFile.fromTreeUri(requireContext(), uri)?.let {
+                //Save roadbook uri
+                val prefs = PreferenceHelper.defaultPreference(requireContext())
+                prefs.roadbookUri = uri.toString()
+                mRbLoader.setRoadbookDir(it)
+            }
         }
 
     fun onKeyUp(keyCode: Int): Boolean {
@@ -569,10 +632,80 @@ class DashboardFragment : Fragment(), LocationListener,
             else -> false
         }
     }
+}
 
-    // https://stuff.mit.edu/afs/sipb/project/android/docs/training/managing-audio/volume-playback.html
-    // tester pour éviter d'appeler les fonctoins media du systeme
+object PreferenceHelper {
+
+    val CHRONOMETER_DISTANCE = "CHRONOMETER_DISTANCE"
+    val ODOMETER_INCREMENT = "ODOMETER_INCREMENT"
+    val ODOMETER_PRECISION = "ODOMETER_PRECISION"
+    val ROADBOOK_URI = "ROADBOOK_URI"
+    val AUTO_LOAD_ROADBOOK = "AUTO_LOAD_ROADBOOK"
+
+    fun defaultPreference(context: Context): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(context)
+
+    fun customPreference(context: Context, name: String): SharedPreferences =
+        context.getSharedPreferences(name, Context.MODE_PRIVATE)
+
+    inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Unit) {
+        val editMe = edit()
+        operation(editMe)
+        editMe.apply()
+    }
+
+    var SharedPreferences.chronometerDistance
+        get() = getString(CHRONOMETER_DISTANCE, "40")
+        set(value) {
+            editMe {
+                it.putString(CHRONOMETER_DISTANCE, value)
+            }
+        }
+
+    var SharedPreferences.odometerIncrement
+        get() = getString(ODOMETER_INCREMENT, "10")
+        set(value) {
+            editMe {
+                it.putString(ODOMETER_INCREMENT, value)
+            }
+        }
+
+    var SharedPreferences.odometerPrecision
+        get() = getBoolean(ODOMETER_PRECISION, true)
+        set(value) {
+            editMe {
+                it.putBoolean(ODOMETER_PRECISION, value)
+            }
+        }
+
+    var SharedPreferences.roadbookUri
+        get() = getString(ROADBOOK_URI, "")
+        set(value) {
+            editMe {
+                it.putString(ROADBOOK_URI, value)
+            }
+        }
+
+    var SharedPreferences.autoLoadRoadbook
+        get() = getBoolean(AUTO_LOAD_ROADBOOK, false)
+        set(value) {
+            editMe {
+                it.putBoolean(AUTO_LOAD_ROADBOOK, value)
+            }
+        }
+
+    var SharedPreferences.clearValues
+        get() = { }
+        set(value) {
+            editMe {
+                it.clear()
+            }
+        }
+}
+
+
+// https://stuff.mit.edu/afs/sipb/project/android/docs/training/managing-audio/volume-playback.html
+// tester pour éviter d'appeler les fonctoins media du systeme
 //    fun dispatchKeyEvent(event: KeyEvent?): Boolean {
 //        return super.dispatchKeyEvent(event)
 //    }
-}

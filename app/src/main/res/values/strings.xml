@@ -37,7 +37,8 @@
     <string name="avg_speed_format">%03.1fkm/h</string>
     <string name="timer_format">%02dm%02ds</string>
     <string name="zero_timer">00m00s</string>
-    <string name="zero_odometer">0,00</string>
+    <string name="zero_odometer">0.00</string>
+    <string name="zero_odometer_dec">0.0</string>
     <string name="zero_speed">000km/h</string>
     <string name="zero_max_speed">000km/h</string>
     <string name="zero_avg_speed">00,0km/h</string>
@@ -58,4 +59,8 @@
     <string name="odometer_precision_to_10m">Odometer precision to 10m</string>
     <string name="convertisseur_de_roadbook">Roadbook pdf converteur</string>
     <string name="unit_km">km</string>
+    <string name="configure_roadbook">Configure Roadbook</string>
+    <string name="auto_load_last_roadbook_on_startup">Auto load last roadbook on startup</string>
+    <string name="close_rallye_dashboard">Close Rallye Dashboard</string>
+    <string name="quit_the_app">Quit the app ?</string>
 </resources>

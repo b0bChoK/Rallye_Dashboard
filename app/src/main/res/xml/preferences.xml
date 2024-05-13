@@ -10,10 +10,10 @@
             android:defaultValue="Auto"
             android:entries="@array/ThemeSelection"
             android:entryValues="@array/ThemeSelection"
-            android:key="theme_selection"
+            android:key="THEME_SELECTION"
             android:title="@string/theme_selection_dark_light_auto" />
         <SwitchPreference
-            android:key="odometer_precision"
+            android:key="ODOMETER_PRECISION"
             android:title="@string/odometer_precision_to_10m"
             android:defaultValue="true"/>
 
@@ -27,17 +27,28 @@
             android:defaultValue="10"
             android:entries="@array/IncrementOdometer"
             android:entryValues="@array/IncrementOdometerData"
-            android:key="odometer_increment"
+            android:key="ODOMETER_INCREMENT"
             android:title="@string/pref_edit_odo" />
 
         <ListPreference
             android:defaultValue="40"
             android:entries="@array/DistanceChronometer"
             android:entryValues="@array/DistanceChronometerData"
-            android:key="chronometer_distance"
+            android:key="CHRONOMETER_DISTANCE"
             android:title="@string/pref_chrono_start" />
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/configure_roadbook">
+
+        <SwitchPreference
+            android:key="AUTO_LOAD_ROADBOOK"
+            android:title="@string/auto_load_last_roadbook_on_startup"
+            android:defaultValue="false"/>
+
+    </PreferenceCategory>
 
     <PreferenceCategory
         android:layout_width="wrap_content"
