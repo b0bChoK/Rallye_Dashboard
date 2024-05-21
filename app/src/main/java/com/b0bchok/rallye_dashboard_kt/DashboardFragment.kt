@@ -61,8 +61,8 @@ class DashboardFragment : Fragment(), LocationListener,
     private val TAG_IS_CHRONOMTER_RUNNING = "is-chronometer-running"
     private val TAG_CHRONOMETER_VALUE = "chronometer-value"
 
-    private var _binding: DashboardFragmentBinding? = null;
-    private val binding get() = _binding!!;
+    private var _binding: DashboardFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var locationManager: LocationManager
     private lateinit var mSpeedMeasures: SpeedMeasures
@@ -91,14 +91,14 @@ class DashboardFragment : Fragment(), LocationListener,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DashboardFragmentBinding.inflate(inflater, container, false);
+        _binding = DashboardFragmentBinding.inflate(inflater, container, false)
 
         if (savedInstanceState != null) {
             isChronometerRunning = savedInstanceState.getBoolean(TAG_IS_CHRONOMTER_RUNNING)
             startChronometer = savedInstanceState.getLong(TAG_CHRONOMETER_VALUE)
         }
 
-        mRbLoader = ViewModelProvider(this)[RoadbookLoader::class.java]
+        mRbLoader = ViewModelProvider(requireActivity())[RoadbookLoader::class.java]
 
         val roadbooLoadedObserver = Observer<Boolean> { status ->
             if (status && mRbLoader.isRoadbookLoaded) {
@@ -214,7 +214,12 @@ class DashboardFragment : Fragment(), LocationListener,
         mImgCaseC = binding.imageCaseC
 
         binding.btSelectRoadbook.setOnLongClickListener {
-            openFolderPrompt.launch(null)
+            //Open menu
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, OpenRoadbookMenuFragment(), "openRB")
+                .addToBackStack(null)
+                .commit()
+
             true
         }
         binding.btSelectRoadbook.setOnClickListener {
@@ -557,25 +562,6 @@ class DashboardFragment : Fragment(), LocationListener,
             }
         }
     }
-
-    private val openFolderPrompt =
-        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
-            if (uri == null) {
-                return@registerForActivityResult
-            }
-            requireActivity().contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-            Log.d(TAG, "Open document tree $uri")
-            binding.progressBar.visibility = View.VISIBLE
-            DocumentFile.fromTreeUri(requireContext(), uri)?.let {
-                //Save roadbook uri
-                val prefs = PreferenceHelper.defaultPreference(requireContext())
-                prefs.roadbookUri = uri.toString()
-                mRbLoader.setRoadbookDir(it)
-            }
-        }
 
     fun onKeyUp(keyCode: Int): Boolean {
         return when (keyCode) {

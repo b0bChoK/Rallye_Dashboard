@@ -29,6 +29,10 @@ class RoadbookLoader : ViewModel() {
         }
     }
 
+    fun getRoadbookName(): String? {
+        return mRoadbookDir.name
+    }
+
     fun goNextCase() {
         if (isRoadbookLoaded) {
             if (currentCase < ordererFiles!!.size - 1) {
@@ -68,6 +72,7 @@ class RoadbookLoader : ViewModel() {
         get() = ordererFiles != null
 
     fun loadCases() {
+        Log.d(TAG, "Load case for new RB")
         if (mRoadbookDir!!.exists() && mRoadbookDir!!.isDirectory) {
             ordererFiles = mRoadbookDir!!.listFiles()
         } else

@@ -63,4 +63,8 @@
     <string name="auto_load_last_roadbook_on_startup">Auto load last roadbook on startup</string>
     <string name="close_rallye_dashboard">Close Rallye Dashboard</string>
     <string name="quit_the_app">Quit the app ?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_roadbook_loaded">No roadbook loaded</string>
+    <string name="roadbook_loaded">Roadbook loaded : %s</string>
 </resources>

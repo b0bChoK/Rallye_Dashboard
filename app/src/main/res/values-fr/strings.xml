@@ -40,4 +40,6 @@
     <string name="auto_load_last_roadbook_on_startup">Chargement automatique du précédent roadbook au démarage</string>
     <string name="close_rallye_dashboard">Fermer Rallye Dashboard</string>
     <string name="quit_the_app">Quitter l\'application ?</string>
+    <string name="no_roadbook_loaded">Pas de roadbook chargé</string>
+    <string name="roadbook_loaded">Roadbook chargé : %s</string>
 </resources>
