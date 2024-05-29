@@ -99,14 +99,14 @@ class DashboardFragment : Fragment(), LocationListener,
 
         mRbLoader = ViewModelProvider(requireActivity())[RoadbookLoader::class.java]
 
-        val roadbooLoadedObserver = Observer<Boolean> { status ->
+        val roadbookLoadedObserver = Observer<Boolean> { status ->
             if (status && mRbLoader.isRoadbookLoaded) {
                 Log.d(TAG, "End of loading")
                 refreshRoadbookCases()
                 binding.progressBar.visibility = View.GONE
             }
         }
-        mRbLoader.roadbookLoaded.observe(viewLifecycleOwner, roadbooLoadedObserver)
+        mRbLoader.roadbookLoaded.observe(viewLifecycleOwner, roadbookLoadedObserver)
 
         mSpeedMeasures = ViewModelProvider(this)[SpeedMeasures::class.java]
 
@@ -290,23 +290,6 @@ class DashboardFragment : Fragment(), LocationListener,
             if (event.action == MotionEvent.ACTION_UP) {
                 decreaseTotalTimer.cancel();
             }
-            true
-        }
-
-        binding.btOpenConfig.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                requireContext().getString(R.string.click_setup),
-                Toast.LENGTH_SHORT
-            )
-                .show()
-        }
-
-        binding.btOpenConfig.setOnLongClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SettingsFragment(), "settings")
-                .addToBackStack(null)
-                .commit()
             true
         }
 

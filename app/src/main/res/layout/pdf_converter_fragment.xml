@@ -6,17 +6,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
         <FrameLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -47,55 +36,60 @@
             app:layout_constraintTop_toBottomOf="@id/title">
 
             <TextView
-                android:id="@+id/txt_roadbook_status"
+                android:id="@+id/txt_pdf_status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="@string/no_roadbook_loaded" />
+                android:text="pdf..." />
 
         </FrameLayout>
 
-        <Button
-            android:id="@+id/bt_select_rb"
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Select &amp; open roadbook"
+            android:background="@color/background"
+            android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/status" />
+            app:layout_constraintTop_toBottomOf="@id/status">
+
+            <com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookPreView
+                android:id="@+id/img_pdf_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/pdf_sample" />
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/bt_load_cfrr_preset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load CFRR preset"
+            app:layout_constraintEnd_toStartOf="@id/bt_load_trippy_preset"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/preview" />
+
+        <Button
+            android:id="@+id/bt_load_trippy_preset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load Trippy preset"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bt_load_cfrr_preset"
+            app:layout_constraintTop_toBottomOf="@id/preview" />
 
         <Button
             android:id="@+id/bt_convert_pdf"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Convert PDF..."
-            app:layout_constraintEnd_toEndOf="@+id/bt_select_rb"
-            app:layout_constraintStart_toStartOf="@+id/bt_select_rb"
-            app:layout_constraintTop_toBottomOf="@+id/bt_select_rb" />
-
-        <Button
-            android:id="@+id/bt_settings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Settings..."
-            app:layout_constraintEnd_toEndOf="@+id/bt_select_rb"
-            app:layout_constraintStart_toStartOf="@+id/bt_select_rb"
-            app:layout_constraintTop_toBottomOf="@+id/bt_convert_pdf" />
-
-        <Button
-            android:id="@+id/bt_remote_config"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:enabled="false"
-            android:text="Remote mapping..."
-            app:layout_constraintEnd_toEndOf="@+id/bt_select_rb"
-            app:layout_constraintStart_toStartOf="@+id/bt_select_rb"
-            app:layout_constraintTop_toBottomOf="@+id/bt_settings" />
+            android:text="Convert"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

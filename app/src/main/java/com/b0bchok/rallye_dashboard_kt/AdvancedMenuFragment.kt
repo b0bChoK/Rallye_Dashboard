@@ -1,5 +1,6 @@
 package com.b0bchok.rallye_dashboard_kt
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,12 +18,16 @@ import com.b0bchok.rallye_dashboard_kt.databinding.AdvancedMenuFragmentBinding
 class AdvancedMenuFragment : Fragment() {
 
     companion object {
-        private const val TAG = "OpenRoadbookFragment"
+        private const val TAG = "AdvancedMenuFragment"
+
+        // Request code for selecting a PDF document.
+        private const val PICK_PDF_FILE = 2
     }
 
     private lateinit var mRbLoader: RoadbookLoader
 
     private var _binding: AdvancedMenuFragmentBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -46,21 +51,21 @@ class AdvancedMenuFragment : Fragment() {
         }
 
         binding.btConvertPdf.setOnClickListener {
-            openPdfPrompt.launch("application/pdf")
+            //openPdfPrompt.launch("application/pdf")
+            openPdfFile()
         }
 
-        binding.btLoadCfrrPreset.setOnClickListener {
-            binding.imgPdfPreview.loadCFRRConfig()
-        }
-
-        binding.btLoadTrippyPreset.setOnClickListener {
-            binding.imgPdfPreview.loadTrippyConfig()
+        binding.btSettings.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, SettingsFragment(), "settings")
+                .addToBackStack(null)
+                .commit()
         }
 
         Log.d(TAG, "Rb loaded ? %b".format(mRbLoader.isRoadbookLoaded))
-        if(mRbLoader.isRoadbookLoaded)
-        {
-            binding.txtRoadbookStatus.text = String.format(getString(R.string.roadbook_loaded),mRbLoader.getRoadbookName())
+        if (mRbLoader.isRoadbookLoaded) {
+            binding.txtRoadbookStatus.text =
+                String.format(getString(R.string.roadbook_loaded), mRbLoader.getRoadbookName())
         } else {
             binding.txtRoadbookStatus.text = getString(R.string.no_roadbook_loaded)
         }
@@ -89,18 +94,36 @@ class AdvancedMenuFragment : Fragment() {
             requireActivity().onBackPressed()
         }
 
-    private val openPdfPrompt = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        if (uri == null) {
-            return@registerForActivityResult
+    fun openPdfFile() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "application/pdf"
         }
-        requireActivity().contentResolver.takePersistableUriPermission(
-            uri,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-        )
-        Log.d(TAG, "Select pdf $uri")
 
-        // https://developer.android.com/reference/kotlin/android/graphics/pdf/PdfRenderer
+        startActivityForResult(intent, PICK_PDF_FILE)
     }
+
+    override fun onActivityResult(
+        requestCode: Int, resultCode: Int, resultData: Intent?
+    ) {
+        if (requestCode == PICK_PDF_FILE
+            && resultCode == Activity.RESULT_OK
+        ) {
+            // The result data contains a URI for the document or directory that
+            // the user selected.
+            resultData?.data?.also { uri ->
+                // Perform operations on the document using its URI.
+                Log.d(TAG, "Select pdf $uri")
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, PdfConverterFragment(uri), "pdfConverter")
+                    .addToBackStack(null)
+                    .commit()
+            }
+
+        }
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
