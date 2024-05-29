@@ -34,7 +34,36 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Convert pdf to roadbook" />
+            android:text="Select pdf to convert" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/background">
+
+            <com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookPreView
+                android:id="@+id/img_pdf_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:src="@drawable/pdf_sample" />
+
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/bt_load_cfrr_preset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load CFRR preset"/>
+        <Button
+            android:id="@+id/bt_load_trippy_preset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load Trippy preset"/>
 
     </LinearLayout>
 </layout>

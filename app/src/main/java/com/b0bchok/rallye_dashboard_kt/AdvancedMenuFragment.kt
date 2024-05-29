@@ -11,9 +11,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
 import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.roadbookUri
-import com.b0bchok.rallye_dashboard_kt.databinding.OpenRoadbookFragmentBinding
+import com.b0bchok.rallye_dashboard_kt.databinding.AdvancedMenuFragmentBinding
 
-class OpenRoadbookMenuFragment : Fragment() {
+
+class AdvancedMenuFragment : Fragment() {
 
     companion object {
         private const val TAG = "OpenRoadbookFragment"
@@ -21,7 +22,7 @@ class OpenRoadbookMenuFragment : Fragment() {
 
     private lateinit var mRbLoader: RoadbookLoader
 
-    private var _binding: OpenRoadbookFragmentBinding? = null
+    private var _binding: AdvancedMenuFragmentBinding? = null
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -30,7 +31,7 @@ class OpenRoadbookMenuFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = OpenRoadbookFragmentBinding.inflate(inflater, container, false)
+        _binding = AdvancedMenuFragmentBinding.inflate(inflater, container, false)
 
         mRbLoader = ViewModelProvider(requireActivity())[RoadbookLoader::class.java]
 
@@ -42,6 +43,18 @@ class OpenRoadbookMenuFragment : Fragment() {
 
         binding.btSelectRb.setOnClickListener {
             openFolderPrompt.launch(null)
+        }
+
+        binding.btConvertPdf.setOnClickListener {
+            openPdfPrompt.launch("application/pdf")
+        }
+
+        binding.btLoadCfrrPreset.setOnClickListener {
+            binding.imgPdfPreview.loadCFRRConfig()
+        }
+
+        binding.btLoadTrippyPreset.setOnClickListener {
+            binding.imgPdfPreview.loadTrippyConfig()
         }
 
         Log.d(TAG, "Rb loaded ? %b".format(mRbLoader.isRoadbookLoaded))
@@ -75,6 +88,19 @@ class OpenRoadbookMenuFragment : Fragment() {
             // return to dashboard
             requireActivity().onBackPressed()
         }
+
+    private val openPdfPrompt = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri == null) {
+            return@registerForActivityResult
+        }
+        requireActivity().contentResolver.takePersistableUriPermission(
+            uri,
+            Intent.FLAG_GRANT_READ_URI_PERMISSION
+        )
+        Log.d(TAG, "Select pdf $uri")
+
+        // https://developer.android.com/reference/kotlin/android/graphics/pdf/PdfRenderer
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()

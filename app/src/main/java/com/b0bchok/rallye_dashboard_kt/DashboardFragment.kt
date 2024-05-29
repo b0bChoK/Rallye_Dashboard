@@ -26,7 +26,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -216,7 +215,7 @@ class DashboardFragment : Fragment(), LocationListener,
         binding.btSelectRoadbook.setOnLongClickListener {
             //Open menu
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, OpenRoadbookMenuFragment(), "openRB")
+                .replace(R.id.fragment_container, AdvancedMenuFragment(), "openRB")
                 .addToBackStack(null)
                 .commit()
 
