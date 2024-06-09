@@ -6,6 +6,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/button_view"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintWidth_percent="0.5">
+
         <FrameLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
@@ -45,25 +54,6 @@
 
         </FrameLayout>
 
-        <FrameLayout
-            android:id="@+id/preview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/background"
-            android:padding="5dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/status">
-
-            <com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookPreView
-                android:id="@+id/img_pdf_preview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:src="@drawable/pdf_sample" />
-        </FrameLayout>
-
         <Button
             android:id="@+id/bt_load_cfrr_preset"
             android:layout_width="wrap_content"
@@ -71,7 +61,7 @@
             android:text="Load CFRR preset"
             app:layout_constraintEnd_toStartOf="@id/bt_load_trippy_preset"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/preview" />
+            app:layout_constraintTop_toBottomOf="@id/status" />
 
         <Button
             android:id="@+id/bt_load_trippy_preset"
@@ -80,7 +70,7 @@
             android:text="Load Trippy preset"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/bt_load_cfrr_preset"
-            app:layout_constraintTop_toBottomOf="@id/preview" />
+            app:layout_constraintTop_toBottomOf="@id/status" />
 
         <Button
             android:id="@+id/bt_convert_pdf"
@@ -90,6 +80,28 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/preview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/background"
+            android:padding="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/button_view"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookPreView
+                android:id="@+id/img_pdf_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/pdf_sample" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

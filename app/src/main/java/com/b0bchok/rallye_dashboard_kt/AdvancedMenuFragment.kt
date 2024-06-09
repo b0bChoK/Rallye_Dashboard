@@ -91,7 +91,13 @@ class AdvancedMenuFragment : Fragment() {
             }
 
             // return to dashboard
-            requireActivity().onBackPressed()
+            try {
+                requireActivity().onBackPressed()
+            } catch (e : Exception) {
+                Log.e(TAG, "Cannot invoke back button !")
+                binding.txtRoadbookStatus.text =
+                    String.format(getString(R.string.roadbook_loaded), mRbLoader.getRoadbookName())
+            }
         }
 
     fun openPdfFile() {
@@ -114,6 +120,11 @@ class AdvancedMenuFragment : Fragment() {
             resultData?.data?.also { uri ->
                 // Perform operations on the document using its URI.
                 Log.d(TAG, "Select pdf $uri")
+
+                requireActivity().contentResolver.takePersistableUriPermission(
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION
+                )
 
                 requireActivity().supportFragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, PdfConverterFragment(uri), "pdfConverter")

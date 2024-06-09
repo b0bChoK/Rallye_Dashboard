@@ -91,7 +91,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.31" />
+                app:layout_constraintWidth_percent="0.40" />
 
             <Button
                 android:id="@+id/btPageUp"
@@ -104,7 +104,7 @@
                 app:layout_constraintEnd_toStartOf="@id/btSelectRoadbook"
                 app:layout_constraintStart_toEndOf="@id/btPageDown"
                 app:layout_constraintTop_toTopOf="@id/btPageDown"
-                app:layout_constraintWidth_percent="0.31"
+                app:layout_constraintWidth_percent="0.35"
                 app:tint="@color/background" />
 
             <ImageButton
@@ -116,25 +116,8 @@
                 android:contentDescription="@string/button_open_roadbook"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/opened_folder"
+                android:src="@drawable/hamburger_menu"
                 android:text="@string/button_open_roadbook_ld"
-                app:layout_constraintBottom_toBottomOf="@id/btPageDown"
-                app:layout_constraintEnd_toStartOf="@id/btOpenConfig"
-                app:layout_constraintTop_toTopOf="@id/btPageDown"
-                app:layout_constraintWidth_percent="0.15"
-                app:tint="@color/button_text" />
-
-            <ImageButton
-                android:id="@+id/btOpenConfig"
-                style="@style/Custom_button"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:contentDescription="@string/button_open_setup"
-                android:keepScreenOn="true"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/setup"
-                android:text="@string/button_open_setup"
                 app:layout_constraintBottom_toBottomOf="@id/btPageDown"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/btPageDown"

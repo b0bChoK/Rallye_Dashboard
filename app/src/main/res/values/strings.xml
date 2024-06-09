@@ -20,8 +20,7 @@
     <string name="img_caseA">Top case</string>
 
     <string name="click_raz">Press long to RAZ</string>
-    <string name="click_rb">Press long to Open Roadbook</string>
-    <string name="click_setup">Press long to Open Configuration</string>
+    <string name="click_rb">Press long to Open Menu</string>
 
     <string name="pref_title_conf_odo">Configure odometer and chronometer</string>
     <string name="pref_edit_odo">Distance to increment odometer</string>
@@ -57,7 +56,7 @@
     <string name="theme_selection_dark_light_auto">Theme selection (dark/light/auto)</string>
     <string name="configure_display">Configure display</string>
     <string name="odometer_precision_to_10m">Odometer precision to 10m</string>
-    <string name="convertisseur_de_roadbook">Roadbook pdf converteur</string>
+    <string name="convertisseur_de_roadbook">Roadbook pdf converter (for advanced user)</string>
     <string name="unit_km">km</string>
     <string name="configure_roadbook">Configure Roadbook</string>
     <string name="auto_load_last_roadbook_on_startup">Auto load last roadbook on startup</string>

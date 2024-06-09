@@ -1,20 +1,29 @@
 package com.b0bchok.rallye_dashboard_kt.rd_loader
 
+import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
+import android.os.Environment
+import android.util.Log
+import com.b0bchok.rallye_dashboard_kt.utils.FileUtils
+import java.io.File
 
-class PdfConverter(val pdf: Uri, val context: Context) {
+class PdfConverter(private val pdf: Uri?, private val context: Context, val activity: Activity) {
+
+    companion object {
+        private const val TAG = "PDFConverter"
+    }
 
     var pageList = ArrayList<Bitmap>()
 
-    fun loadPDFPreview(){
+    fun loadPDFPreview() {
         // https://developer.android.com/reference/kotlin/android/graphics/pdf/PdfRenderer
         // create a new renderer
-        val fileDescriptor = context.contentResolver.openFileDescriptor(pdf, "r")
+        val fileDescriptor = pdf?.let { context.contentResolver.openFileDescriptor(it, "r") }
         val renderer = PdfRenderer(fileDescriptor!!)
 
 
@@ -25,8 +34,9 @@ class PdfConverter(val pdf: Uri, val context: Context) {
             val page: PdfRenderer.Page = renderer.openPage(i)
 
             // say we render for showing on the screen
-            val rendererPageWidth = page.width
-            val rendererPageHeight = page.height
+            // increase resolution to better display
+            val rendererPageWidth = page.width * 3
+            val rendererPageHeight = page.height * 3
             val bitmap = Bitmap.createBitmap(
                 rendererPageWidth,
                 rendererPageHeight,
@@ -48,7 +58,117 @@ class PdfConverter(val pdf: Uri, val context: Context) {
         renderer.close()
     }
 
-    fun convert(param: ConverterConfigData) {
+    // https://www.linkedin.com/pulse/how-use-bitmapcreatebitmap-crop-image-homan-huang/
+    fun convert(param: ConverterConfigData): File? {
 
+        var pageHeight: Int = 0
+        var pageWidth: Int = 0
+
+        val inputFileName = pdf?.let { FileUtils(activity).getFileName(it)?.split('.')?.get(0) }
+
+        var caseList = ArrayList<Bitmap>()
+
+        // Extract case
+        for (p in pageList) {
+
+            pageHeight = p.height
+            pageWidth = p.width
+
+            val topMargin = (pageHeight * param.topMargin).toInt()
+            val bottomMargin = (pageHeight * param.bottomMargin).toInt()
+            val leftMargin = (pageWidth * param.leftMargin).toInt()
+            val rightMargin = (pageWidth * param.rightMargin).toInt()
+
+            val colAWidth = (pageWidth * param.columnAWidth).toInt()
+            val colBWidth = (pageWidth * param.columnBWidth).toInt()
+
+            val colBStart = (pageWidth - (rightMargin + colBWidth)).toInt()
+
+            val caseHeight = (pageHeight - (topMargin + bottomMargin)) / param.lineNumber
+
+            // Crop left column
+            for (i in (param.lineNumber - 1) downTo 0) {
+                Log.d(
+                    TAG,
+                    "Extract case %d / page h %d / page w %d".format(i, pageHeight, pageWidth)
+                )
+
+                Log.d(
+                    TAG,
+                    "leftMargin %d / bottomMargin + (i * caseHeight) %d / leftMargin + colAWidth %d / bottomMargin + ((i + 1) * caseHeight) %d".format(
+                        leftMargin,
+                        bottomMargin + (i * caseHeight),
+                        leftMargin + colAWidth,
+                        bottomMargin + ((i + 1) * caseHeight)
+                    )
+                )
+
+                var caseImg = Bitmap.createBitmap(
+                    p,
+                    leftMargin,
+                    topMargin + (i * caseHeight),
+                    colAWidth,
+                    caseHeight
+                )
+                caseList.add(caseImg)
+            }
+
+            // Crop right column
+            for (i in (param.lineNumber - 1) downTo 0) {
+                Log.d(TAG, "Extract case %d".format(i))
+
+                var caseImg = Bitmap.createBitmap(
+                    p,
+                    colBStart,
+                    topMargin + (i * caseHeight),
+                    colBWidth,
+                    caseHeight
+                )
+                caseList.add(caseImg)
+            }
+
+        }
+
+        // Save case
+        val destF = createAppDirectoryInDownloads(context, inputFileName)
+
+        if (destF != null) {
+            var caseNumber: Int = 1
+            for (i in caseList) {
+                val caseName = "%03d_%s.jpg".format(caseNumber, inputFileName)
+                File(destF, caseName).writeBitmap(i)
+
+                caseNumber++
+            }
+        }
+
+        return destF
+    }
+
+    fun createAppDirectoryInDownloads(context: Context, inputFileName: String?): File? {
+        val downloadsDirectory =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val appDirectory = File(downloadsDirectory, "%s_rb".format(inputFileName))
+
+        if (!appDirectory.exists()) {
+            val directoryCreated = appDirectory.mkdir()
+            if (!directoryCreated) {
+                Log.e(TAG, "Failed to create the directory %s".format(appDirectory.toString()))
+                return null
+            }
+        }
+
+        return appDirectory
+    }
+
+    private fun File.writeBitmap(
+        bitmap: Bitmap,
+        format: Bitmap.CompressFormat = Bitmap.CompressFormat.JPEG,
+        quality: Int = 80
+    ) {
+        outputStream().use { out ->
+            bitmap.compress(format, quality, out)
+            out.flush()
+        }
     }
 }

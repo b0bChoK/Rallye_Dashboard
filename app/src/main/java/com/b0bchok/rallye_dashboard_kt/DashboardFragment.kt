@@ -53,7 +53,9 @@ class DashboardFragment : Fragment(), LocationListener,
     companion object {
         private const val TAG = "DashboardFragment"
         private val permissions = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     }
 
@@ -386,6 +388,8 @@ class DashboardFragment : Fragment(), LocationListener,
     }
 
     private fun checkGPS() {
+        // TODO Better check if provider disabled or not existing
+
         val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (!gpsEnabled) {
 
@@ -538,6 +542,7 @@ class DashboardFragment : Fragment(), LocationListener,
         if (theCase != null) {
             if (mRbLoader.isRoadbookLoaded) {
                 val caseFile = mRbLoader.getCase(index)
+                // TODO Add try catch if setImageURI failed
                 if (caseFile != null) theCase.setImageURI(caseFile.uri) else theCase.setImageResource(
                     R.drawable.case_empty
                 )

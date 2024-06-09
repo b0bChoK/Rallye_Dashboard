@@ -138,35 +138,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btPageUp" />
 
-
             <ImageButton
                 android:id="@+id/btSelectRoadbook"
                 style="@style/Custom_button"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/opened_folder"
+                android:src="@drawable/hamburger_menu"
                 android:text="@string/button_open_roadbook_ld"
-                app:layout_constraintBottom_toTopOf="@id/btOpenConfig"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.12"
-                app:layout_constraintStart_toStartOf="parent"
-                app:tint="@color/button_text" />
-
-            <ImageButton
-                android:id="@+id/btOpenConfig"
-                style="@style/Custom_button"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:keepScreenOn="true"
-                android:scaleType="fitCenter"
-                android:src="@drawable/setup"
-                android:text="@string/button_open_setup_ld"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHeight_default="percent"
-                app:layout_constraintHeight_percent="0.12"
+                app:layout_constraintHeight_percent="0.10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:tint="@color/button_text" />
 

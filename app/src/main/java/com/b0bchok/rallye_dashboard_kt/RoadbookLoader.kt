@@ -73,6 +73,7 @@ class RoadbookLoader : ViewModel() {
 
     fun loadCases() {
         Log.d(TAG, "Load case for new RB")
+        // TODO add try catch
         if (mRoadbookDir!!.exists() && mRoadbookDir!!.isDirectory) {
             ordererFiles = mRoadbookDir!!.listFiles()
         } else

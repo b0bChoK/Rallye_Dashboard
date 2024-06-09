@@ -13,8 +13,7 @@
     <string name="button_raz">RAZ</string>
 
     <string name="click_raz">Appui long pour RAZ</string>
-    <string name="click_rb">Appui long pour Ouvrir Roadbook</string>
-    <string name="click_setup">Appui long pour afficher Configuration</string>
+    <string name="click_rb">Appui long pour ouvrir le Menu</string>
 
     <string name="pref_title_conf_odo">Configurer l\'odomètre et le chronomètre</string>
     <string name="pref_edit_odo">Distance d\'incrémentation de l\'odomètre</string>
@@ -34,7 +33,7 @@
     <string name="theme_selection_dark_light_auto">Sélection du thème (dark/light/auto)</string>
     <string name="configure_display">Configurer l\'affichage</string>
     <string name="odometer_precision_to_10m">Précision de l\'odomètre à 10m</string>
-    <string name="convertisseur_de_roadbook">Convertisseur de roadbook pdf</string>
+    <string name="convertisseur_de_roadbook">Convertisseur de roadbook pdf (pour utilisateur avancé)</string>
     <string name="unit_km">km</string>
     <string name="configure_roadbook">Configuration du Roadbook</string>
     <string name="auto_load_last_roadbook_on_startup">Chargement automatique du précédent roadbook au démarage</string>

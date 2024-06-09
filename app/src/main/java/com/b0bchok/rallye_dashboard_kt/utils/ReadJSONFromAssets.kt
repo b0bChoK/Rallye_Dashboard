@@ -11,7 +11,7 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
     val identifier = "[ReadJSON]"
     try {
         val file = context.assets.open("$path")
-        Log.i(
+        Log.d(
             identifier,
             "Found File: $file.",
         )
@@ -22,12 +22,12 @@ fun ReadJSONFromAssets(context: Context, path: String): String {
                 stringBuilder.append(it)
             }
         }
-        Log.i(
+        Log.d(
             identifier,
             "getJSON stringBuilder: $stringBuilder.",
         )
         val jsonString = stringBuilder.toString()
-        Log.i(
+        Log.d(
             identifier,
             "JSON as String: $jsonString.",
         )
