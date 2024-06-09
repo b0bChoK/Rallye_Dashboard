@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="Rallye Dashboard menu"
+                android:text="@string/rallye_dashboard_menu"
                 android:textColor="@color/background"
                 android:textStyle="bold" />
 
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Select &amp; open roadbook"
+            android:text="@string/select_amp_open_roadbook"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/status" />
@@ -71,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Convert PDF..."
+            android:text="@string/convert_pdf"
             app:layout_constraintEnd_toEndOf="@+id/bt_select_rb"
             app:layout_constraintStart_toStartOf="@+id/bt_select_rb"
             app:layout_constraintTop_toBottomOf="@+id/bt_select_rb" />
@@ -81,7 +81,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Settings..."
+            android:text="@string/settings"
             app:layout_constraintEnd_toEndOf="@+id/bt_select_rb"
             app:layout_constraintStart_toStartOf="@+id/bt_select_rb"
             app:layout_constraintTop_toBottomOf="@+id/bt_convert_pdf" />
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:enabled="false"
-            android:text="Remote mapping..."
+            android:text="@string/remote_mapping"
             app:layout_constraintEnd_toEndOf="@+id/bt_select_rb"
             app:layout_constraintStart_toStartOf="@+id/bt_select_rb"
             app:layout_constraintTop_toBottomOf="@+id/bt_settings" />

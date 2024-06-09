@@ -62,8 +62,15 @@
     <string name="auto_load_last_roadbook_on_startup">Auto load last roadbook on startup</string>
     <string name="close_rallye_dashboard">Close Rallye Dashboard</string>
     <string name="quit_the_app">Quit the app ?</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_roadbook_loaded">No roadbook loaded</string>
     <string name="roadbook_loaded">Roadbook loaded : %s</string>
+    <string name="rallye_dashboard_menu">Rallye Dashboard menu</string>
+    <string name="select_amp_open_roadbook"><![CDATA[Select & open roadbook]]></string>
+    <string name="convert_pdf">Convert PDF...</string>
+    <string name="settings">Settings...</string>
+    <string name="remote_mapping">Remote mapping...</string>
+    <string name="convert_pdf_menu">Convert PDF</string>
+    <string name="load_cfrr_preset">Load CFRR preset</string>
+    <string name="load_trippy_preset">Load Trippy preset</string>
+    <string name="convert">Convert</string>
 </resources>

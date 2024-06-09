@@ -41,4 +41,13 @@
     <string name="quit_the_app">Quitter l\'application ?</string>
     <string name="no_roadbook_loaded">Pas de roadbook chargé</string>
     <string name="roadbook_loaded">Roadbook chargé : %s</string>
+    <string name="rallye_dashboard_menu">Rallye Dashboard menu</string>
+    <string name="select_amp_open_roadbook"><![CDATA[Selectionner & ouvrir un roadbook]]></string>
+    <string name="convert_pdf">Convertir un PDF...</string>
+    <string name="settings">Préférences...</string>
+    <string name="remote_mapping">Configuration télécommande...</string>
+    <string name="convert_pdf_menu">Convertir un PDF</string>
+    <string name="load_cfrr_preset">Découpage CFRR</string>
+    <string name="load_trippy_preset">Découpage Trippy</string>
+    <string name="convert">Convertir</string>
 </resources>
