@@ -8,6 +8,7 @@ Permet de remplacer le dérouleur et un compteur odométre :
 - afficher un chronométre déclencher automatiquement après une distance parcourue
 - afficher des statistiques de vitesses
 - piloté par une télécommande bluetooth
+- convertir un pdf en série d'image
 
 Requier une tablette ou une smartphone Android 8 mini (API 28)
 Autorisation requise pour accéder à la position GPS et la lecture du répertoire contenant les roadbooks.
@@ -16,7 +17,8 @@ Autorisation requise pour accéder à la position GPS et la lecture du répertoi
 Le manuel est lisible ici : https://github.com/b0bChoK/Rallye_Dashboard/blob/main/docs/Rallye%20Dashboard%20User%20Manual%20FR.pdf
 
 ## Convertion du roadbook pdf en serie d'image
-L'application supporte le format IZ Roadbook, convertisser vos roadbook ici https://www.izroadbook.com/roadbook et copier les fichiers sur votre appareil Android
+L'application intégre un convertisseur de pdf pour tranformer vos roadbook en une série d'image.
+Vous pouvez aussi utiliser le script suivant : https://github.com/b0bChoK/roadbook_converter
 
 ## Télécommande compatible
 Supporte les télécommandes multimédia compatible android
@@ -36,27 +38,18 @@ Allow you to replace the traditional paper roadbook and include an odometer :
 - display a chronometer automatically start when moving
 - display speed statistics
 - remotely controlled by bluetooth media controller
+- convert pdf to case by case image
 
 Need a tablet or smartphone with Android 8 minimum (API 28)
 Need request to access fine position and read access to directory containing the roadbook.
 
 ## Convert a pdf roadbook in a set of image
-This app support the format IZ Roadbook, convert them here https://www.izroadbook.com/roadbook and copy/paste the file on your device.
+This app contain a pdf roadbook converter.
+You can also use this script : https://github.com/b0bChoK/roadbook_converter
 
 ## Remote compatible
-Support any medi controller remote
+Support any media remote android compatible.
 
 ## Contact creator
 Albert DEWAS, b0b_ChoK@yahoo.fr
 
---------------------------------------------------------
-
-# TODO list
-- catch media key event without changing system state or launching other media app
-- add different mapping for remote controller (ex : barbutton)
-- add configuration to setup some parameters :
-  - distance before starting chronometer
-  - distance to increase / decrease odometer
-  - button mapping
-- User manual
-- included pdf conversion
