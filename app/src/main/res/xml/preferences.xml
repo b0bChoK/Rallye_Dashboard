@@ -64,7 +64,7 @@
         <Preference android:title="@string/convertisseur_de_roadbook">
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://www.izroadbook.com/roadbook" />
+                android:data="https://github.com/b0bChoK/roadbook_converter" />
         </Preference>
 
         <Preference android:title="@string/soutenir_le_projet">

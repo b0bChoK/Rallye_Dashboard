@@ -13,8 +13,7 @@
     <string name="button_raz">RAZ</string>
 
     <string name="click_raz">Appui long pour RAZ</string>
-    <string name="click_rb">Appui long pour Ouvrir Roadbook</string>
-    <string name="click_setup">Appui long pour afficher Configuration</string>
+    <string name="click_rb">Appui long pour ouvrir le Menu</string>
 
     <string name="pref_title_conf_odo">Configurer l\'odomètre et le chronomètre</string>
     <string name="pref_edit_odo">Distance d\'incrémentation de l\'odomètre</string>
@@ -34,10 +33,27 @@
     <string name="theme_selection_dark_light_auto">Sélection du thème (dark/light/auto)</string>
     <string name="configure_display">Configurer l\'affichage</string>
     <string name="odometer_precision_to_10m">Précision de l\'odomètre à 10m</string>
-    <string name="convertisseur_de_roadbook">Convertisseur de roadbook pdf</string>
+    <string name="convertisseur_de_roadbook">Convertisseur de roadbook pdf (pour utilisateur avancé)</string>
     <string name="unit_km">km</string>
     <string name="configure_roadbook">Configuration du Roadbook</string>
     <string name="auto_load_last_roadbook_on_startup">Chargement automatique du précédent roadbook au démarage</string>
     <string name="close_rallye_dashboard">Fermer Rallye Dashboard</string>
     <string name="quit_the_app">Quitter l\'application ?</string>
+    <string name="no_roadbook_loaded">Pas de roadbook chargé</string>
+    <string name="roadbook_loaded">Roadbook chargé : %s</string>
+    <string name="rallye_dashboard_menu">Rallye Dashboard menu</string>
+    <string name="select_amp_open_roadbook"><![CDATA[Selectionner & ouvrir un roadbook]]></string>
+    <string name="convert_pdf">Convertir un PDF...</string>
+    <string name="settings">Préférences...</string>
+    <string name="remote_mapping">Configuration télécommande...</string>
+    <string name="convert_pdf_menu">Convertir un PDF</string>
+    <string name="load_cfrr_preset">Découpage CFRR</string>
+    <string name="load_trippy_preset">Découpage Trippy</string>
+    <string name="convert">Convertir</string>
+    <string name="roadbook_loaded_dialog">Roadbook chargé !</string>
+    <string name="roadbook_loaded_dialog_text">Le roadbook %s est chargé.</string>
+    <string name="ok">Ok</string>
+    <string name="pdf_converted">Pdf converti !</string>
+    <string name="the_pdf_was_converted_to_case_by_case_image_here_s">Le fichier pdf a été converti case par case en image ici %s</string>
+    <string name="pdf_to_convert_s">PDF à convertir : %s</string>
 </resources>

@@ -11,6 +11,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -26,7 +27,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -53,16 +53,20 @@ class DashboardFragment : Fragment(), LocationListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         private const val TAG = "DashboardFragment"
-        private val permissions = arrayOf(
+        private val permissionsGps = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        private val permissionsStorage = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
     }
 
     private val TAG_IS_CHRONOMTER_RUNNING = "is-chronometer-running"
     private val TAG_CHRONOMETER_VALUE = "chronometer-value"
 
-    private var _binding: DashboardFragmentBinding? = null;
-    private val binding get() = _binding!!;
+    private var _binding: DashboardFragmentBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var locationManager: LocationManager
     private lateinit var mSpeedMeasures: SpeedMeasures
@@ -91,23 +95,23 @@ class DashboardFragment : Fragment(), LocationListener,
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = DashboardFragmentBinding.inflate(inflater, container, false);
+        _binding = DashboardFragmentBinding.inflate(inflater, container, false)
 
         if (savedInstanceState != null) {
             isChronometerRunning = savedInstanceState.getBoolean(TAG_IS_CHRONOMTER_RUNNING)
             startChronometer = savedInstanceState.getLong(TAG_CHRONOMETER_VALUE)
         }
 
-        mRbLoader = ViewModelProvider(this)[RoadbookLoader::class.java]
+        mRbLoader = ViewModelProvider(requireActivity())[RoadbookLoader::class.java]
 
-        val roadbooLoadedObserver = Observer<Boolean> { status ->
+        val roadbookLoadedObserver = Observer<Boolean> { status ->
             if (status && mRbLoader.isRoadbookLoaded) {
                 Log.d(TAG, "End of loading")
                 refreshRoadbookCases()
                 binding.progressBar.visibility = View.GONE
             }
         }
-        mRbLoader.roadbookLoaded.observe(viewLifecycleOwner, roadbooLoadedObserver)
+        mRbLoader.roadbookLoaded.observe(viewLifecycleOwner, roadbookLoadedObserver)
 
         mSpeedMeasures = ViewModelProvider(this)[SpeedMeasures::class.java]
 
@@ -214,7 +218,12 @@ class DashboardFragment : Fragment(), LocationListener,
         mImgCaseC = binding.imageCaseC
 
         binding.btSelectRoadbook.setOnLongClickListener {
-            openFolderPrompt.launch(null)
+            //Open menu
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AdvancedMenuFragment(), "openRB")
+                .addToBackStack(null)
+                .commit()
+
             true
         }
         binding.btSelectRoadbook.setOnClickListener {
@@ -289,23 +298,6 @@ class DashboardFragment : Fragment(), LocationListener,
             true
         }
 
-        binding.btOpenConfig.setOnClickListener {
-            Toast.makeText(
-                requireContext(),
-                requireContext().getString(R.string.click_setup),
-                Toast.LENGTH_SHORT
-            )
-                .show()
-        }
-
-        binding.btOpenConfig.setOnLongClickListener {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, SettingsFragment(), "settings")
-                .addToBackStack(null)
-                .commit()
-            true
-        }
-
         mTxtClock = binding.txtCurrentTime
         mTxtTimer = binding.txtTimer
         mTxtSpeed = binding.txtSpeedOMeter
@@ -372,14 +364,22 @@ class DashboardFragment : Fragment(), LocationListener,
     }
 
     private fun checkPermissions() {
-        val anyDenied = permissions.any {
+        val gpsDenied = permissionsGps.any {
             ContextCompat.checkSelfPermission(requireContext(), it) ==
                     PackageManager.PERMISSION_DENIED
         }
-        if (anyDenied) {
-            requestPermissions(permissions, 1)
+        if (gpsDenied) {
+            requestPermissions(permissionsGps, 1)
         } else {
             checkGPS()
+        }
+
+        val storageDenied = permissionsStorage.any {
+            ContextCompat.checkSelfPermission(requireContext(), it) ==
+                    PackageManager.PERMISSION_DENIED
+        }
+        if (storageDenied) {
+            requestPermissions(permissionsStorage, 2)
         }
     }
 
@@ -396,9 +396,19 @@ class DashboardFragment : Fragment(), LocationListener,
                 gpsNotEnabled()
             }
         }
+
+        if (requestCode == 2) {
+            if (grantResults.all { it == PackageManager.PERMISSION_DENIED }) {
+                if (Build.VERSION.SDK_INT < 30)
+                    Toast.makeText(requireContext(), "No storage access", Toast.LENGTH_LONG)
+                        .show()
+            }
+        }
     }
 
     private fun checkGPS() {
+        // TODO Better check if provider disabled or not existing
+
         val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (!gpsEnabled) {
 
@@ -551,31 +561,24 @@ class DashboardFragment : Fragment(), LocationListener,
         if (theCase != null) {
             if (mRbLoader.isRoadbookLoaded) {
                 val caseFile = mRbLoader.getCase(index)
-                if (caseFile != null) theCase.setImageURI(caseFile.uri) else theCase.setImageResource(
-                    R.drawable.case_empty
-                )
+                try {
+                    if (caseFile != null) theCase.setImageURI(caseFile.uri) else theCase.setImageResource(
+                        R.drawable.case_empty
+                    )
+                } catch (e: Exception) {
+                    Log.e(
+                        TAG,
+                        "Cannot set uri the Image View %s".format(caseFile?.uri.toString()),
+                        e
+                    )
+                    theCase.setImageResource(
+                        R.drawable.case_error
+                    )
+                }
+
             }
         }
     }
-
-    private val openFolderPrompt =
-        registerForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
-            if (uri == null) {
-                return@registerForActivityResult
-            }
-            requireActivity().contentResolver.takePersistableUriPermission(
-                uri,
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-            )
-            Log.d(TAG, "Open document tree $uri")
-            binding.progressBar.visibility = View.VISIBLE
-            DocumentFile.fromTreeUri(requireContext(), uri)?.let {
-                //Save roadbook uri
-                val prefs = PreferenceHelper.defaultPreference(requireContext())
-                prefs.roadbookUri = uri.toString()
-                mRbLoader.setRoadbookDir(it)
-            }
-        }
 
     fun onKeyUp(keyCode: Int): Boolean {
         return when (keyCode) {
@@ -631,6 +634,19 @@ class DashboardFragment : Fragment(), LocationListener,
 
             else -> false
         }
+    }
+
+
+    override fun onProviderEnabled(provider: String) {
+        Log.w(TAG, "Provider %s enabled".format(provider))
+    }
+
+    override fun onProviderDisabled(provider: String) {
+        Log.w(TAG, "Provider %s disabled".format(provider))
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        Log.w(TAG, "Provider %s change to %d".format(provider, status))
     }
 }
 

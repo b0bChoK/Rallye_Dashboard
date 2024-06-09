@@ -6,6 +6,7 @@ import android.view.KeyEvent
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.preference.PreferenceManager
