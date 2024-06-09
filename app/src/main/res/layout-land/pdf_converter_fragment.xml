@@ -100,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
+                android:layout_gravity="center"
                 android:src="@drawable/pdf_sample" />
         </FrameLayout>
 

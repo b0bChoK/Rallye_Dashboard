@@ -635,6 +635,19 @@ class DashboardFragment : Fragment(), LocationListener,
             else -> false
         }
     }
+
+
+    override fun onProviderEnabled(provider: String) {
+        Log.w(TAG, "Provider %s enabled".format(provider))
+    }
+
+    override fun onProviderDisabled(provider: String) {
+        Log.w(TAG, "Provider %s disabled".format(provider))
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+        Log.w(TAG, "Provider %s change to %d".format(provider, status))
+    }
 }
 
 object PreferenceHelper {
