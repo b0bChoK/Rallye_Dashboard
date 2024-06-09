@@ -20,13 +20,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        requestPermissions(
-//            arrayOf<String>(
-//                Manifest.permission.,
-//                Manifest.permission.MANAGE_EXTERNAL_STORAGE
-//            ),
-//            1
-//        )
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         setContentView(R.layout.activity_main)

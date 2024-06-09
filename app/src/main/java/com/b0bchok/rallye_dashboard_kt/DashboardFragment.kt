@@ -11,6 +11,7 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
@@ -52,8 +53,10 @@ class DashboardFragment : Fragment(), LocationListener,
     SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         private const val TAG = "DashboardFragment"
-        private val permissions = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
+        private val permissionsGps = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION
+        )
+        private val permissionsStorage = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
@@ -361,14 +364,22 @@ class DashboardFragment : Fragment(), LocationListener,
     }
 
     private fun checkPermissions() {
-        val anyDenied = permissions.any {
+        val gpsDenied = permissionsGps.any {
             ContextCompat.checkSelfPermission(requireContext(), it) ==
                     PackageManager.PERMISSION_DENIED
         }
-        if (anyDenied) {
-            requestPermissions(permissions, 1)
+        if (gpsDenied) {
+            requestPermissions(permissionsGps, 1)
         } else {
             checkGPS()
+        }
+
+        val storageDenied = permissionsStorage.any {
+            ContextCompat.checkSelfPermission(requireContext(), it) ==
+                    PackageManager.PERMISSION_DENIED
+        }
+        if (storageDenied) {
+            requestPermissions(permissionsStorage, 2)
         }
     }
 
@@ -383,6 +394,14 @@ class DashboardFragment : Fragment(), LocationListener,
                 checkGPS()
             } else {
                 gpsNotEnabled()
+            }
+        }
+
+        if (requestCode == 2) {
+            if (grantResults.all { it == PackageManager.PERMISSION_DENIED }) {
+                if (Build.VERSION.SDK_INT < 30)
+                    Toast.makeText(requireContext(), "No storage access", Toast.LENGTH_LONG)
+                        .show()
             }
         }
     }
@@ -546,8 +565,12 @@ class DashboardFragment : Fragment(), LocationListener,
                     if (caseFile != null) theCase.setImageURI(caseFile.uri) else theCase.setImageResource(
                         R.drawable.case_empty
                     )
-                } catch (e: Exception){
-                    Log.e(TAG, "Cannot set uri the Image View %s".format(caseFile?.uri.toString()), e)
+                } catch (e: Exception) {
+                    Log.e(
+                        TAG,
+                        "Cannot set uri the Image View %s".format(caseFile?.uri.toString()),
+                        e
+                    )
                     theCase.setImageResource(
                         R.drawable.case_error
                     )
