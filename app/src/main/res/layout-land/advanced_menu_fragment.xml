@@ -92,6 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:enabled="false"
+            android:visibility="invisible"
             android:text="Remote mapping..."
             app:layout_constraintEnd_toEndOf="@+id/bt_select_rb"
             app:layout_constraintStart_toStartOf="@+id/bt_select_rb"

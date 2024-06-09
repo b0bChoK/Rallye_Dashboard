@@ -47,7 +47,7 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.txtPdfStatus.text = "PDF to convert : %s".format(pdf?.let {
+        binding.txtPdfStatus.text = getString(R.string.pdf_to_convert_s).format(pdf?.let {
             FileUtils(requireActivity()).getFileName(
                 it
             )
@@ -65,10 +65,10 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
             val destF = converter.convert(binding.imgPdfPreview.pageConfig)
 
             val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle("Pdf converted !")
-                .setMessage("The pdf was converted to case by case image here %s".format(destF.toString()))
+            builder.setTitle(getString(R.string.pdf_converted))
+                .setMessage(getString(R.string.the_pdf_was_converted_to_case_by_case_image_here_s).format(destF.toString()))
                 .setPositiveButton(
-                    "Ok"
+                    getString(R.string.ok),
                 ) { _, _ ->
                     // return to menu
                     requireActivity().onBackPressed()

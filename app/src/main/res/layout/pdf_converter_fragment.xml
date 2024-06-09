@@ -13,7 +13,8 @@
             android:background="@color/dark_blue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/status">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -33,7 +34,8 @@
             android:background="@color/background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title">
+            app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintBottom_toTopOf="@id/preview">
 
             <TextView
                 android:id="@+id/txt_pdf_status"
@@ -48,12 +50,13 @@
         <FrameLayout
             android:id="@+id/preview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:background="@color/background"
             android:padding="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/status">
+            app:layout_constraintTop_toBottomOf="@id/status"
+            app:layout_constraintBottom_toTopOf="@id/bt_load_cfrr_preset">
 
             <com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookPreView
                 android:id="@+id/img_pdf_preview"
@@ -71,7 +74,8 @@
             android:text="@string/load_cfrr_preset"
             app:layout_constraintEnd_toStartOf="@id/bt_load_trippy_preset"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/preview" />
+            app:layout_constraintTop_toBottomOf="@id/preview"
+            app:layout_constraintBottom_toTopOf="@id/bt_convert_pdf"/>
 
         <Button
             android:id="@+id/bt_load_trippy_preset"
@@ -89,7 +93,8 @@
             android:text="@string/convert"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset" />
+            app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

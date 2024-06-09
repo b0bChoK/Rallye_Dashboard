@@ -50,4 +50,10 @@
     <string name="load_cfrr_preset">Découpage CFRR</string>
     <string name="load_trippy_preset">Découpage Trippy</string>
     <string name="convert">Convertir</string>
+    <string name="roadbook_loaded_dialog">Roadbook chargé !</string>
+    <string name="roadbook_loaded_dialog_text">Le roadbook %s est chargé.</string>
+    <string name="ok">Ok</string>
+    <string name="pdf_converted">Pdf converti !</string>
+    <string name="the_pdf_was_converted_to_case_by_case_image_here_s">Le fichier pdf a été converti case par case en image ici %s</string>
+    <string name="pdf_to_convert_s">PDF à convertir : %s</string>
 </resources>

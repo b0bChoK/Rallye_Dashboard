@@ -73,4 +73,10 @@
     <string name="load_cfrr_preset">Load CFRR preset</string>
     <string name="load_trippy_preset">Load Trippy preset</string>
     <string name="convert">Convert</string>
+    <string name="roadbook_loaded_dialog">Roadbook loaded !</string>
+    <string name="roadbook_loaded_dialog_text">The roadbook %s is loaded.</string>
+    <string name="ok">Ok</string>
+    <string name="pdf_converted">Pdf converted !</string>
+    <string name="the_pdf_was_converted_to_case_by_case_image_here_s">The pdf was converted to case by case image here %s</string>
+    <string name="pdf_to_convert_s">PDF to convert : %s</string>
 </resources>

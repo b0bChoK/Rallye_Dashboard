@@ -73,30 +73,35 @@ class RoadbookLoader : ViewModel() {
 
     fun loadCases() {
         Log.d(TAG, "Load case for new RB")
-        // TODO add try catch
-        if (mRoadbookDir!!.exists() && mRoadbookDir!!.isDirectory) {
-            ordererFiles = mRoadbookDir!!.listFiles()
-        } else
-            Log.w(TAG, "Uri not valid ! %s".format(mRoadbookDir))
+        var result = true
+        try {
+            if (mRoadbookDir!!.exists() && mRoadbookDir!!.isDirectory) {
+                ordererFiles = mRoadbookDir!!.listFiles()
+            } else
+                Log.w(TAG, "Uri not valid ! %s".format(mRoadbookDir))
 
-        if (ordererFiles != null) {
-            // Keep only image file
-            ordererFiles = ordererFiles!!.filter {
-                it.isFile && it.name?.split(".")?.get(1).equals("jpg", true) || it.name?.split(".")
-                    ?.get(1).equals("png", true)
-            }.toTypedArray()
+            if (ordererFiles != null) {
+                // Keep only image file
+                ordererFiles = ordererFiles!!.filter {
+                    it.isFile && it.name?.split(".")?.get(1)
+                        .equals("jpg", true) || it.name?.split(".")
+                        ?.get(1).equals("png", true)
+                }.toTypedArray()
 
-            // Sort by name
-            ordererFiles!!.sortWith(Comparator { o1: DocumentFile, o2: DocumentFile ->
-                extractWeight(o1.name!!) - extractWeight(o2.name!!)
-            })
-            for (i in ordererFiles!!) {
-                Log.d(TAG, "FileName:" + i.name)
+                // Sort by name
+                ordererFiles!!.sortWith(Comparator { o1: DocumentFile, o2: DocumentFile ->
+                    extractWeight(o1.name!!) - extractWeight(o2.name!!)
+                })
+                for (i in ordererFiles!!) {
+                    Log.d(TAG, "FileName:" + i.name)
+                }
+                Log.i(TAG, ordererFiles!!.size.toString() + " cases in roadbook")
             }
-            Log.i(TAG, ordererFiles!!.size.toString() + " cases in roadbook")
+        }catch (e: Exception) {
+            Log.e(TAG, "Cannot load and sort the roadbook", e)
+            result = false
         }
-
-        roadbookLoaded.postValue(true)
+        roadbookLoaded.postValue(result)
     }
 
     private fun extractWeight(s: String): Int {

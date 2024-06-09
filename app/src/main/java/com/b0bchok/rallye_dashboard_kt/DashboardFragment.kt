@@ -542,10 +542,17 @@ class DashboardFragment : Fragment(), LocationListener,
         if (theCase != null) {
             if (mRbLoader.isRoadbookLoaded) {
                 val caseFile = mRbLoader.getCase(index)
-                // TODO Add try catch if setImageURI failed
-                if (caseFile != null) theCase.setImageURI(caseFile.uri) else theCase.setImageResource(
-                    R.drawable.case_empty
-                )
+                try {
+                    if (caseFile != null) theCase.setImageURI(caseFile.uri) else theCase.setImageResource(
+                        R.drawable.case_empty
+                    )
+                } catch (e: Exception){
+                    Log.e(TAG, "Cannot set uri the Image View %s".format(caseFile?.uri.toString()), e)
+                    theCase.setImageResource(
+                        R.drawable.case_error
+                    )
+                }
+
             }
         }
     }

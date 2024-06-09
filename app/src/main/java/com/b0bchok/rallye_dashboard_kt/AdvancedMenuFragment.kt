@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
 import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.roadbookUri
@@ -97,6 +98,17 @@ class AdvancedMenuFragment : Fragment() {
                 Log.e(TAG, "Cannot invoke back button !")
                 binding.txtRoadbookStatus.text =
                     String.format(getString(R.string.roadbook_loaded), mRbLoader.getRoadbookName())
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle(getString(R.string.roadbook_loaded_dialog))
+                    .setMessage(getString(R.string.roadbook_loaded_dialog_text).format(binding.txtRoadbookStatus.text))
+                    .setPositiveButton(
+                        getString(R.string.ok)
+                    ) { _, _ ->
+                        // return to menu
+                        requireActivity().onBackPressed()
+                    }
+                val dialog = builder.create()
+                dialog.show()
             }
         }
 

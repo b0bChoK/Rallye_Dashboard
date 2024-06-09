@@ -11,6 +11,7 @@ import android.os.Environment
 import android.util.Log
 import com.b0bchok.rallye_dashboard_kt.utils.FileUtils
 import java.io.File
+import java.nio.file.Files
 
 class PdfConverter(private val pdf: Uri?, private val context: Context, val activity: Activity) {
 
@@ -88,21 +89,6 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
 
             // Crop left column
             for (i in (param.lineNumber - 1) downTo 0) {
-                Log.d(
-                    TAG,
-                    "Extract case %d / page h %d / page w %d".format(i, pageHeight, pageWidth)
-                )
-
-                Log.d(
-                    TAG,
-                    "leftMargin %d / bottomMargin + (i * caseHeight) %d / leftMargin + colAWidth %d / bottomMargin + ((i + 1) * caseHeight) %d".format(
-                        leftMargin,
-                        bottomMargin + (i * caseHeight),
-                        leftMargin + colAWidth,
-                        bottomMargin + ((i + 1) * caseHeight)
-                    )
-                )
-
                 var caseImg = Bitmap.createBitmap(
                     p,
                     leftMargin,
@@ -115,8 +101,6 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
 
             // Crop right column
             for (i in (param.lineNumber - 1) downTo 0) {
-                Log.d(TAG, "Extract case %d".format(i))
-
                 var caseImg = Bitmap.createBitmap(
                     p,
                     colBStart,
@@ -151,11 +135,12 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
         val appDirectory = File(downloadsDirectory, "%s_rb".format(inputFileName))
 
         if (!appDirectory.exists()) {
-            val directoryCreated = appDirectory.mkdir()
-            if (!directoryCreated) {
-                Log.e(TAG, "Failed to create the directory %s".format(appDirectory.toString()))
-                return null
-            }
+            Files.createDirectory(appDirectory.toPath())
+//            val directoryCreated = appDirectory.mkdir()
+//            if (!directoryCreated) {
+//                Log.e(TAG, "Failed to create the directory %s".format(appDirectory.toString()))
+//                return null
+//            }
         }
 
         return appDirectory
