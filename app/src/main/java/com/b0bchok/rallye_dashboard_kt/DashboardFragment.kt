@@ -35,12 +35,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
-import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.autoLoadRoadbook
-import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.chronometerDistance
-import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.odometerIncrement
-import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.odometerPrecision
-import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.roadbookUri
+import com.b0bchok.rallye_dashboard_kt.controller.ControllerConfigData
 import com.b0bchok.rallye_dashboard_kt.databinding.DashboardFragmentBinding
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.autoLoadRoadbook
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.chronometerDistance
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.controllerConfig
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.odometerIncrement
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.odometerPrecision
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.roadbookUri
+import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -90,6 +94,13 @@ class DashboardFragment : Fragment(), LocationListener,
     private var minimumDistanceToStartChrono: Int = 40
     private var distanceIncrementation: Int = 10
     private lateinit var odometerFormat: String
+
+    //Controller configuration
+    private var ActionCaseNext: Int = KeyEvent.KEYCODE_UNKNOWN
+    private var ActionCasePrev: Int = KeyEvent.KEYCODE_UNKNOWN
+    private var ActionIncreaseOdometer: Int = KeyEvent.KEYCODE_UNKNOWN
+    private var ActionDecreaseOdometer: Int = KeyEvent.KEYCODE_UNKNOWN
+    private var ActionRAZ: Int = KeyEvent.KEYCODE_UNKNOWN
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -194,6 +205,14 @@ class DashboardFragment : Fragment(), LocationListener,
         override fun onFinish() {}
     }
 
+    private val razTimer: CountDownTimer = object : CountDownTimer(3000, 500) {
+        override fun onTick(l: Long) {}
+
+        override fun onFinish() {
+            raz()
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private fun initializeComponents() {
         val displayMetrics = DisplayMetrics()
@@ -210,6 +229,8 @@ class DashboardFragment : Fragment(), LocationListener,
                 binding.caseLayout!!.requestLayout()
             }
         }
+
+        loadControllerConfiguration()
 
         updateButton()
 
@@ -580,62 +601,88 @@ class DashboardFragment : Fragment(), LocationListener,
         }
     }
 
-    fun onKeyUp(keyCode: Int): Boolean {
-        return when (keyCode) {
-            KeyEvent.KEYCODE_VOLUME_UP -> {
-                mRbLoader.goNextCase()
-                refreshRoadbookCases()
-                true
-            }
+    private fun loadControllerConfiguration() {
+        val prefs = PreferenceHelper.defaultPreference(requireContext())
+        if ((prefs.controllerConfig != null) and (prefs.controllerConfig != "")) {
+            val remoteConfig =
+                Gson().fromJson(prefs.controllerConfig, ControllerConfigData::class.java)
 
-            KeyEvent.KEYCODE_VOLUME_DOWN -> {
-                mRbLoader.goPrevCase()
-                refreshRoadbookCases()
-                true
-            }
-
-            KeyEvent.KEYCODE_MEDIA_NEXT -> {
-                increaseTotalTimer.cancel()
-                true
-            }
-
-            KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                decreaseTotalTimer.cancel()
-                true
-            }
-
-            else -> false
+            ActionCaseNext = KeyEvent.keyCodeFromString(remoteConfig.nextCase)
+            ActionCasePrev = KeyEvent.keyCodeFromString(remoteConfig.prevCase)
+            ActionIncreaseOdometer = KeyEvent.keyCodeFromString(remoteConfig.increaseOdo)
+            ActionDecreaseOdometer = KeyEvent.keyCodeFromString(remoteConfig.decreaseOdo)
+            ActionRAZ = KeyEvent.keyCodeFromString(remoteConfig.raz)
         }
     }
 
-    fun onKeyDown(keyCode: Int): Boolean {
-        return when (keyCode) {
-            KeyEvent.KEYCODE_MEDIA_NEXT -> {
-                increaseTotalTimer.start()
-                true
-            }
+    // Manage key event from remote controller
+    fun dispatchKeyEvent(event: KeyEvent?): Boolean {
 
-            KeyEvent.KEYCODE_MEDIA_PREVIOUS -> {
-                decreaseTotalTimer.start()
-                true
-            }
+        val keyCode = event?.keyCode
+        val action = event?.action
 
-            else -> false
+        if (action == KeyEvent.ACTION_DOWN) {
+            return when(keyCode) {
+                ActionCaseNext -> {
+                    true
+                }
+
+                ActionCasePrev -> {
+                    true
+                }
+
+                ActionIncreaseOdometer -> {
+                    increaseTotalTimer.start()
+                    true
+                }
+
+                ActionDecreaseOdometer -> {
+                    decreaseTotalTimer.start()
+                    true
+                }
+
+                ActionRAZ -> {
+                    razTimer.start()
+                    true
+                }
+
+                else -> false
+            }
+        } else if (action == KeyEvent.ACTION_UP) {
+            return when (keyCode) {
+                ActionCaseNext -> {
+                    mRbLoader.goNextCase()
+                    refreshRoadbookCases()
+                    true
+                }
+
+                ActionCasePrev -> {
+                    mRbLoader.goPrevCase()
+                    refreshRoadbookCases()
+                    true
+                }
+
+                ActionIncreaseOdometer -> {
+                    increaseTotalTimer.cancel()
+                    true
+                }
+
+                ActionDecreaseOdometer -> {
+                    decreaseTotalTimer.cancel()
+                    true
+                }
+
+                ActionRAZ -> {
+                    razTimer.cancel()
+                    true
+                }
+
+                else -> false
+            }
         }
+
+        return false
     }
-
-    @Override
-    fun onKeyLongPress(keyCode: Int): Boolean {
-        return when (keyCode) {
-            KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE -> {
-                raz()
-                true
-            }
-
-            else -> false
-        }
-    }
-
 
     override fun onProviderEnabled(provider: String) {
         Log.w(TAG, "Provider %s enabled".format(provider))
@@ -649,79 +696,3 @@ class DashboardFragment : Fragment(), LocationListener,
         Log.w(TAG, "Provider %s change to %d".format(provider, status))
     }
 }
-
-object PreferenceHelper {
-
-    val CHRONOMETER_DISTANCE = "CHRONOMETER_DISTANCE"
-    val ODOMETER_INCREMENT = "ODOMETER_INCREMENT"
-    val ODOMETER_PRECISION = "ODOMETER_PRECISION"
-    val ROADBOOK_URI = "ROADBOOK_URI"
-    val AUTO_LOAD_ROADBOOK = "AUTO_LOAD_ROADBOOK"
-
-    fun defaultPreference(context: Context): SharedPreferences =
-        PreferenceManager.getDefaultSharedPreferences(context)
-
-    fun customPreference(context: Context, name: String): SharedPreferences =
-        context.getSharedPreferences(name, Context.MODE_PRIVATE)
-
-    inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Unit) {
-        val editMe = edit()
-        operation(editMe)
-        editMe.apply()
-    }
-
-    var SharedPreferences.chronometerDistance
-        get() = getString(CHRONOMETER_DISTANCE, "40")
-        set(value) {
-            editMe {
-                it.putString(CHRONOMETER_DISTANCE, value)
-            }
-        }
-
-    var SharedPreferences.odometerIncrement
-        get() = getString(ODOMETER_INCREMENT, "10")
-        set(value) {
-            editMe {
-                it.putString(ODOMETER_INCREMENT, value)
-            }
-        }
-
-    var SharedPreferences.odometerPrecision
-        get() = getBoolean(ODOMETER_PRECISION, true)
-        set(value) {
-            editMe {
-                it.putBoolean(ODOMETER_PRECISION, value)
-            }
-        }
-
-    var SharedPreferences.roadbookUri
-        get() = getString(ROADBOOK_URI, "")
-        set(value) {
-            editMe {
-                it.putString(ROADBOOK_URI, value)
-            }
-        }
-
-    var SharedPreferences.autoLoadRoadbook
-        get() = getBoolean(AUTO_LOAD_ROADBOOK, false)
-        set(value) {
-            editMe {
-                it.putBoolean(AUTO_LOAD_ROADBOOK, value)
-            }
-        }
-
-    var SharedPreferences.clearValues
-        get() = { }
-        set(value) {
-            editMe {
-                it.clear()
-            }
-        }
-}
-
-
-// https://stuff.mit.edu/afs/sipb/project/android/docs/training/managing-audio/volume-playback.html
-// tester pour éviter d'appeler les fonctoins media du systeme
-//    fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-//        return super.dispatchKeyEvent(event)
-//    }

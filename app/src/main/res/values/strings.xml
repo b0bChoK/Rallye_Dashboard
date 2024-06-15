@@ -79,4 +79,20 @@
     <string name="pdf_converted">Pdf converted !</string>
     <string name="the_pdf_was_converted_to_case_by_case_image_here_s">The pdf was converted to case by case image here %s</string>
     <string name="pdf_to_convert_s">PDF to convert : %s</string>
+    <string name="press_key_for_next_case">Press key for next case</string>
+    <string name="press_key_for_previous_case">Press key for previous case</string>
+    <string name="press_key_for_increase_odometer">Press key for increase odometer</string>
+    <string name="press_key_for_decrease_odometer">Press key for decrease odometer</string>
+    <string name="press_key_for_raz">Press key for RAZ</string>
+    <string name="select_action_to_configure">Select action to configure</string>
+    <string name="s_selected">%s selected !</string>
+    <string name="set">Set...</string>
+    <string name="controller_configuration">Controller configuration</string>
+    <string name="save">Save</string>
+    <string name="reset_all">Reset all</string>
+    <string name="next_case_action">Next case action</string>
+    <string name="previous_case_action">Previous case action</string>
+    <string name="increase_odometer_action">Increase odometer action</string>
+    <string name="decrease_odometer_action">Decrease odometer action</string>
+    <string name="raz_action">RAZ action</string>
 </resources>

@@ -12,8 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.ViewModelProvider
-import com.b0bchok.rallye_dashboard_kt.PreferenceHelper.roadbookUri
 import com.b0bchok.rallye_dashboard_kt.databinding.AdvancedMenuFragmentBinding
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.roadbookUri
 
 
 class AdvancedMenuFragment : Fragment() {
@@ -59,6 +60,13 @@ class AdvancedMenuFragment : Fragment() {
         binding.btSettings.setOnClickListener {
             requireActivity().supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, SettingsFragment(), "settings")
+                .addToBackStack(null)
+                .commit()
+        }
+
+        binding.btRemoteConfig.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, RemoteFragment(), "controller")
                 .addToBackStack(null)
                 .commit()
         }

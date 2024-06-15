@@ -1,0 +1,7 @@
+{
+  "nextCase" : "KEYCODE_VOLUME_UP",
+  "prevCase" : "KEYCODE_VOLUME_DOWN",
+  "increaseOdo" : "KEYCODE_MEDIA_NEXT",
+  "decreaseOdo" : "KEYCODE_MEDIA_PREVIOUS",
+  "raz" : "KEYCODE_MEDIA_PLAY_PAUSE"
+}
