@@ -11,8 +11,8 @@ android {
         applicationId = "com.b0bchok.rallye_dashboard_kt"
         minSdk = 28
         targetSdk = 33
-        versionCode = 15
-        versionName = "1.13"
+        versionCode = 16
+        versionName = "1.14"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
