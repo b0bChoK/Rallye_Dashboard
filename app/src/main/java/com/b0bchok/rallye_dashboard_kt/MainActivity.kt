@@ -41,58 +41,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d(TAG, "Press Key Up %d".format(keyCode))
-        var res = false
-        for (f in supportFragmentManager.fragments) {
-            if (f is DashboardFragment)
-                res = f.onKeyUp(keyCode)
-        }
-
-        return if (res)
-            true
-        else
-            super.onKeyUp(keyCode, event)
-    }
-
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d(TAG, "Press Key Down %d".format(keyCode))
-        var res = false
-        for (f in supportFragmentManager.fragments) {
-            if (f is DashboardFragment)
-                res = f.onKeyDown(keyCode)
-        }
-
-        return if (res)
-            true
-        else
-            super.onKeyDown(keyCode, event)
-    }
-
-    //https://medium.com/jodel-engineering/android-volume-keys-as-camera-trigger-with-kotlin-e75d20838706
-//    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-//        val keyCode = event?.keyCode
-//        val action = event?.action
-//
-//
-//        if (action == KeyEvent.ACTION_DOWN)
-//
-//        return super.dispatchKeyEvent(event)
-//    }
-
-    override fun onKeyLongPress(keyCode: Int, event: KeyEvent?): Boolean {
-        Log.d(TAG, "Long Press Key %d".format(keyCode))
-
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        val keyCode = event?.keyCode
+        val action = event?.action
         var res = false
 
+        Log.d(TAG, "DispatchKeyEvent %s keyCode %d, action %d".format(event.toString(), keyCode, action))
+
         for (f in supportFragmentManager.fragments) {
-            if (f is DashboardFragment)
-                res = f.onKeyLongPress(keyCode)
+            if (f is DashboardFragment) {
+                Log.d(TAG, "Send it to DashboardFragment")
+                res = f.dispatchKeyEvent(event)
+            }
+
+            if (f is RemoteFragment) {
+                Log.d(TAG, "Send it to RemoteFragment")
+                res = f.dispatchKeyEvent(event)
+            }
+
         }
 
-        return if (res)
-            true
+        if (res)
+            return res
         else
-            super.onKeyLongPress(keyCode, event)
+            return super.dispatchKeyEvent(event)
     }
 }

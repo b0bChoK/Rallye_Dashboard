@@ -56,4 +56,20 @@
     <string name="pdf_converted">Pdf converti !</string>
     <string name="the_pdf_was_converted_to_case_by_case_image_here_s">Le fichier pdf a été converti case par case en image ici %s</string>
     <string name="pdf_to_convert_s">PDF à convertir : %s</string>
+    <string name="press_key_for_next_case">Appuyer sur la touche Case Suivante</string>
+    <string name="press_key_for_previous_case">Appuyer sur la touche Case Précédente</string>
+    <string name="press_key_for_increase_odometer">Appuyer sur la touche Incrémenter Odomètre</string>
+    <string name="press_key_for_decrease_odometer">Appuyer sur la touche Décrémenter Odomètre</string>
+    <string name="press_key_for_raz">Appuyer sur touche RAZ</string>
+    <string name="select_action_to_configure">Selectionner l\'action à configurer</string>
+    <string name="s_selected">%s sélectionné !</string>
+    <string name="set">Configurer...</string>
+    <string name="controller_configuration">Configuration télécommande</string>
+    <string name="save">Sauvegarder</string>
+    <string name="reset_all">Ré-initialiser</string>
+    <string name="next_case_action">Action case suivante</string>
+    <string name="previous_case_action">Action case précédente</string>
+    <string name="increase_odometer_action">Action incrémenter l\'odomètre</string>
+    <string name="decrease_odometer_action">Action décrémenter l\'odomètre</string>
+    <string name="raz_action">Action RAZ</string>
 </resources>
