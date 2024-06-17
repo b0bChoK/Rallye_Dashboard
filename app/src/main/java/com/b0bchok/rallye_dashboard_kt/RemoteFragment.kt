@@ -259,6 +259,7 @@ class RemoteFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        updateStatusTimer.cancel()
         _binding = null
     }
 }

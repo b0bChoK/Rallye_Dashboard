@@ -156,6 +156,9 @@ class DashboardFragment : Fragment(), LocationListener,
     override fun onDestroyView() {
         super.onDestroyView()
         callbackBackPressedCallback.remove()
+        razTimer.cancel()
+        increaseTotalTimer.cancel()
+        decreaseTotalTimer.cancel()
         _binding = null
     }
 
@@ -187,28 +190,40 @@ class DashboardFragment : Fragment(), LocationListener,
         }
     }
 
+    private var isIncreaseTotalTimerRunning = false
     private val increaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
         override fun onTick(l: Long) {
+            isIncreaseTotalTimerRunning = true
             mSpeedMeasures.increaseTotalDistance(distanceIncrementation.toFloat())
             updateMeter()
         }
 
-        override fun onFinish() {}
+        override fun onFinish() {
+            isIncreaseTotalTimerRunning = false
+        }
     }
 
+    private var isDecreaseTotalTimerRunning = false
     private val decreaseTotalTimer: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 500) {
         override fun onTick(l: Long) {
+            isDecreaseTotalTimerRunning = true
             mSpeedMeasures.decreaseTotalDistance(distanceIncrementation.toFloat())
             updateMeter()
         }
 
-        override fun onFinish() {}
+        override fun onFinish() {
+            isDecreaseTotalTimerRunning = false
+        }
     }
 
-    private val razTimer: CountDownTimer = object : CountDownTimer(3000, 500) {
-        override fun onTick(l: Long) {}
+    private var isRazTimerRunning = false
+    private val razTimer: CountDownTimer = object : CountDownTimer(2000, 500) {
+        override fun onTick(l: Long) {
+            isRazTimerRunning = true
+        }
 
         override fun onFinish() {
+            isRazTimerRunning = false
             raz()
         }
     }
@@ -302,18 +317,22 @@ class DashboardFragment : Fragment(), LocationListener,
 
         binding.btIncreaseDist.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
+                isIncreaseTotalTimerRunning = true
                 increaseTotalTimer.start();
             }
             if (event.action == MotionEvent.ACTION_UP) {
+                isIncreaseTotalTimerRunning = false
                 increaseTotalTimer.cancel();
             }
             true
         }
         binding.btDecreaseDist.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
+                isDecreaseTotalTimerRunning = true
                 decreaseTotalTimer.start();
             }
             if (event.action == MotionEvent.ACTION_UP) {
+                isDecreaseTotalTimerRunning = false
                 decreaseTotalTimer.cancel();
             }
             true
@@ -632,17 +651,26 @@ class DashboardFragment : Fragment(), LocationListener,
                 }
 
                 ActionIncreaseOdometer -> {
-                    increaseTotalTimer.start()
+                    if(!isIncreaseTotalTimerRunning) {
+                        isIncreaseTotalTimerRunning = true
+                        increaseTotalTimer.start()
+                    }
                     true
                 }
 
                 ActionDecreaseOdometer -> {
-                    decreaseTotalTimer.start()
+                    if(!isDecreaseTotalTimerRunning) {
+                        isDecreaseTotalTimerRunning = true
+                        decreaseTotalTimer.start()
+                    }
                     true
                 }
 
                 ActionRAZ -> {
-                    razTimer.start()
+                    if(!isRazTimerRunning) {
+                        isRazTimerRunning = true
+                        razTimer.start()
+                    }
                     true
                 }
 
@@ -663,17 +691,20 @@ class DashboardFragment : Fragment(), LocationListener,
                 }
 
                 ActionIncreaseOdometer -> {
+                    isIncreaseTotalTimerRunning = false
                     increaseTotalTimer.cancel()
                     true
                 }
 
                 ActionDecreaseOdometer -> {
+                    isDecreaseTotalTimerRunning = false
                     decreaseTotalTimer.cancel()
                     true
                 }
 
                 ActionRAZ -> {
                     razTimer.cancel()
+                    isRazTimerRunning = false
                     true
                 }
 
@@ -692,6 +723,7 @@ class DashboardFragment : Fragment(), LocationListener,
         Log.w(TAG, "Provider %s disabled".format(provider))
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
         Log.w(TAG, "Provider %s change to %d".format(provider, status))
     }
