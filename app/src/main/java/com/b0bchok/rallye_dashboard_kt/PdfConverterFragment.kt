@@ -11,8 +11,12 @@ import androidx.fragment.app.Fragment
 import com.b0bchok.rallye_dashboard_kt.databinding.PdfConverterFragmentBinding
 import com.b0bchok.rallye_dashboard_kt.rd_loader.PdfConverter
 import com.b0bchok.rallye_dashboard_kt.utils.FileUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
-
 
 class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
 
@@ -47,6 +51,8 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.btConvertPdf.isEnabled = true
+
         binding.txtPdfStatus.text = getString(R.string.pdf_to_convert_s).format(pdf?.let {
             FileUtils(requireActivity()).getFileName(
                 it
@@ -61,20 +67,33 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
             binding.imgPdfPreview.loadTrippyConfig()
         }
 
-        binding.btConvertPdf.setOnClickListener {
-            val destF = converter.convert(binding.imgPdfPreview.pageConfig)
+        val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setTitle(getString(R.string.pdf_converted))
-                .setMessage(getString(R.string.the_pdf_was_converted_to_case_by_case_image_here_s).format(destF.toString()))
-                .setPositiveButton(
-                    getString(R.string.ok),
-                ) { _, _ ->
-                    // return to menu
-                    requireActivity().onBackPressed()
+        binding.btConvertPdf.setOnClickListener {
+            // Run loading bar
+            binding.loadBar.visibility = View.VISIBLE
+            binding.btConvertPdf.isEnabled = false
+
+            coroutineScope.launch(Dispatchers.IO) {
+                val destF: File? = converter.convert(binding.imgPdfPreview.pageConfig)
+                // Handle the result 'destF' on the main thread
+                withContext(Dispatchers.Main) {
+                    binding.loadBar.visibility = View.GONE
+                    // Update UI or perform other main-thread operations with 'destF'
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setTitle(getString(R.string.pdf_converted))
+                        .setMessage(getString(R.string.the_pdf_was_converted_to_case_by_case_image_here_s).format(destF.toString()))
+                        .setPositiveButton(
+                            getString(R.string.ok),
+                        ) { _, _ ->
+                            // return to menu
+                            requireActivity().onBackPressed()
+                        }
+                    val dialog = builder.create()
+                    dialog.show()
                 }
-            val dialog = builder.create()
-            dialog.show()
+            }
+
         }
 
         converter = PdfConverter(pdf, requireContext(), requireActivity())

@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="10sp"
-                android:text="Rallye Dashboard menu"
+                android:text="@string/convert_pdf_menu"
                 android:textColor="@color/background"
                 android:textStyle="bold" />
 
@@ -54,29 +54,40 @@
 
         </FrameLayout>
 
+        <ProgressBar
+            android:id="@+id/load_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/status"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:indeterminate="true"/>
+
         <Button
             android:id="@+id/bt_load_cfrr_preset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Load CFRR preset"
+            android:text="@string/load_cfrr_preset"
             app:layout_constraintEnd_toStartOf="@id/bt_load_trippy_preset"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/status" />
+            app:layout_constraintTop_toBottomOf="@id/load_bar" />
 
         <Button
             android:id="@+id/bt_load_trippy_preset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Load Trippy preset"
+            android:text="@string/load_trippy_preset"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/bt_load_cfrr_preset"
-            app:layout_constraintTop_toBottomOf="@id/status" />
+            app:layout_constraintTop_toBottomOf="@id/load_bar" />
 
         <Button
             android:id="@+id/bt_convert_pdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Convert"
+            android:text="@string/convert"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset" />

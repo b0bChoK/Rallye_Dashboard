@@ -10,6 +10,9 @@ import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import com.b0bchok.rallye_dashboard_kt.utils.FileUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Files
 
@@ -117,11 +120,10 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
         val destF = createAppDirectoryInDownloads(context, inputFileName)
 
         if (destF != null) {
-            var caseNumber: Int = 1
+            var caseNumber = 1
             for (i in caseList) {
                 val caseName = "%03d_%s.jpg".format(caseNumber, inputFileName)
                 File(destF, caseName).writeBitmap(i)
-
                 caseNumber++
             }
         }
@@ -129,7 +131,7 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
         return destF
     }
 
-    fun createAppDirectoryInDownloads(context: Context, inputFileName: String?): File? {
+    private fun createAppDirectoryInDownloads(context: Context, inputFileName: String?): File? {
         val downloadsDirectory =
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val appDirectory = File(downloadsDirectory, "%s_rb".format(inputFileName))
