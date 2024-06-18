@@ -37,6 +37,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import com.b0bchok.rallye_dashboard_kt.controller.ControllerConfigData
 import com.b0bchok.rallye_dashboard_kt.databinding.DashboardFragmentBinding
+import com.b0bchok.rallye_dashboard_kt.odometer.SpeedMeasures
+import com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookLoader
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.autoLoadRoadbook
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.chronometerDistance
