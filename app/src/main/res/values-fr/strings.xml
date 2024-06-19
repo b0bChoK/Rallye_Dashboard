@@ -72,4 +72,11 @@
     <string name="increase_odometer_action">Action incrémenter l\'odomètre</string>
     <string name="decrease_odometer_action">Action décrémenter l\'odomètre</string>
     <string name="raz_action">Action RAZ</string>
+    <string name="color_avg_speed_depending_target">Change la couleur la vitesse moyenne selon la cible choisi</string>
+    <string name="avg_speed_will_be_green_when_on_target_red_if_not">La vitesse moyenne sera verte quand la cible est atteinte, rouge sinon</string>
+    <string name="avg_speed_will_stay_black">La vitesse moyenne reste en noire</string>
+    <string name="avg_speed_target">Vitesse moyenne cible</string>
+    <string name="target_in_km_h">Cible en km/h</string>
+    <string name="avg_speed_green_range">Intervalle dans laquelle la vitesse moyenne est affiché en vert</string>
+    <string name="green_range_in_km_h">Intervalle \"verte\" en km/h</string>
 </resources>

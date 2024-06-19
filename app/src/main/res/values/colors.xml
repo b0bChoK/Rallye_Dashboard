@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#c2c2c2</color>
+    <color name="menu_title">#c2c2c2</color>
     <color name="main_case">#202020</color>
     <color name="dark_blue">#234057</color>
     <color name="light_blue">#3A5466</color>
@@ -11,4 +12,6 @@
     <color name="transparent">#00000000</color>
     <color name="transparent_grey">#77302E33</color>
     <color name="roadbook_mask">@color/transparent</color>
+    <color name="avg_speed_ok">#00AA00</color>
+    <color name="avg_speed_critical">#AA0000</color>
 </resources>

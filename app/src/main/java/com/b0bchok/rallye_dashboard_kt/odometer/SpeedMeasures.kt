@@ -1,4 +1,4 @@
-package com.b0bchok.rallye_dashboard_kt
+package com.b0bchok.rallye_dashboard_kt.odometer
 
 import android.location.Location
 import androidx.lifecycle.ViewModel
