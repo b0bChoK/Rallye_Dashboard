@@ -296,7 +296,7 @@
                 android:text="000km/h"
                 android:maxLines="1"
                 android:gravity="center"
-                android:textAppearance="@style/TextNoSize"
+                android:textColor="@color/text"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtSpeedOMeter"
