@@ -41,8 +41,11 @@ import com.b0bchok.rallye_dashboard_kt.odometer.SpeedMeasures
 import com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookLoader
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.autoLoadRoadbook
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.avgSpeedGreenRange
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.avgSpeedTarget
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.chronometerDistance
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.controllerConfig
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.highlightAvgSpeed
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.odometerIncrement
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.odometerPrecision
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.roadbookUri
@@ -96,6 +99,9 @@ class DashboardFragment : Fragment(), LocationListener,
     private var minimumDistanceToStartChrono: Int = 40
     private var distanceIncrementation: Int = 10
     private lateinit var odometerFormat: String
+    private var highlightAvgSpeed: Boolean = false
+    private var avgSpeedTarget: Int = 55
+    private var avgSpeedTargetRange: Int = 3
 
     //Controller configuration
     private var ActionCaseNext: Int = KeyEvent.KEYCODE_UNKNOWN
@@ -372,6 +378,13 @@ class DashboardFragment : Fragment(), LocationListener,
         if (!prefs.autoLoadRoadbook)
             prefs.roadbookUri = ""
 
+        highlightAvgSpeed = prefs.highlightAvgSpeed
+        if (highlightAvgSpeed) //HIGHLIGHT_AVG_SPEED
+        {
+            avgSpeedTarget = prefs.avgSpeedTarget ?: 55
+            avgSpeedTargetRange = prefs.avgSpeedGreenRange ?: 3
+        }
+
         val roadbookUri = prefs.roadbookUri
         if (roadbookUri != "" && prefs.autoLoadRoadbook && !mRbLoader.isRoadbookLoaded) {
             Log.d(TAG, "Auto load roadbook \"%s\" - %b".format(roadbookUri, prefs.autoLoadRoadbook))
@@ -537,10 +550,19 @@ class DashboardFragment : Fragment(), LocationListener,
                 if (isChronometerRunning) {
                     val currentDurationMS = currentDate.time - startChronometer
                     // Update AVG Speed
+                    val avgSpeed = mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6
                     mTxtAvgSpeed?.text = String.format(
                         requireContext().getString(R.string.avg_speed_format),
-                        (mSpeedMeasures.getAverageSpeed(currentDurationMS) * 3.6)
+                        (avgSpeed)
                     )
+                    if(highlightAvgSpeed)
+                    {
+                        if((avgSpeed > avgSpeedTarget + avgSpeedTargetRange) or (avgSpeed < avgSpeedTarget - avgSpeedTargetRange))
+                            mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.avg_speed_critical))
+                        else
+                            mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.avg_speed_ok))
+                    } else
+                        mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.text))
 
                     // Update chrono
                     mTxtTimer?.text = String.format(
@@ -587,6 +609,7 @@ class DashboardFragment : Fragment(), LocationListener,
         mTxtSpeed?.text = requireContext().getString(R.string.zero_speed)
         mTxtMaxSpeed?.text = requireContext().getString(R.string.zero_max_speed)
         mTxtAvgSpeed?.text = requireContext().getString(R.string.zero_avg_speed)
+        mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.text))
     }
 
     private fun refreshRoadbookCases() {

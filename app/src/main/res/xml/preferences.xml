@@ -11,11 +11,14 @@
             android:entries="@array/ThemeSelection"
             android:entryValues="@array/ThemeSelection"
             android:key="THEME_SELECTION"
-            android:title="@string/theme_selection_dark_light_auto" />
+            android:title="@string/theme_selection_dark_light_auto"
+            app:useSimpleSummaryProvider="true"/>
         <SwitchPreference
             android:key="ODOMETER_PRECISION"
             android:title="@string/odometer_precision_to_10m"
-            android:defaultValue="true"/>
+            android:defaultValue="true"
+            android:summaryOn="Odometer precision rounded to 10m"
+            android:summaryOff="Odometer precision rounded to 100m"/>
 
     </PreferenceCategory>
 
@@ -28,14 +31,41 @@
             android:entries="@array/IncrementOdometer"
             android:entryValues="@array/IncrementOdometerData"
             android:key="ODOMETER_INCREMENT"
-            android:title="@string/pref_edit_odo" />
+            android:title="@string/pref_edit_odo"
+            app:useSimpleSummaryProvider="true"/>
 
         <ListPreference
             android:defaultValue="40"
             android:entries="@array/DistanceChronometer"
             android:entryValues="@array/DistanceChronometerData"
             android:key="CHRONOMETER_DISTANCE"
-            android:title="@string/pref_chrono_start" />
+            android:title="@string/pref_chrono_start"
+            app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="HIGHLIGHT_AVG_SPEED"
+            android:title="@string/color_avg_speed_depending_target"
+            android:summaryOn="@string/avg_speed_will_be_green_when_on_target_red_if_not"
+            android:summaryOff="@string/avg_speed_will_stay_black"/>
+        <SeekBarPreference
+            android:defaultValue="55"
+            android:key="AVG_SPEED_TARGET"
+            android:title="@string/avg_speed_target"
+            app:showSeekBarValue="true"
+            android:min="30"
+            android:max="100"
+            android:dependency="HIGHLIGHT_AVG_SPEED"
+            android:summary="@string/target_in_km_h"/>
+        <SeekBarPreference
+            android:defaultValue="3"
+            android:key="AVG_SPEED_GREEN_RANGE"
+            android:title="@string/avg_speed_green_range"
+            app:showSeekBarValue="true"
+            android:min="0"
+            android:max="5"
+            android:dependency="HIGHLIGHT_AVG_SPEED"
+            android:summary="@string/green_range_in_km_h"/>
     </PreferenceCategory>
 
     <PreferenceCategory

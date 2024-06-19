@@ -12,6 +12,9 @@ object PreferenceHelper {
     val ROADBOOK_URI = "ROADBOOK_URI"
     val AUTO_LOAD_ROADBOOK = "AUTO_LOAD_ROADBOOK"
     val CONTROLLER_CONFIG = "CONTROLLER_CONFIG"
+    val HIGHLIGHT_AVG_SPEED = "HIGHLIGHT_AVG_SPEED"
+    val AVG_SPEED_TARGET = "AVG_SPEED_TARGET"
+    val AVG_SPEED_GREEN_RANGE = "AVG_SPEED_GREEN_RANGE"
 
     fun defaultPreference(context: Context): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -62,6 +65,28 @@ object PreferenceHelper {
         set(value) {
             editMe {
                 it.putBoolean(AUTO_LOAD_ROADBOOK, value)
+            }
+        }
+
+    var SharedPreferences.highlightAvgSpeed
+        get() = getBoolean(HIGHLIGHT_AVG_SPEED, false)
+        set(value) {
+            editMe {
+                it.putBoolean(HIGHLIGHT_AVG_SPEED, value)
+            }
+        }
+    var SharedPreferences.avgSpeedTarget
+        get() = getInt(AVG_SPEED_TARGET, 55)
+        set(value) {
+            editMe {
+                it.putInt(AVG_SPEED_TARGET, value)
+            }
+        }
+    var SharedPreferences.avgSpeedGreenRange
+        get() = getInt(AVG_SPEED_GREEN_RANGE, 3)
+        set(value) {
+            editMe {
+                it.putInt(AVG_SPEED_GREEN_RANGE, value)
             }
         }
 

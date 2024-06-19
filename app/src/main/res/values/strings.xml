@@ -95,4 +95,11 @@
     <string name="increase_odometer_action">Increase odometer action</string>
     <string name="decrease_odometer_action">Decrease odometer action</string>
     <string name="raz_action">RAZ action</string>
+    <string name="color_avg_speed_depending_target">Color AVG speed depending target</string>
+    <string name="avg_speed_will_be_green_when_on_target_red_if_not">AVG Speed will be green when on target, red if not</string>
+    <string name="avg_speed_will_stay_black">AVG Speed will stay black</string>
+    <string name="avg_speed_target">AVG speed target</string>
+    <string name="target_in_km_h">Target in km/h</string>
+    <string name="avg_speed_green_range">AVG speed green range</string>
+    <string name="green_range_in_km_h">Green +/- range in km/h</string>
 </resources>
