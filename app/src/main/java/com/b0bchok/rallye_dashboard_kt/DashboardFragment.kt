@@ -557,7 +557,7 @@ class DashboardFragment : Fragment(), LocationListener,
                     )
                     if(highlightAvgSpeed)
                     {
-                        if((avgSpeed > avgSpeedTarget + avgSpeedTargetRange) or (avgSpeed < avgSpeedTarget - avgSpeedTargetRange))
+                        if((avgSpeed >= avgSpeedTarget + avgSpeedTargetRange) or (avgSpeed <= avgSpeedTarget - avgSpeedTargetRange))
                             mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.avg_speed_critical))
                         else
                             mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.avg_speed_ok))
