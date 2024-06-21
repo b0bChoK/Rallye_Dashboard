@@ -80,13 +80,13 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
 
             val topMargin = (pageHeight * param.topMargin).toInt()
             val bottomMargin = (pageHeight * param.bottomMargin).toInt()
-            val leftMargin = (pageWidth * param.leftMargin).toInt()
+
+            val colAStart = (pageWidth * param.leftMargin).toInt()
+            val colAWidth = (pageWidth * param.columnAWidth).toInt() - colAStart
+
             val rightMargin = (pageWidth * param.rightMargin).toInt()
-
-            val colAWidth = (pageWidth * param.columnAWidth).toInt()
-            val colBWidth = (pageWidth * param.columnBWidth).toInt()
-
-            val colBStart = (pageWidth - (rightMargin + colBWidth)).toInt()
+            val colBStart = (pageWidth - (pageWidth * param.columnBWidth)).toInt()
+            val colBWidth = ((pageWidth * param.columnBWidth) - rightMargin).toInt()
 
             val caseHeight = (pageHeight - (topMargin + bottomMargin)) / param.lineNumber
 
@@ -94,7 +94,7 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
             for (i in (param.lineNumber - 1) downTo 0) {
                 var caseImg = Bitmap.createBitmap(
                     p,
-                    leftMargin,
+                    colAStart,
                     topMargin + (i * caseHeight),
                     colAWidth,
                     caseHeight

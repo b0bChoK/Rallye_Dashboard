@@ -75,7 +75,7 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
             binding.btConvertPdf.isEnabled = false
 
             coroutineScope.launch(Dispatchers.IO) {
-                val destF: File? = converter.convert(binding.imgPdfPreview.pageConfig)
+                val destF: File? = converter.convert(binding.imgPdfPreview.updateCurrentPageConfig())
                 // Handle the result 'destF' on the main thread
                 withContext(Dispatchers.Main) {
                     binding.loadBar.visibility = View.GONE
