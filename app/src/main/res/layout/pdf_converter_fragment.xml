@@ -88,7 +88,7 @@
             app:layout_constraintEnd_toStartOf="@id/bt_load_trippy_preset"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/preview"
-            app:layout_constraintBottom_toTopOf="@id/bt_convert_pdf"/>
+            app:layout_constraintBottom_toTopOf="@id/bt_load_custom"/>
 
         <Button
             android:id="@+id/bt_load_trippy_preset"
@@ -101,14 +101,48 @@
             app:layout_constraintTop_toBottomOf="@id/preview" />
 
         <Button
+            android:id="@+id/bt_load_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load saved preset"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@id/bt_save_custom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset"
+            app:layout_constraintBottom_toTopOf="@id/bt_convert_pdf"/>
+
+        <Button
+            android:id="@+id/bt_save_custom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save custom preset"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bt_load_custom"
+            app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset"
+            app:layout_constraintBottom_toTopOf="@id/bt_convert_pdf"/>
+
+        <SeekBar
+            android:id="@+id/line_number"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bt_convert_pdf"
+            app:layout_constraintTop_toBottomOf="@id/bt_load_custom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:min="6"
+            android:max="15"
+            />
+
+        <Button
             android:id="@+id/bt_convert_pdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/convert"
             android:textColor="@color/white"
+            app:layout_constraintStart_toEndOf="@id/line_number"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset"
+            app:layout_constraintTop_toBottomOf="@id/bt_load_custom"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
