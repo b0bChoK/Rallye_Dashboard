@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
@@ -20,6 +21,7 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
     androidx.appcompat.widget.AppCompatImageView(context, attrs) {
 
     private val linePaint: Paint = Paint()
+    private val rowPaint: Paint = Paint()
     private val selectedLinePaint: Paint = Paint()
 
     private var touchDownX: Float = .0F
@@ -34,14 +36,14 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
     private var bottomMarginPX: Float = .0F
     private var columnAWidthPX: Float = .0F
     private var columnBWidthPX: Float = .0F
-    private var numberLine: Int = 0
+    var numberLine: Int = 0
 
 
     companion object {
         private const val TAG = "RoadbookPreView"
         private const val EPSILON_SELECTION: Float = 30.0F
         private const val MINIMUM_MOTION: Float = 10.0F
-        private const val MINIMUM_HORIZONTAL_SEPARATION: Float = 20.0F
+        private const val MINIMUM_HORIZONTAL_SEPARATION: Float = 10.0F
         private const val MINIMUM_VERTICAL_SEPARATION: Float = 50.0F
     }
 
@@ -53,15 +55,15 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
     private var selectedLine: LineSelection = LineSelection.NONE
 
     init {
-        linePaint.color = Color.CYAN
+        linePaint.color = Color.MAGENTA
         linePaint.strokeWidth = 3f
+
+        rowPaint.color = Color.CYAN
+        rowPaint.strokeWidth = 3f
 
         selectedLinePaint.color = Color.RED
         selectedLinePaint.strokeWidth = 3f
     }
-
-    // https://stackoverflow.com/questions/6178896/how-to-draw-a-line-in-imageview-on-android
-    // https://stackoverflow.com/questions/3616676/how-to-draw-a-line-in-android
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
@@ -70,6 +72,18 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
         if (!initialized) {
             loadConfig()
             initialized = true
+        }
+
+        // inner case lines
+        val caseHeight = (height - (topMarginPX + bottomMarginPX)) / numberLine
+        for (i in 1..<numberLine) {
+            canvas.drawLine(
+                leftMarginPX,
+                topMarginPX + (i * caseHeight),
+                width - rightMarginPX,
+                topMarginPX + (i * caseHeight),
+                rowPaint
+            )
         }
 
         // right line
@@ -120,18 +134,6 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
             height - bottomMarginPX,
             if (selectedLine == LineSelection.COLUMN_B) selectedLinePaint else linePaint
         )
-
-        // inner case lines
-        val caseHeight = (height - (topMarginPX + bottomMarginPX)) / numberLine
-        for (i in 1..<numberLine) {
-            canvas.drawLine(
-                leftMarginPX,
-                topMarginPX + (i * caseHeight),
-                width - rightMarginPX,
-                topMarginPX + (i * caseHeight),
-                linePaint
-            )
-        }
     }
 
     @SuppressLint("ClickableViewAccessibility")

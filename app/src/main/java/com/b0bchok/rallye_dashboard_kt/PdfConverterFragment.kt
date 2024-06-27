@@ -34,6 +34,8 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
 
     private lateinit var converter: PdfConverter
 
+    private var presetMenuVisible: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,27 +64,34 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
 
         binding.btLoadCfrrPreset.setOnClickListener {
             binding.imgPdfPreview.loadCFRRConfig()
+            showPresetMenu()
         }
 
         binding.btLoadTrippyPreset.setOnClickListener {
             binding.imgPdfPreview.loadTrippyConfig()
+            showPresetMenu()
         }
 
-        binding.lineNumber.progress = 8
-        binding.lineNumber.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                // here, you react to the value being set in seekBar
-                binding.imgPdfPreview.changeNumberLine(progress)
-            }
+        binding.btLoadCustom.setOnClickListener {
+            //binding.imgPdfPreview.loadTrippyConfig()
+            showPresetMenu()
+        }
 
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                // you can probably leave this empty
-            }
+        enableSaveButton(false)
 
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                // you can probably leave this empty
-            }
-        })
+        binding.btAddRow.setOnClickListener {
+            if(binding.imgPdfPreview.numberLine < 20)
+                binding.imgPdfPreview.changeNumberLine(binding.imgPdfPreview.numberLine + 1)
+        }
+
+        binding.btRemoveRow.setOnClickListener {
+            if(binding.imgPdfPreview.numberLine > 6)
+                binding.imgPdfPreview.changeNumberLine(binding.imgPdfPreview.numberLine -1)
+        }
+
+        binding.btSelectPresset.setOnClickListener {
+            showPresetMenu()
+        }
 
         val coroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
 
@@ -116,6 +125,31 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
         converter = PdfConverter(pdf, requireContext(), requireActivity())
         converter.loadPDFPreview()
         binding.imgPdfPreview.setImageBitmap(converter.pageList[0])
+    }
+
+    private fun showPresetMenu() {
+        if(!presetMenuVisible) {
+            binding.btLoadCustom.visibility = View.VISIBLE
+            binding.btLoadCfrrPreset.visibility = View.VISIBLE
+            binding.btLoadTrippyPreset.visibility = View.VISIBLE
+            binding.btSelectPresset.isSelected = true
+        } else {
+            binding.btLoadCustom.visibility = View.GONE
+            binding.btLoadCfrrPreset.visibility = View.GONE
+            binding.btLoadTrippyPreset.visibility = View.GONE
+            binding.btSelectPresset.isSelected = false
+        }
+        presetMenuVisible = !presetMenuVisible
+    }
+
+    private fun enableSaveButton(enable: Boolean) {
+        if(enable) {
+            binding.btSavePresset.isEnabled = false
+            binding.btSavePresset.alpha = 0.5F
+        } else {
+            binding.btSavePresset.isEnabled = true
+            binding.btSavePresset.alpha = 1F
+        }
     }
 
     override fun onSaveInstanceState(bundle: Bundle) {

@@ -3,6 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="background">#c2c2c2</color>
+    <color name="bt_idle">#B3C2C2C2</color>
+    <color name="bt_selected">#B3818181</color>
+    <color name="bt_stroke">#B33A3A3A</color>
+    <color name="bt_icon">#1B1B1B</color>
     <color name="menu_title">#c2c2c2</color>
     <color name="main_case">#202020</color>
     <color name="dark_blue">#234057</color>
