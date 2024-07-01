@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import com.b0bchok.rallye_dashboard_kt.DashboardFragment.Companion
 import com.b0bchok.rallye_dashboard_kt.databinding.PdfConverterFragmentBinding
 import com.b0bchok.rallye_dashboard_kt.rd_loader.PdfConverter
 import com.b0bchok.rallye_dashboard_kt.utils.FileUtils
@@ -54,6 +56,11 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val pageConfigChangedObserver = Observer<Boolean> { status ->
+            enableSaveButton(status)
+        }
+        binding.imgPdfPreview.pageConfigChanged.observe(viewLifecycleOwner, pageConfigChangedObserver)
+
         binding.btConvertPdf.isEnabled = true
 
         binding.txtPdfStatus.text = getString(R.string.pdf_to_convert_s).format(pdf?.let {
@@ -73,8 +80,12 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
         }
 
         binding.btLoadCustom.setOnClickListener {
-            //binding.imgPdfPreview.loadTrippyConfig()
+            binding.imgPdfPreview.loadCustomConfig()
             showPresetMenu()
+        }
+
+        binding.btSavePresset.setOnClickListener {
+            binding.imgPdfPreview.saveCustomConfig()
         }
 
         enableSaveButton(false)
@@ -143,7 +154,7 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
     }
 
     private fun enableSaveButton(enable: Boolean) {
-        if(enable) {
+        if(!enable) {
             binding.btSavePresset.isEnabled = false
             binding.btSavePresset.alpha = 0.5F
         } else {

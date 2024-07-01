@@ -9,6 +9,12 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
+import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import com.b0bchok.rallye_dashboard_kt.R
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.controllerConfig
+import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.customPageConfig
 import com.b0bchok.rallye_dashboard_kt.utils.ReadJSONFromAssets
 import com.google.gson.Gson
 import kotlin.math.abs
@@ -38,6 +44,7 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
     private var columnBWidthPX: Float = .0F
     var numberLine: Int = 0
 
+    val pageConfigChanged: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>(false) }
 
     companion object {
         private const val TAG = "RoadbookPreView"
@@ -210,6 +217,8 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
             touchDownX = -MINIMUM_MOTION
             touchDownY = -MINIMUM_MOTION
 
+            pageConfigChanged.value = true
+
             when (selectedLine) {
                 LineSelection.TOP -> {
                     if(y < height - bottomMarginPX - MINIMUM_VERTICAL_SEPARATION)
@@ -254,6 +263,9 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
         columnAWidthPX = pageConfig.columnAWidth * width
         columnBWidthPX = pageConfig.columnBWidth * width
         numberLine = pageConfig.lineNumber
+
+        Toast.makeText(context,
+            context.getString(R.string.config_loaded), Toast.LENGTH_SHORT).show()
     }
 
     fun updateCurrentPageConfig() : ConverterConfigData {
@@ -286,8 +298,38 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
         this.invalidate()
     }
 
+    fun saveCustomConfig() {
+        updateCurrentPageConfig()
+
+        jsonString = Gson().toJson(pageConfig)
+        val prefs = PreferenceHelper.defaultPreference(context)
+        prefs.customPageConfig = jsonString
+
+        pageConfigChanged.value = false
+
+        Toast.makeText(context,
+            context.getString(R.string.preset_saved), Toast.LENGTH_SHORT).show()
+    }
+
+    fun loadCustomConfig() {
+        val prefs = PreferenceHelper.defaultPreference(context)
+        try {
+            pageConfig = Gson().fromJson(prefs.customPageConfig, ConverterConfigData::class.java)
+        } catch (_: Exception) {
+            Toast.makeText(context,
+                context.getString(R.string.no_valid_custom_config), Toast.LENGTH_SHORT).show()
+        }
+
+        loadConfig()
+
+        this.invalidate()
+    }
+
     fun changeNumberLine(n : Int) {
         numberLine = n
+
+        Toast.makeText(context,
+            context.getString(R.string.d_row_per_column).format(numberLine), Toast.LENGTH_SHORT).show()
 
         this.invalidate()
     }
