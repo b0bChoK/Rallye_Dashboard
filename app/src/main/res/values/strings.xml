@@ -26,7 +26,7 @@
     <string name="pref_edit_odo">Distance to increment odometer</string>
     <string name="pref_chrono_start">Distance before chronometer start</string>
 
-    <string name="copyright">(c)2022 by A. DEWAS</string>
+    <string name="copyright">©2022 by A. DEWAS</string>
     <string name="comment">This is an Android app that can display the current roadbook and a chronometer/odometer/speedometer dashboard, that can be piloted by a ble remote.</string>
 
     <string name="odometer_format_10m">%.2f</string>
@@ -66,9 +66,9 @@
     <string name="roadbook_loaded">Roadbook loaded : %s</string>
     <string name="rallye_dashboard_menu">Rallye Dashboard menu</string>
     <string name="select_amp_open_roadbook"><![CDATA[Select & open roadbook]]></string>
-    <string name="convert_pdf">Convert PDF...</string>
-    <string name="settings">Settings...</string>
-    <string name="remote_mapping">Remote mapping...</string>
+    <string name="convert_pdf">Convert PDF…</string>
+    <string name="settings">Settings…</string>
+    <string name="remote_mapping">Remote mapping…</string>
     <string name="convert_pdf_menu">Convert PDF</string>
     <string name="load_cfrr_preset">Load CFRR preset</string>
     <string name="load_trippy_preset">Load Trippy preset</string>
@@ -86,7 +86,7 @@
     <string name="press_key_for_raz">Press key for RAZ</string>
     <string name="select_action_to_configure">Select action to configure</string>
     <string name="s_selected">%s selected !</string>
-    <string name="set">Set...</string>
+    <string name="set">Set…</string>
     <string name="controller_configuration">Controller configuration</string>
     <string name="save">Save</string>
     <string name="reset_all">Reset all</string>
@@ -102,4 +102,10 @@
     <string name="target_in_km_h">Target in km/h</string>
     <string name="avg_speed_green_range">AVG speed green range</string>
     <string name="green_range_in_km_h">Green +/- range in km/h</string>
+    <string name="no_valid_custom_config">No valid custom config</string>
+    <string name="d_row_per_column">%d row per column</string>
+    <string name="load_saved_preset">Load saved preset</string>
+    <string name="save_preset">Save preset</string>
+    <string name="config_loaded">Config loaded !</string>
+    <string name="preset_saved">Preset saved</string>
 </resources>

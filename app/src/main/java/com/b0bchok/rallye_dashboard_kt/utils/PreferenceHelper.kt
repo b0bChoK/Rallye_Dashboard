@@ -15,6 +15,7 @@ object PreferenceHelper {
     val HIGHLIGHT_AVG_SPEED = "HIGHLIGHT_AVG_SPEED"
     val AVG_SPEED_TARGET = "AVG_SPEED_TARGET"
     val AVG_SPEED_GREEN_RANGE = "AVG_SPEED_GREEN_RANGE"
+    val CUSTOM_PAGE_CONFIG = "CUSTOM_PAGE_CONFIG"
 
     fun defaultPreference(context: Context): SharedPreferences =
         PreferenceManager.getDefaultSharedPreferences(context)
@@ -103,6 +104,14 @@ object PreferenceHelper {
         set(value) {
             editMe {
                 it.putString(CONTROLLER_CONFIG, value)
+            }
+        }
+
+    var SharedPreferences.customPageConfig
+        get() = getString(CUSTOM_PAGE_CONFIG, "")
+        set(value) {
+            editMe {
+                it.putString(CUSTOM_PAGE_CONFIG, value)
             }
         }
 }

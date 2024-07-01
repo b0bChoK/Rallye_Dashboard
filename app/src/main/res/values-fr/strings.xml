@@ -19,7 +19,7 @@
     <string name="pref_edit_odo">Distance d\'incrémentation de l\'odomètre</string>
     <string name="pref_chrono_start">Distance avant activation du chronomètre</string>
 
-    <string name="copyright">(c)2022 by A. DEWAS</string>
+    <string name="copyright">©2022 by A. DEWAS</string>
     <string name="comment">C\'est une application Android qui permet d\'afficher un roadbook et un chronomètre/odomètre, qui peut être pilotée par une télécommande bluetooth.</string>
     <string name="alert_location_required">Positionnement requis</string>
     <string name="alert_location_detail">Merci d\'activer la localisation dans les paramètres systèmes</string>
@@ -43,12 +43,14 @@
     <string name="roadbook_loaded">Roadbook chargé : %s</string>
     <string name="rallye_dashboard_menu">Rallye Dashboard menu</string>
     <string name="select_amp_open_roadbook"><![CDATA[Selectionner & ouvrir un roadbook]]></string>
-    <string name="convert_pdf">Convertir un PDF...</string>
-    <string name="settings">Préférences...</string>
-    <string name="remote_mapping">Configuration télécommande...</string>
+    <string name="convert_pdf">Convertir un PDF…</string>
+    <string name="settings">Préférences…</string>
+    <string name="remote_mapping">Configuration télécommande…</string>
     <string name="convert_pdf_menu">Convertir un PDF</string>
     <string name="load_cfrr_preset">Découpage CFRR</string>
     <string name="load_trippy_preset">Découpage Trippy</string>
+    <string name="load_saved_preset">Découpage sauvé</string>
+    <string name="save_preset">Enregistrer découpage</string>
     <string name="convert">Convertir</string>
     <string name="roadbook_loaded_dialog">Roadbook chargé !</string>
     <string name="roadbook_loaded_dialog_text">Le roadbook %s est chargé.</string>
@@ -63,7 +65,7 @@
     <string name="press_key_for_raz">Appuyer sur touche RAZ</string>
     <string name="select_action_to_configure">Selectionner l\'action à configurer</string>
     <string name="s_selected">%s sélectionné !</string>
-    <string name="set">Configurer...</string>
+    <string name="set">Configurer…</string>
     <string name="controller_configuration">Configuration télécommande</string>
     <string name="save">Sauvegarder</string>
     <string name="reset_all">Ré-initialiser</string>
@@ -79,4 +81,8 @@
     <string name="target_in_km_h">Cible en km/h</string>
     <string name="avg_speed_green_range">Intervalle dans laquelle la vitesse moyenne est affiché en vert</string>
     <string name="green_range_in_km_h">Intervalle \"verte\" en km/h</string>
+    <string name="no_valid_custom_config">Pas de configuration sauvegardé en mémoire</string>
+    <string name="d_row_per_column">%d lignes par colonnes</string>
+    <string name="config_loaded">Découpage chargé !</string>
+    <string name="preset_saved">Découpage sauvé</string>
 </resources>

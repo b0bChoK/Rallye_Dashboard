@@ -4,17 +4,18 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/background">
 
         <FrameLayout
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/dark_blue"
+            app:layout_constraintBottom_toTopOf="@id/status"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/status">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,10 +33,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/background"
+            app:layout_constraintBottom_toTopOf="@id/preview"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title"
-            app:layout_constraintBottom_toTopOf="@id/preview">
+            app:layout_constraintTop_toBottomOf="@id/title">
 
             <TextView
                 android:id="@+id/txt_pdf_status"
@@ -47,69 +48,147 @@
 
         </FrameLayout>
 
-        <FrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/preview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="@color/background"
-            android:padding="5dp"
+            app:layout_constraintBottom_toTopOf="@id/bt_convert_pdf"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/status"
-            app:layout_constraintBottom_toTopOf="@id/bt_load_cfrr_preset">
+            app:layout_constraintTop_toBottomOf="@id/status">
 
             <com.b0bchok.rallye_dashboard_kt.rd_loader.RoadbookPreView
                 android:id="@+id/img_pdf_preview"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="5dp"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:layout_gravity="center"
-                android:src="@drawable/pdf_sample" />
-        </FrameLayout>
+                android:src="@drawable/pdf_sample"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/bt_select_presset"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="7dp"
+                android:background="@drawable/converter_action_button_selector"
+                android:contentDescription="Open presset"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/select_field"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/bt_icon" />
+
+            <Button
+                android:id="@+id/bt_load_cfrr_preset"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/converter_preset_menu_selector"
+                android:text="@string/load_cfrr_preset"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@id/bt_load_trippy_preset"
+                app:layout_constraintStart_toStartOf="@id/bt_select_presset"
+                app:layout_constraintTop_toBottomOf="@+id/bt_select_presset" />
+
+            <Button
+                android:id="@+id/bt_load_trippy_preset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/converter_preset_menu_selector"
+                android:text="@string/load_trippy_preset"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="@id/bt_select_presset"
+                app:layout_constraintTop_toBottomOf="@+id/bt_load_cfrr_preset" />
+
+            <Button
+                android:id="@+id/bt_load_custom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/converter_preset_menu_selector"
+                android:text="@string/load_saved_preset"
+                android:textColor="@color/white"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@id/bt_load_trippy_preset"
+                app:layout_constraintStart_toStartOf="@id/bt_select_presset"
+                app:layout_constraintTop_toBottomOf="@+id/bt_load_trippy_preset" />
+
+            <ImageButton
+                android:id="@+id/bt_save_presset"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="2dp"
+                android:background="@drawable/converter_action_button_selector"
+                android:contentDescription="@string/save_preset"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/save"
+                app:layout_constraintStart_toEndOf="@+id/bt_select_presset"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/bt_icon" />
+
+            <ImageButton
+                android:id="@+id/bt_add_row"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="2dp"
+                android:background="@drawable/converter_action_button_selector"
+                android:contentDescription="Add row"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/add_row"
+                app:layout_constraintEnd_toStartOf="@+id/bt_remove_row"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/bt_icon" />
+
+            <ImageButton
+                android:id="@+id/bt_remove_row"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="7dp"
+                android:background="@drawable/converter_action_button_selector"
+                android:contentDescription="Remove row"
+                android:padding="5dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/delete_row"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/bt_icon" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ProgressBar
             android:id="@+id/load_bar"
-            android:visibility="gone"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/status"
-            app:layout_constraintStart_toStartOf="parent"
+            android:indeterminate="true"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
-            android:indeterminate="true"/>
-
-        <Button
-            android:id="@+id/bt_load_cfrr_preset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/load_cfrr_preset"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toStartOf="@id/bt_load_trippy_preset"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/preview"
-            app:layout_constraintBottom_toTopOf="@id/bt_convert_pdf"/>
-
-        <Button
-            android:id="@+id/bt_load_trippy_preset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/load_trippy_preset"
-            android:textColor="@color/white"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/bt_load_cfrr_preset"
-            app:layout_constraintTop_toBottomOf="@id/preview" />
+            app:layout_constraintTop_toBottomOf="@+id/status" />
 
         <Button
             android:id="@+id/bt_convert_pdf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="@string/convert"
             android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bt_load_cfrr_preset"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toBottomOf="@id/preview" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
