@@ -6,11 +6,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.b0bchok.rallye_dashboard_kt.DashboardFragment.Companion
 import com.b0bchok.rallye_dashboard_kt.databinding.PdfConverterFragmentBinding
 import com.b0bchok.rallye_dashboard_kt.rd_loader.PdfConverter
 import com.b0bchok.rallye_dashboard_kt.utils.FileUtils
@@ -30,6 +28,7 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
     private val TAG_PDF_PATH = "pdf-to-convert-value"
 
     private var _binding: PdfConverterFragmentBinding? = null
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -59,7 +58,10 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
         val pageConfigChangedObserver = Observer<Boolean> { status ->
             enableSaveButton(status)
         }
-        binding.imgPdfPreview.pageConfigChanged.observe(viewLifecycleOwner, pageConfigChangedObserver)
+        binding.imgPdfPreview.pageConfigChanged.observe(
+            viewLifecycleOwner,
+            pageConfigChangedObserver
+        )
 
         binding.btConvertPdf.isEnabled = true
 
@@ -91,13 +93,13 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
         enableSaveButton(false)
 
         binding.btAddRow.setOnClickListener {
-            if(binding.imgPdfPreview.numberLine < 20)
+            if (binding.imgPdfPreview.numberLine < 20)
                 binding.imgPdfPreview.changeNumberLine(binding.imgPdfPreview.numberLine + 1)
         }
 
         binding.btRemoveRow.setOnClickListener {
-            if(binding.imgPdfPreview.numberLine > 6)
-                binding.imgPdfPreview.changeNumberLine(binding.imgPdfPreview.numberLine -1)
+            if (binding.imgPdfPreview.numberLine > 6)
+                binding.imgPdfPreview.changeNumberLine(binding.imgPdfPreview.numberLine - 1)
         }
 
         binding.btSelectPresset.setOnClickListener {
@@ -112,14 +114,19 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
             binding.btConvertPdf.isEnabled = false
 
             coroutineScope.launch(Dispatchers.IO) {
-                val destF: File? = converter.convert(binding.imgPdfPreview.updateCurrentPageConfig())
+                val destF: File? =
+                    converter.convert(binding.imgPdfPreview.updateCurrentPageConfig())
                 // Handle the result 'destF' on the main thread
                 withContext(Dispatchers.Main) {
                     binding.loadBar.visibility = View.GONE
                     // Update UI or perform other main-thread operations with 'destF'
                     val builder = AlertDialog.Builder(requireContext())
                     builder.setTitle(getString(R.string.pdf_converted))
-                        .setMessage(getString(R.string.the_pdf_was_converted_to_case_by_case_image_here_s).format(destF.toString()))
+                        .setMessage(
+                            getString(R.string.the_pdf_was_converted_to_case_by_case_image_here_s).format(
+                                destF.toString()
+                            )
+                        )
                         .setPositiveButton(
                             getString(R.string.ok),
                         ) { _, _ ->
@@ -139,7 +146,7 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
     }
 
     private fun showPresetMenu() {
-        if(!presetMenuVisible) {
+        if (!presetMenuVisible) {
             binding.btLoadCustom.visibility = View.VISIBLE
             binding.btLoadCfrrPreset.visibility = View.VISIBLE
             binding.btLoadTrippyPreset.visibility = View.VISIBLE
@@ -154,7 +161,7 @@ class PdfConverterFragment(var pdf: Uri? = null) : Fragment() {
     }
 
     private fun enableSaveButton(enable: Boolean) {
-        if(!enable) {
+        if (!enable) {
             binding.btSavePresset.isEnabled = false
             binding.btSavePresset.alpha = 0.5F
         } else {

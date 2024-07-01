@@ -555,9 +555,8 @@ class DashboardFragment : Fragment(), LocationListener,
                         requireContext().getString(R.string.avg_speed_format),
                         (avgSpeed)
                     )
-                    if(highlightAvgSpeed)
-                    {
-                        if((avgSpeed >= avgSpeedTarget + avgSpeedTargetRange) or (avgSpeed <= avgSpeedTarget - avgSpeedTargetRange))
+                    if (highlightAvgSpeed) {
+                        if ((avgSpeed >= avgSpeedTarget + avgSpeedTargetRange) or (avgSpeed <= avgSpeedTarget - avgSpeedTargetRange))
                             mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.avg_speed_critical))
                         else
                             mTxtAvgSpeed?.setTextColor(requireContext().getColor(R.color.avg_speed_ok))
@@ -666,7 +665,7 @@ class DashboardFragment : Fragment(), LocationListener,
         val action = event?.action
 
         if (action == KeyEvent.ACTION_DOWN) {
-            return when(keyCode) {
+            return when (keyCode) {
                 ActionCaseNext -> {
                     true
                 }
@@ -676,7 +675,7 @@ class DashboardFragment : Fragment(), LocationListener,
                 }
 
                 ActionIncreaseOdometer -> {
-                    if(!isIncreaseTotalTimerRunning) {
+                    if (!isIncreaseTotalTimerRunning) {
                         isIncreaseTotalTimerRunning = true
                         increaseTotalTimer.start()
                     }
@@ -684,7 +683,7 @@ class DashboardFragment : Fragment(), LocationListener,
                 }
 
                 ActionDecreaseOdometer -> {
-                    if(!isDecreaseTotalTimerRunning) {
+                    if (!isDecreaseTotalTimerRunning) {
                         isDecreaseTotalTimerRunning = true
                         decreaseTotalTimer.start()
                     }
@@ -692,7 +691,7 @@ class DashboardFragment : Fragment(), LocationListener,
                 }
 
                 ActionRAZ -> {
-                    if(!isRazTimerRunning) {
+                    if (!isRazTimerRunning) {
                         isRazTimerRunning = true
                         razTimer.start()
                     }

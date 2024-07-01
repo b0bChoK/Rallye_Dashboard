@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
-
 import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.Log
@@ -13,7 +12,6 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.b0bchok.rallye_dashboard_kt.R
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper
-import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.controllerConfig
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.customPageConfig
 import com.b0bchok.rallye_dashboard_kt.utils.ReadJSONFromAssets
 import com.google.gson.Gson
@@ -307,8 +305,7 @@ class RoadbookPreView(context: Context, attrs: AttributeSet?) :
 
         pageConfigChanged.value = false
 
-        Toast.makeText(context,
-            context.getString(R.string.preset_saved), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, context.getString(R.string.preset_saved), Toast.LENGTH_SHORT).show()
     }
 
     fun loadCustomConfig() {
