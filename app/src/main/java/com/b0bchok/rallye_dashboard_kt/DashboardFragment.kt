@@ -381,8 +381,8 @@ class DashboardFragment : Fragment(), LocationListener,
         highlightAvgSpeed = prefs.highlightAvgSpeed
         if (highlightAvgSpeed) //HIGHLIGHT_AVG_SPEED
         {
-            avgSpeedTarget = prefs.avgSpeedTarget ?: 55
-            avgSpeedTargetRange = prefs.avgSpeedGreenRange ?: 3
+            avgSpeedTarget = prefs.avgSpeedTarget
+            avgSpeedTargetRange = prefs.avgSpeedGreenRange
         }
 
         val roadbookUri = prefs.roadbookUri

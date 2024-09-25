@@ -41,9 +41,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        val keyCode = event?.keyCode
-        val action = event?.action
+    override fun dispatchKeyEvent(event: KeyEvent): Boolean {
+        val keyCode = event.keyCode
+        val action = event.action
         var res = false
 
         Log.d(TAG, "DispatchKeyEvent %s keyCode %d, action %d".format(event.toString(), keyCode, action))
@@ -61,9 +61,9 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        if (res)
-            return res
+        return if (res)
+            res
         else
-            return super.dispatchKeyEvent(event)
+            super.dispatchKeyEvent(event)
     }
 }

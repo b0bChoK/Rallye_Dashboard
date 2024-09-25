@@ -65,8 +65,8 @@ class PdfConverter(private val pdf: Uri?, private val context: Context, val acti
     // https://www.linkedin.com/pulse/how-use-bitmapcreatebitmap-crop-image-homan-huang/
     fun convert(param: ConverterConfigData): File? {
 
-        var pageHeight: Int = 0
-        var pageWidth: Int = 0
+        var pageHeight = 0
+        var pageWidth = 0
 
         val inputFileName = pdf?.let { FileUtils(activity).getFileName(it)?.split('.')?.get(0) }
 
