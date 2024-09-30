@@ -1,3 +1,23 @@
+/*
+The program Rallye Dashboard is a combination of a roadbook reader
+and a odometer destined to french road racer.
+
+Copyright (C) 2024 DEWAS Albert
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package com.b0bchok.rallye_dashboard_kt
 
 import android.Manifest
@@ -463,7 +483,7 @@ class DashboardFragment : Fragment(), LocationListener,
 
     private fun checkGPS() {
         // TODO Better check if provider disabled or not existing
-
+        
         val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
         if (!gpsEnabled) {
 
@@ -479,10 +499,11 @@ class DashboardFragment : Fragment(), LocationListener,
 
         Log.d(TAG, "Check permission")
 
-        if (ContextCompat.checkSelfPermission(
+        if (gpsEnabled &&
+            (ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
+            ) == PackageManager.PERMISSION_GRANTED)
         ) {
             Log.d(TAG, "Start update location")
 
@@ -492,6 +513,8 @@ class DashboardFragment : Fragment(), LocationListener,
                 10.0f,
                 this
             )
+        } else {
+            Log.e(TAG, "No gps provider available !")
         }
     }
 
