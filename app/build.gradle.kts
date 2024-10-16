@@ -11,8 +11,8 @@ android {
         applicationId = "com.b0bchok.rallye_dashboard_kt"
         minSdk = 28
         targetSdk = 34
-        versionCode = 19
-        versionName = "1.17"
+        versionCode = 20
+        versionName = "1.18"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,6 +47,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")

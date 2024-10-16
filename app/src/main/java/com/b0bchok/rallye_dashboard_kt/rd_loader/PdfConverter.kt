@@ -33,11 +33,7 @@ import android.graphics.Color
 import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Environment
-import android.util.Log
 import com.b0bchok.rallye_dashboard_kt.utils.FileUtils
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.file.Files
 

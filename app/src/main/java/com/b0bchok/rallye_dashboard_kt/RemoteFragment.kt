@@ -23,14 +23,12 @@ package com.b0bchok.rallye_dashboard_kt
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.KeyEvent
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.b0bchok.rallye_dashboard_kt.controller.ControllerConfigData
-import com.b0bchok.rallye_dashboard_kt.databinding.AdvancedMenuFragmentBinding
 import com.b0bchok.rallye_dashboard_kt.databinding.RemoteFragmentBinding
-import com.b0bchok.rallye_dashboard_kt.rd_loader.ConverterConfigData
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.controllerConfig
 import com.b0bchok.rallye_dashboard_kt.utils.ReadJSONFromAssets

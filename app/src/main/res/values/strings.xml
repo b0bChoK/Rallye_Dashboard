@@ -42,7 +42,7 @@
     <string name="zero_max_speed">000km/h</string>
     <string name="zero_avg_speed">00,0km/h</string>
     <string name="alert_location_required">Location Required</string>
-    <string name="alert_location_detail">Please enable Location in system settings</string>
+    <string name="alert_location_detail">Please enable Location in system settings to have a fully and precise odometer</string>
     <string name="text_yes">Yes</string>
     <string name="text_no">No</string>
     <string name="time_pattern">HH:mm:ss</string>
@@ -108,4 +108,6 @@
     <string name="save_preset">Save preset</string>
     <string name="config_loaded">Config loaded !</string>
     <string name="preset_saved">Preset saved</string>
+    <string name="app_cannot_function_without_gps">Odometer cannot work without fine location.</string>
+    <string name="limited_use">Without a fine position, the odometer cannot work. But you still use the roadbook feature.</string>
 </resources>
