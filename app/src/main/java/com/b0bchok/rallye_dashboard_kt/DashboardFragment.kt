@@ -22,19 +22,16 @@ package com.b0bchok.rallye_dashboard_kt
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.util.DisplayMetrics
 import android.util.Log
@@ -69,6 +66,19 @@ import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.highlightAvgSpeed
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.odometerIncrement
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.odometerPrecision
 import com.b0bchok.rallye_dashboard_kt.utils.PreferenceHelper.roadbookUri
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Granularity
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationRequest.Builder.IMPLICIT_MIN_UPDATE_INTERVAL
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.Priority
+import com.google.android.gms.location.SettingsClient
+import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -77,13 +87,15 @@ import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
 
-
-class DashboardFragment : Fragment(), LocationListener,
+// This big fragment manage the roadbook interaction and the location
+class DashboardFragment : Fragment(),
     SharedPreferences.OnSharedPreferenceChangeListener {
     companion object {
         private const val TAG = "DashboardFragment"
+
         private val permissionsGps = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         )
         private val permissionsStorage = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -97,7 +109,11 @@ class DashboardFragment : Fragment(), LocationListener,
     private var _binding: DashboardFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var locationManager: LocationManager
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
+    private var haveAccessToLocation: Boolean = false
+
     private lateinit var mSpeedMeasures: SpeedMeasures
 
     private lateinit var mRbLoader: RoadbookLoader
@@ -130,18 +146,21 @@ class DashboardFragment : Fragment(), LocationListener,
     private var ActionDecreaseOdometer: Int = KeyEvent.KEYCODE_UNKNOWN
     private var ActionRAZ: Int = KeyEvent.KEYCODE_UNKNOWN
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = DashboardFragmentBinding.inflate(inflater, container, false)
+
+        var theActivity = requireActivity()
 
         if (savedInstanceState != null) {
             isChronometerRunning = savedInstanceState.getBoolean(TAG_IS_CHRONOMTER_RUNNING)
             startChronometer = savedInstanceState.getLong(TAG_CHRONOMETER_VALUE)
         }
 
-        mRbLoader = ViewModelProvider(requireActivity())[RoadbookLoader::class.java]
+        mRbLoader = ViewModelProvider(theActivity)[RoadbookLoader::class.java]
 
         val roadbookLoadedObserver = Observer<Boolean> { status ->
             if (status && mRbLoader.isRoadbookLoaded) {
@@ -154,17 +173,25 @@ class DashboardFragment : Fragment(), LocationListener,
 
         mSpeedMeasures = ViewModelProvider(this)[SpeedMeasures::class.java]
 
-        locationManager =
-            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        requireActivity().onBackPressedDispatcher.addCallback(
+        theActivity.onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             callbackBackPressedCallback
         );
 
         updatePrefs()
 
-        checkPermissions()
+        // Check access to location, if not, request it
+        checkGNSSPermissions()
+
+        // Initialize location callback, but not started yet
+        // Callback is started if location access is granted and
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+
+                locationResult.lastLocation?.let { updateLocation(it) }
+            }
+        }
 
         return binding.root
     }
@@ -183,6 +210,7 @@ class DashboardFragment : Fragment(), LocationListener,
 
     override fun onDestroyView() {
         super.onDestroyView()
+        stopLocationUpdates()
         callbackBackPressedCallback.remove()
         razTimer.cancel()
         increaseTotalTimer.cancel()
@@ -385,7 +413,7 @@ class DashboardFragment : Fragment(), LocationListener,
         updateButton()
     }
 
-    fun updatePrefs() {
+    private fun updatePrefs() {
         val prefs = PreferenceHelper.defaultPreference(requireContext())
 
         minimumDistanceToStartChrono = prefs.chronometerDistance?.toInt() ?: 40
@@ -418,7 +446,6 @@ class DashboardFragment : Fragment(), LocationListener,
         }
     }
 
-
     private fun updateButton() {
         binding.btIncreaseDist.text =
             String.format(getString(R.string.increase_button_pattern), distanceIncrementation)
@@ -438,104 +465,162 @@ class DashboardFragment : Fragment(), LocationListener,
             .unregisterOnSharedPreferenceChangeListener(this)
     }
 
-    private fun checkPermissions() {
-        val gpsDenied = permissionsGps.any {
-            ContextCompat.checkSelfPermission(requireContext(), it) ==
-                    PackageManager.PERMISSION_DENIED
-        }
-        if (gpsDenied) {
-            requestPermissions(permissionsGps, 1)
-        } else {
-            checkGPS()
-        }
+    @SuppressLint("MissingPermission")
+    // Check if location is available after getting authorization
+    private fun requestLocation() {
+        if(haveAccessToLocation) {
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        val storageDenied = permissionsStorage.any {
-            ContextCompat.checkSelfPermission(requireContext(), it) ==
-                    PackageManager.PERMISSION_DENIED
-        }
-        if (storageDenied) {
-            requestPermissions(permissionsStorage, 2)
-        }
-    }
+            locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 500L)
+                .setWaitForAccurateLocation(false)
+                .setGranularity(Granularity.GRANULARITY_FINE)
+                .setMinUpdateIntervalMillis(IMPLICIT_MIN_UPDATE_INTERVAL)
+                .setMinUpdateDistanceMeters(10F)
+                .build()
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                checkGPS()
-            } else {
-                gpsNotEnabled()
+            val builder = LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest)
+
+            val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
+            val task: Task<LocationSettingsResponse> = client.checkLocationSettings(builder.build())
+
+            task.addOnSuccessListener { locationSettingsResponse ->
+                // All location settings are satisfied. The client can initialize
+                // location requests here.
+                fusedLocationClient.lastLocation
+                    .addOnSuccessListener { location: Location? ->
+                        Log.d(TAG, "Location : %s".format(location))
+
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null)
+                            updateLocation(location)
+
+                        startLocationUpdates()
+                    }
             }
-        }
 
-        if (requestCode == 2) {
-            if (grantResults.all { it == PackageManager.PERMISSION_DENIED }) {
-                if (Build.VERSION.SDK_INT < 30)
-                    Toast.makeText(requireContext(), "No storage access", Toast.LENGTH_LONG)
+            task.addOnFailureListener { exception ->
+                if (exception is ResolvableApiException){
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    Toast.makeText(requireContext(),
+                        getString(R.string.app_cannot_function_without_gps), Toast.LENGTH_LONG)
                         .show()
+                    Log.w(TAG, "Location settings are not satisfied.")
+                }
             }
         }
     }
 
-    private fun checkGPS() {
-        // TODO Better check if provider disabled or not existing
-        
-        val gpsEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-        if (!gpsEnabled) {
-
-            val builder = AlertDialog.Builder(requireContext())
-            builder.setPositiveButton(requireContext().getString(R.string.text_yes)) { _: DialogInterface, _: Int -> enableLocation() }
-                .setNegativeButton(requireContext().getString(R.string.text_no)) { _: DialogInterface, _: Int -> gpsNotEnabled() }
-                .setMessage(requireContext().getString(R.string.alert_location_detail))
-                .setTitle(requireContext().getString(R.string.alert_location_required))
-            val alertDialog = builder.create()
-            alertDialog.show()
-
-        }
-
-        Log.d(TAG, "Check permission")
-
-        if (gpsEnabled &&
-            (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED)
-        ) {
-            Log.d(TAG, "Start update location")
-
-            locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                500,
-                10.0f,
-                this
-            )
-        } else {
-            Log.e(TAG, "No gps provider available !")
-        }
-    }
-
-    private fun enableLocation() {
-        val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-        startActivity(settingsIntent)
-    }
-
-    private fun gpsNotEnabled() {
-        Toast.makeText(requireContext(), "App cannot function without GPS", Toast.LENGTH_LONG)
-            .show()
-    }
-
-    override fun onLocationChanged(p0: Location) {
-        mSpeedMeasures.updateLocation(p0)
+    private fun updateLocation(location: Location) {
+        // Got last known location. In some rare situations this can be null.
+        mSpeedMeasures.updateLocation(location)
 
         // Update odometer and speed
         if (context != null)
             updateMeter()
         else
             Log.w(TAG, "Not attached to context ! (onLocationChanged)")
+    }
+
+    private fun checkGNSSPermissions() {
+        when {
+            ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // You can use the API that requires the permission.
+                haveAccessToLocation = true
+                Log.d(TAG, "ACCESS_FINE_LOCATION : Permission granted")
+
+                requestLocation()
+            }
+
+            requireActivity().shouldShowRequestPermissionRationale(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) -> {
+                // In an educational UI, explain to the user why your app requires this
+                // permission for a specific feature to behave as expected, and what
+                // features are disabled if it's declined. In this UI, include a
+                // "cancel" or "no thanks" button that lets the user continue
+                // using your app without granting the permission.
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setPositiveButton(requireContext().getString(R.string.text_yes)) { _: DialogInterface, _: Int -> enableLocationSettings() }
+                    .setNegativeButton(requireContext().getString(R.string.text_no)) { _: DialogInterface, _: Int -> gpsNotEnabled() }
+                    .setMessage(requireContext().getString(R.string.alert_location_detail))
+                    .setTitle(requireContext().getString(R.string.alert_location_required))
+                val alertDialog = builder.create()
+                alertDialog.show()
+            }
+
+            else -> {
+                // You can directly ask for the permission.
+                requestPermissions(permissionsGps, 1)
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 -> {
+                // If request is cancelled, the result arrays are empty.
+                if ((grantResults.isNotEmpty() &&
+                            grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                    haveAccessToLocation = true
+                    Log.d(TAG, "ACCESS_FINE_LOCATION : Permission granted")
+                    requestLocation()
+
+                } else {
+                    // Explain to the user that the feature is unavailable because
+                    // the feature requires a permission that the user has denied.
+                    // At the same time, respect the user's decision. Don't link to
+                    // system settings in an effort to convince the user to change
+                    // their decision.
+
+                    val builder = AlertDialog.Builder(requireContext())
+                    builder.setNeutralButton(requireContext().getString(R.string.ok)) { _: DialogInterface, _: Int -> gpsNotEnabled() }
+                        .setMessage(getString(R.string.limited_use))
+                        .setTitle(requireContext().getString(R.string.alert_location_required))
+                    val alertDialog = builder.create()
+                    alertDialog.show()
+                }
+                return
+            }
+
+            // Add other 'when' lines to check for other
+            // permissions this app might request.
+            else -> {
+                // Ignore all other requests.
+            }
+        }
+    }
+
+    private fun enableLocationSettings() {
+        Log.i(TAG, "Enabling location in settings")
+        val settingsIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+        startActivity(settingsIntent)
+    }
+
+    private fun gpsNotEnabled() {
+        Log.w(TAG, "GPS not enabled")
+        Toast.makeText(requireContext(),
+            getString(R.string.app_cannot_function_without_gps), Toast.LENGTH_LONG)
+            .show()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun startLocationUpdates() {
+        fusedLocationClient.requestLocationUpdates(locationRequest,
+            locationCallback,
+            Looper.getMainLooper())
+    }
+
+    private fun stopLocationUpdates() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
     private fun updateMeter() {
@@ -760,18 +845,5 @@ class DashboardFragment : Fragment(), LocationListener,
         }
 
         return false
-    }
-
-    override fun onProviderEnabled(provider: String) {
-        Log.w(TAG, "Provider %s enabled".format(provider))
-    }
-
-    override fun onProviderDisabled(provider: String) {
-        Log.w(TAG, "Provider %s disabled".format(provider))
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-        Log.w(TAG, "Provider %s change to %d".format(provider, status))
     }
 }

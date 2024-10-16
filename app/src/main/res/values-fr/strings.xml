@@ -22,7 +22,7 @@
     <string name="copyright">©2022 by A. DEWAS</string>
     <string name="comment">C\'est une application Android qui permet d\'afficher un roadbook et un chronomètre/odomètre, qui peut être pilotée par une télécommande bluetooth.</string>
     <string name="alert_location_required">Positionnement requis</string>
-    <string name="alert_location_detail">Merci d\'activer la localisation dans les paramètres systèmes</string>
+    <string name="alert_location_detail">Merci d\'activer la localisation dans les paramètres systèmes pour profiter d\'un odomètre complet et précis.</string>
 
     <string name="text_yes">Oui</string>
     <string name="text_no">Non</string>
@@ -85,4 +85,6 @@
     <string name="d_row_per_column">%d lignes par colonnes</string>
     <string name="config_loaded">Découpage chargé !</string>
     <string name="preset_saved">Découpage sauvé</string>
+    <string name="app_cannot_function_without_gps">L\'odomètre ne peut pas fonctionner sans une position précise.</string>
+    <string name="limited_use">Sans l\'accès à la position précise, l\'odomètre ne peut pas fonctionner. Mais vous pouvez utiliser la fonction roadbook.</string>
 </resources>
