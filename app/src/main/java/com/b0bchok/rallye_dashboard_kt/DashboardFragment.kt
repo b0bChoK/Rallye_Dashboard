@@ -273,14 +273,13 @@ class DashboardFragment : Fragment(),
     }
 
     private var isRazTimerRunning = false
-    private val razTimer: CountDownTimer = object : CountDownTimer(2000, 500) {
+    private val razTimer: CountDownTimer = object : CountDownTimer(1000, 500) {
         override fun onTick(l: Long) {
             isRazTimerRunning = true
         }
 
         override fun onFinish() {
             isRazTimerRunning = false
-            raz()
         }
     }
 
@@ -799,7 +798,11 @@ class DashboardFragment : Fragment(),
                 }
 
                 ActionRAZ -> {
-                    if (!isRazTimerRunning) {
+                    Log.d(TAG, "RAZ down")
+                    if(isRazTimerRunning)
+                    {
+                        raz()
+                    } else {
                         isRazTimerRunning = true
                         razTimer.start()
                     }
@@ -835,8 +838,6 @@ class DashboardFragment : Fragment(),
                 }
 
                 ActionRAZ -> {
-                    razTimer.cancel()
-                    isRazTimerRunning = false
                     true
                 }
 
