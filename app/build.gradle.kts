@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.b0bchok.rallye_dashboard_kt"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.b0bchok.rallye_dashboard_kt"
         minSdk = 28
-        targetSdk = 34
-        versionCode = 22
-        versionName = "1.19"
+        targetSdk = 35
+        versionCode = 23
+        versionName = "1.20"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
